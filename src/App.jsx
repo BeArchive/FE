@@ -1,10 +1,7 @@
-function App() {
+import '@styles/global.scss';
 
-  return (
-    <>
-      Hello World!
-    </>
-  )
+function App() {
+  return <>Hello World!</>;
 }
 
-export default App
+export default App;
