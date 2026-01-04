@@ -1,1 +1,42 @@
-/* 색상, 링크, 공통 UI */
+:root {
+  /* Grayscale */
+  --color-black: #000000;
+  --color-gray-900: #1a1a1a;
+  --color-gray-800: #333333;
+  --color-gray-700: #4d4d4d;
+  --color-gray-600: #666666;
+  --color-gray-500: #808080;
+  --color-gray-400: #999999;
+  --color-gray-300: #b3b3b3;
+  --color-gray-200: #cccccc;
+  --color-gray-150: #d9d9d9;
+  --color-gray-100: #e6e6e6;
+  --color-gray-50: #f2f2f2;
+  --color-white: #ffffff;
+
+  /* Primary */
+  --color-primary-0: #f8fafc;
+  --color-primary-50: #e3f4ff;
+  --color-primary-200: #8dd0ff;
+  --color-primary-400: #1dadff;
+  --color-primary-main: #007bff;
+  --color-primary-800: #1e3a8a;
+
+  /* Secondary */
+  --color-secondary-50: #e5ecf4;
+  --color-secondary-100: #c2d1db;
+  --color-secondary-200: #a0b2bf;
+  --color-secondary-300: #7d93a4;
+  --color-secondary-500: #49677d;
+  --color-secondary-700: #304757;
+
+  /* Error */
+  --color-error-1: #ff6e6e99;
+  --color-error-2: #ff6e6e;
+
+  /* Gradient */
+  --gradient-main: linear-gradient(180deg, #82cbff 12.28%, #007bff 113.54%);
+
+  /* Shadow */
+  --shadow-primary: 4px 4px 4px 0 #d9d9d929;
+}
