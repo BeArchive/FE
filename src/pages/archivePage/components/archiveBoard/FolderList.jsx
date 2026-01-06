@@ -4,13 +4,18 @@ import FolderCard from '../archiveBoard/FolderCard';
 
 export default function FolderList({ folders = [] }) {
   return (
-    <div className={cn('grid grid-cols-4 gap-120 px-35 py-56 w-full h-full content-start')}>
+    <div
+      className={cn(
+        'grid grid-cols-4 gap-120 px-35 py-56 w-full h-full',
+        folders.length > 0 ? 'content-start' : 'place-items-center',
+      )}
+    >
       {folders.length > 0 ? (
         folders.map((folder) => (
           <FolderCard key={folder.id} folderId={folder.id} folderName={folder.name} />
         ))
       ) : (
-        <div className="col-span-4 flex flex-col gap-17 items-center w-full h-full justify-center">
+        <div className="col-span-4 flex flex-col gap-17 items-center justify-center">
           {/* 빈 상태 아카이브*/}
           <div
             className="flex items-center justify-center"
