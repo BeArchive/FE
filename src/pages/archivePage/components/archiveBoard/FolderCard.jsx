@@ -27,7 +27,7 @@ export default function FolderCard({ folderId, folderName = '폴더명', classNa
 
         {/* 폴더 이름 */}
         <p className="font-medium text-16 text-center text-secondary-500 break-words w-full">
-          {folderName}
+          {folderName.length > 8 ? `${folderName.slice(0, 8)}...` : folderName}
         </p>
       </div>
     </div>

@@ -111,7 +111,7 @@ export default function Sidebar({ folders, setFolders }) {
               ) : (
                 <>
                   <p className="text-16 font-medium text-secondary-500 leading-24 flex-1 truncate">
-                    {folder.name}
+                    {folder.name.length > 8 ? `${folder.name.slice(0, 8)}...` : folder.name}
                   </p>
                   <button
                     className="ml-auto flex items-center justify-center w-23 h-23 transition-all duration-200 hover:brightness-75"
