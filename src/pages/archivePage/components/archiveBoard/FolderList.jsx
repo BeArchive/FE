@@ -2,7 +2,14 @@ import { cn } from '../../../../lib/utils';
 import archiveIcon from '../../../../assets/images/archive_empty_logo.svg';
 import FolderCard from '../archiveBoard/FolderCard';
 
-export default function FolderList({ folders = [] }) {
+export default function FolderList({
+  folders = [],
+  activeFolderId,
+  onActiveFolder,
+  hoveredFolderId,
+  onHoverFolder,
+  editingFolderId,
+}) {
   return (
     <div
       className={cn(
@@ -12,7 +19,16 @@ export default function FolderList({ folders = [] }) {
     >
       {folders.length > 0 ? (
         folders.map((folder) => (
-          <FolderCard key={folder.id} folderId={folder.id} folderName={folder.name} />
+          <FolderCard
+            key={folder.id}
+            folderId={folder.id}
+            folderName={folder.name}
+            isActive={activeFolderId === folder.id}
+            onActive={onActiveFolder}
+            isHovered={hoveredFolderId === folder.id}
+            onHover={onHoverFolder}
+            isEditing={editingFolderId === folder.id}
+          />
         ))
       ) : (
         <div className="col-span-4 flex flex-col gap-17 items-center justify-center">

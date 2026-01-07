@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FolderList from '../archiveBoard/FolderList';
 import Sidebar from '../sidebar/Sidebar';
 import ConfirmModal from '../../../../components/modal/ConfirmModal';
+import { useFolderState } from '../../hooks/useFolderState';
 
 export default function ArchiveBoard() {
   const [folders, setFolders] = useState([
@@ -10,6 +11,14 @@ export default function ArchiveBoard() {
     { id: 3, name: '폴더명3' },
     { id: 4, name: '안녕하세요' },
   ]);
+  const {
+    activeFolderId,
+    setActiveFolderId,
+    hoveredFolderId,
+    setHoveredFolderId,
+    editingFolderId,
+    setEditingFolderId,
+  } = useFolderState();
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState('default');
   const [modalFolderName, setModalFolderName] = useState('');
@@ -33,6 +42,12 @@ export default function ArchiveBoard() {
         <Sidebar
           folders={folders}
           setFolders={setFolders}
+          activeFolderId={activeFolderId}
+          onActiveFolder={setActiveFolderId}
+          hoveredFolderId={hoveredFolderId}
+          onHoverFolder={setHoveredFolderId}
+          editingFolderId={editingFolderId}
+          onEditingFolder={setEditingFolderId}
           onRequestDelete={openDeleteModal}
           onRequestDuplicate={openDuplicateModal}
         />
@@ -47,7 +62,14 @@ export default function ArchiveBoard() {
 
         {/* 폴더 리스트 */}
         <div className="flex-1 overflow-y-auto flex flex-col items-start justify-start">
-          <FolderList folders={folders} />
+          <FolderList
+            folders={folders}
+            activeFolderId={activeFolderId}
+            onActiveFolder={setActiveFolderId}
+            hoveredFolderId={hoveredFolderId}
+            onHoverFolder={setHoveredFolderId}
+            editingFolderId={editingFolderId}
+          />
         </div>
 
         {/* 모달 */}

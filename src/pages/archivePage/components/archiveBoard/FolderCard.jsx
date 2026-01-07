@@ -2,23 +2,47 @@ import folderImage from '../../../../assets/images/folder_btn.webp';
 import { cn } from '../../../../lib/utils';
 import useNavigation from '../../../../hooks/useNavigation';
 
-export default function FolderCard({ folderId, folderName = '폴더명', className }) {
+export default function FolderCard({
+  folderId,
+  folderName = '폴더명',
+  isActive,
+  onActive,
+  isHovered,
+  onHover,
+  isEditing,
+  className,
+}) {
   const { goTo } = useNavigation();
 
   const handleFolderClick = () => {
+    onActive?.(folderId);
     goTo(`/archive/${folderId}`);
   };
 
-  const cardStyles = cn(
-    'flex items-center justify-center p-20 rounded-20',
-    'transition-all duration-200',
-    'cursor-pointer bg-transparent shrink-0',
-    'hover:bg-primary-0 active:bg-primary-50',
-    className,
-  );
+  const getCardStyles = () =>
+    cn(
+      'flex items-center justify-center p-20 rounded-20',
+      'transition-all duration-200',
+      'cursor-pointer bg-transparent shrink-0',
+      isEditing
+        ? 'bg-gray-50'
+        : isActive
+          ? 'bg-primary-50'
+          : isHovered
+            ? 'bg-primary-0'
+            : 'hover:bg-primary-0',
+      className,
+    );
 
   return (
-    <div className={cardStyles} onClick={handleFolderClick}>
+    <div
+      className={getCardStyles()}
+      onClick={handleFolderClick}
+      onMouseEnter={() => onHover?.(folderId)}
+      onMouseLeave={() => onHover?.(null)}
+      onMouseDown={() => onActive?.(folderId)}
+      onMouseUp={() => onActive?.(null)}
+    >
       <div className="flex flex-col gap-18 items-center w-128">
         {/* 폴더 이미지 */}
         <div className="h-96 w-128">

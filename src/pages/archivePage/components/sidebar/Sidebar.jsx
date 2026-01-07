@@ -5,15 +5,42 @@ import { LuCirclePlus } from 'react-icons/lu';
 import { FaRegCircleCheck, FaRegCircleXmark } from 'react-icons/fa6';
 import editIcon from '../../../../assets/icons/edit_icon.svg';
 
-export default function Sidebar({ folders, setFolders, onRequestDelete, onRequestDuplicate }) {
+export default function Sidebar({
+  folders,
+  setFolders,
+  activeFolderId,
+  onActiveFolder,
+  hoveredFolderId,
+  onHoverFolder,
+  editingFolderId,
+  onEditingFolder,
+  onRequestDelete,
+  onRequestDuplicate,
+}) {
   const { goTo } = useNavigation();
   const [folderList, setFolderList] = useState(folders);
   useEffect(() => {
     setFolderList(folders);
   }, [folders]);
-  const [selectedFolderId, setSelectedFolderId] = useState(null);
-  const [editingFolderId, setEditingFolderId] = useState(null);
   const [editingFolderName, setEditingFolderName] = useState('');
+
+  // 폴더 상태 스타일 반환
+  const getFolderItemStyles = (folder, isEditing) => {
+    const isActive = activeFolderId === folder.id;
+    const isHovered = hoveredFolderId === folder.id;
+
+    return cn(
+      'flex items-center px-20 py-10 rounded-100',
+      'cursor-pointer transition-all duration-200',
+      isEditing
+        ? 'bg-gray-50'
+        : isActive
+          ? 'bg-primary-50'
+          : isHovered
+            ? 'bg-primary-0'
+            : 'bg-transparent hover:bg-primary-0',
+    );
+  };
 
   // 폴더 추가 핸들러
   const handleAddFolder = () => {
@@ -29,18 +56,18 @@ export default function Sidebar({ folders, setFolders, onRequestDelete, onReques
     const next = [...folderList, newFolder];
     setFolderList(next);
     setFolders(next);
-    setEditingFolderId(newId);
+    onEditingFolder(newId);
     setEditingFolderName(newName);
   };
 
   const handleFolderSelect = (folderId) => {
-    setSelectedFolderId(folderId);
+    onActiveFolder(folderId);
     goTo(`/archive/${folderId}`);
   };
 
   const handleEditClick = (e, folder) => {
     e.stopPropagation();
-    setEditingFolderId(folder.id);
+    onEditingFolder(folder.id);
     setEditingFolderName(folder.name);
   };
 
@@ -48,13 +75,13 @@ export default function Sidebar({ folders, setFolders, onRequestDelete, onReques
     const updatedFolders = folderList.map((f) => (f.id === folderId ? { ...f, name: newName } : f));
     setFolderList(updatedFolders);
     setFolders(updatedFolders);
-    setEditingFolderId(null);
+    onEditingFolder(null);
     setEditingFolderName('');
   };
 
   const handleCancelEdit = (e) => {
     e.stopPropagation();
-    setEditingFolderId(null);
+    onEditingFolder(null);
     setEditingFolderName('');
   };
 
@@ -78,23 +105,20 @@ export default function Sidebar({ folders, setFolders, onRequestDelete, onReques
       {/* 폴더 목록 */}
       <div className="flex flex-col gap-10 px-16 overflow-y-auto flex-1 mt-10">
         {folderList.map((folder) => {
-          const isSelected = selectedFolderId === folder.id;
+          const isActive = activeFolderId === folder.id;
+          const isHovered = hoveredFolderId === folder.id;
           const isEditing = editingFolderId === folder.id;
-          const folderItemStyles = cn(
-            'flex items-center px-20 py-10 rounded-100',
-            'cursor-pointer transition-all duration-200',
-            isEditing
-              ? 'bg-gray-50'
-              : isSelected
-                ? 'bg-primary-50'
-                : 'bg-transparent hover:bg-primary-0 active:bg-primary-50',
-          );
+          const folderItemStyles = getFolderItemStyles(folder, isEditing);
 
           return (
             <div
               key={folder.id}
               className={cn(folderItemStyles, 'group')}
               onClick={() => handleFolderSelect(folder.id)}
+              onMouseEnter={() => onHoverFolder(folder.id)}
+              onMouseLeave={() => onHoverFolder(null)}
+              onMouseDown={() => onActiveFolder(folder.id)}
+              onMouseUp={() => onActiveFolder(null)}
             >
               {isEditing ? (
                 <>
@@ -118,7 +142,7 @@ export default function Sidebar({ folders, setFolders, onRequestDelete, onReques
                         const proposed = editingFolderName.trim();
                         // 변경이 없는 경우
                         if (!proposed || proposed === folder.name) {
-                          setEditingFolderId(null);
+                          onEditingFolder(null);
                           setEditingFolderName('');
                           return;
                         }
