@@ -35,14 +35,14 @@ export default function ConfirmModal({
   const cancelBtnStyles = cn(
     'bg-primary-0 rounded-100 w-117 h-28',
     'flex items-center justify-center',
-    'text-14 leading-22 text-secondary-300',
+    'text-[14px] leading-22 text-secondary-300',
   );
 
   const confirmBtnStyles = cn(
     'bg-[#FF6E6E]',
     'rounded-100 w-117 h-28',
     'flex items-center justify-center',
-    'text-14 leading-22',
+    'text-[14px] leading-22',
     'text-secondary-700',
   );
 
