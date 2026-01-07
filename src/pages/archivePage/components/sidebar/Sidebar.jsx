@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '../../../../lib/utils';
 import useNavigation from '../../../../hooks/useNavigation';
 import { LuCirclePlus } from 'react-icons/lu';
 import { FaRegCircleCheck, FaRegCircleXmark } from 'react-icons/fa6';
 import editIcon from '../../../../assets/icons/edit_icon.svg';
 
-export default function Sidebar({ folders, setFolders }) {
+export default function Sidebar({ folders, setFolders, onRequestDelete, onRequestDuplicate }) {
   const { goTo } = useNavigation();
   const [folderList, setFolderList] = useState(folders);
+  useEffect(() => {
+    setFolderList(folders);
+  }, [folders]);
   const [selectedFolderId, setSelectedFolderId] = useState(null);
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [editingFolderName, setEditingFolderName] = useState('');
@@ -23,16 +26,12 @@ export default function Sidebar({ folders, setFolders }) {
     setEditingFolderName(folder.name);
   };
 
-  const handleSaveFolder = (e, folderId) => {
-    e.stopPropagation();
-    if (editingFolderName.trim()) {
-      const updatedFolders = folderList.map((f) =>
-        f.id === folderId ? { ...f, name: editingFolderName } : f,
-      );
-      setFolderList(updatedFolders);
-      setFolders(updatedFolders);
-    }
+  const commitRename = (folderId, newName) => {
+    const updatedFolders = folderList.map((f) => (f.id === folderId ? { ...f, name: newName } : f));
+    setFolderList(updatedFolders);
+    setFolders(updatedFolders);
     setEditingFolderId(null);
+    setEditingFolderName('');
   };
 
   const handleCancelEdit = (e) => {
@@ -95,14 +94,38 @@ export default function Sidebar({ folders, setFolders }) {
                     <button
                       className="flex items-center justify-center w-19 h-19 text-primary-400 hover:text-primary-main transition-colors"
                       aria-label="저장"
-                      onClick={(e) => handleSaveFolder(e, folder.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const proposed = editingFolderName.trim();
+                        // 변경이 없는 경우
+                        if (!proposed || proposed === folder.name) {
+                          setEditingFolderId(null);
+                          setEditingFolderName('');
+                          return;
+                        }
+                        // 중복 검사
+                        const isDuplicate = folders.some(
+                          (f) => f.id !== folder.id && f.name === proposed,
+                        );
+                        if (isDuplicate) {
+                          onRequestDuplicate?.(proposed);
+                          return;
+                        }
+                        // 중복 아니면 이름 반영
+                        commitRename(folder.id, proposed);
+                      }}
                     >
                       <FaRegCircleCheck className="w-full h-full" />
                     </button>
                     <button
                       className="flex items-center justify-center w-19 h-19 text-secondary-300 hover:text-secondary-500 transition-colors"
-                      aria-label="취소"
-                      onClick={handleCancelEdit}
+                      aria-label="삭제"
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        const name = editingFolderName || folder.name;
+                        onRequestDelete?.(name);
+                        handleCancelEdit(ev);
+                      }}
                     >
                       <FaRegCircleXmark className="w-full h-full" />
                     </button>
