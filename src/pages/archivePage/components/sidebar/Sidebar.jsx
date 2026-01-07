@@ -15,6 +15,24 @@ export default function Sidebar({ folders, setFolders, onRequestDelete, onReques
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [editingFolderName, setEditingFolderName] = useState('');
 
+  // 폴더 추가 핸들러
+  const handleAddFolder = () => {
+    let newName = '새폴더';
+    let counter = 1;
+    while (folderList.some((f) => f.name === newName)) {
+      newName = `새폴더(${counter})`;
+      counter++;
+    }
+
+    const newId = Date.now(); // 임시 ID 생성
+    const newFolder = { id: newId, name: newName };
+    const next = [...folderList, newFolder];
+    setFolderList(next);
+    setFolders(next);
+    setEditingFolderId(newId);
+    setEditingFolderName(newName);
+  };
+
   const handleFolderSelect = (folderId) => {
     setSelectedFolderId(folderId);
     goTo(`/archive/${folderId}`);
@@ -48,6 +66,7 @@ export default function Sidebar({ folders, setFolders, onRequestDelete, onReques
         <button
           className="flex items-center justify-center w-23 h-23 text-primary-main"
           aria-label="폴더 추가"
+          onClick={handleAddFolder}
         >
           <LuCirclePlus className="w-full h-full" />
         </button>
