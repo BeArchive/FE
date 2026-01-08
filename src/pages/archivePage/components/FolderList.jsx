@@ -1,6 +1,6 @@
-import { cn } from '../../../../lib/utils';
-import archiveIcon from '../../../../assets/images/archive_empty_logo.svg';
-import FolderCard from '../archiveBoard/FolderCard';
+import { cn } from '../../../lib/utils';
+import archiveIcon from '../../../assets/images/archive_empty_logo.svg';
+import FolderCard from './FolderCard';
 
 export default function FolderList({
   folders = [],

@@ -1,6 +1,6 @@
-import folderImage from '../../../../assets/images/folder_btn.webp';
-import { cn } from '../../../../lib/utils';
-import useNavigation from '../../../../hooks/useNavigation';
+import folderImage from '../../../assets/images/folder_btn.webp';
+import { cn } from '../../../lib/utils';
+import useNavigation from '../../../hooks/useNavigation';
 
 export default function FolderCard({
   folderId,

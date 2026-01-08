@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { cn } from '../../../../lib/utils';
-import useNavigation from '../../../../hooks/useNavigation';
+import { cn } from '../../../lib/utils';
+import useNavigation from '../../../hooks/useNavigation';
 import { LuCirclePlus } from 'react-icons/lu';
 import { FaRegCircleCheck, FaRegCircleXmark } from 'react-icons/fa6';
-import editIcon from '../../../../assets/icons/edit_icon.svg';
+import editIcon from '../../../assets/icons/edit_icon.svg';
 
 export default function Sidebar({
   folders,
