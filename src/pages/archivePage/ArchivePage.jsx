@@ -3,47 +3,18 @@ import Sidebar from './components/Sidebar';
 import FolderCard from './components/FolderCard';
 import ConfirmModal from '../../components/modal/ConfirmModal';
 import archiveIcon from '../../assets/images/archive_empty_logo.svg';
-import { useFolder } from './hooks/useFolder';
-import { useModal } from './hooks/useModal';
+import { useArchiveStore } from './store/archiveStore';
 
 const ArchivePage = () => {
-  const {
-    folders,
-    setFolders,
-    setActiveFolderId,
-    setHoveredFolderId,
-    editingFolderId,
-    setEditingFolderId,
-    getFolderStyle,
-    deleteFolder,
-    isDuplicateName,
-  } = useFolder([
-    { id: 1, name: '폴더명1' },
-    { id: 2, name: '폴더명2' },
-    { id: 3, name: '폴더명3' },
-    { id: 4, name: '안녕하세요' },
-  ]);
+  const { folders, modal, deleteFolder, closeModal, openModal } = useArchiveStore();
 
-  const { isOpen, variant, data, openModal, closeModal } = useModal();
-  const openDeleteModal = (name) => openModal('delete', name);
-  const openDuplicateModal = (name) => openModal('duplicate', name);
+  const { isOpen, variant, data } = modal;
 
   return (
     <div className="w-full h-full bg-primary-0 flex">
       {/* 사이드바 */}
       <div className="rounded-tr-20 shadow-basic">
-        <Sidebar
-          folders={folders}
-          setFolders={setFolders}
-          onActiveFolder={setActiveFolderId}
-          onHoverFolder={setHoveredFolderId}
-          editingFolderId={editingFolderId}
-          onEditingFolder={setEditingFolderId}
-          onRequestDelete={openDeleteModal}
-          onRequestDuplicate={openDuplicateModal}
-          isDuplicateName={isDuplicateName}
-          getFolderStyle={getFolderStyle}
-        />
+        <Sidebar />
       </div>
 
       {/* 아카이브 보드 영역 */}
@@ -63,14 +34,7 @@ const ArchivePage = () => {
           >
             {folders.length > 0 ? (
               folders.map((folder) => (
-                <FolderCard
-                  key={folder.id}
-                  folderId={folder.id}
-                  folderName={folder.name}
-                  onActive={setActiveFolderId}
-                  onHover={setHoveredFolderId}
-                  getFolderStyle={getFolderStyle}
-                />
+                <FolderCard key={folder.id} folderId={folder.id} folderName={folder.name} />
               ))
             ) : (
               <div className="col-span-4 flex flex-col gap-17 items-center justify-center">

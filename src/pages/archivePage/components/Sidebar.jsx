@@ -1,27 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { cn } from '../../../lib/utils';
 import useNavigation from '../../../hooks/useNavigation';
 import { LuCirclePlus } from 'react-icons/lu';
 import { FaRegCircleCheck, FaRegCircleXmark } from 'react-icons/fa6';
 import editIcon from '../../../assets/icons/edit_icon.svg';
+import { useArchiveStore } from '../store/archiveStore';
 
-export default function Sidebar({
-  folders,
-  setFolders,
-  onActiveFolder,
-  onHoverFolder,
-  editingFolderId,
-  onEditingFolder,
-  onRequestDelete,
-  onRequestDuplicate,
-  isDuplicateName,
-  getFolderStyle,
-}) {
+export default function Sidebar() {
+  const {
+    folders,
+    setFolders,
+    editingFolderId,
+    setEditingFolderId,
+    setActiveFolderId,
+    setHoveredFolderId,
+    getFolderStyle,
+    isDuplicateName,
+    openModal,
+    getNewFolderName,
+    updateFolderName,
+  } = useArchiveStore();
+
   const { goTo } = useNavigation();
-  const [folderList, setFolderList] = useState(folders);
-  useEffect(() => {
-    setFolderList(folders);
-  }, [folders]);
   const [editingFolderName, setEditingFolderName] = useState('');
 
   // 폴더 상태 스타일 반환
@@ -38,44 +38,38 @@ export default function Sidebar({
 
   // 폴더 추가 핸들러
   const handleAddFolder = () => {
-    let newName = '새폴더';
-    let counter = 1;
-    while (folderList.some((f) => f.name === newName)) {
-      newName = `새폴더(${counter})`;
-      counter++;
-    }
-
+    const newName = getNewFolderName();
     const newId = Date.now(); // 임시 ID 생성
     const newFolder = { id: newId, name: newName };
-    const next = [...folderList, newFolder];
-    setFolderList(next);
+    const next = [...folders, newFolder];
     setFolders(next);
-    onEditingFolder(newId);
+    setEditingFolderId(newId);
     setEditingFolderName(newName);
   };
 
   const handleFolderSelect = (folderId) => {
-    onActiveFolder(folderId);
+    setActiveFolderId(folderId);
     goTo(`/archive/${folderId}`);
   };
 
   const handleEditClick = (e, folder) => {
     e.stopPropagation();
-    onEditingFolder(folder.id);
+    setEditingFolderId(folder.id);
     setEditingFolderName(folder.name);
   };
 
   const commitRename = (folderId, newName) => {
-    const updatedFolders = folderList.map((f) => (f.id === folderId ? { ...f, name: newName } : f));
-    setFolderList(updatedFolders);
-    setFolders(updatedFolders);
-    onEditingFolder(null);
-    setEditingFolderName('');
+    const oldFolder = folders.find((f) => f.id === folderId);
+    if (oldFolder) {
+      updateFolderName(oldFolder.name, newName);
+      setEditingFolderId(null);
+      setEditingFolderName('');
+    }
   };
 
   const handleCancelEdit = (e) => {
     e.stopPropagation();
-    onEditingFolder(null);
+    setEditingFolderId(null);
     setEditingFolderName('');
   };
 
@@ -98,7 +92,7 @@ export default function Sidebar({
 
       {/* 폴더 목록 */}
       <div className="flex flex-col gap-10 px-16 overflow-y-auto flex-1 mt-10">
-        {folderList.map((folder) => {
+        {folders.map((folder) => {
           const isEditing = editingFolderId === folder.id;
           const folderItemStyles = getFolderItemStyles(folder);
 
@@ -107,10 +101,10 @@ export default function Sidebar({
               key={folder.id}
               className={cn(folderItemStyles, 'group')}
               onClick={() => handleFolderSelect(folder.id)}
-              onMouseEnter={() => onHoverFolder(folder.id)}
-              onMouseLeave={() => onHoverFolder(null)}
-              onMouseDown={() => onActiveFolder(folder.id)}
-              onMouseUp={() => onActiveFolder(null)}
+              onMouseEnter={() => setHoveredFolderId(folder.id)}
+              onMouseLeave={() => setHoveredFolderId(null)}
+              onMouseDown={() => setActiveFolderId(folder.id)}
+              onMouseUp={() => setActiveFolderId(null)}
             >
               {isEditing ? (
                 <>
@@ -134,16 +128,16 @@ export default function Sidebar({
                         const proposed = editingFolderName.trim();
                         // 변경이 없는 경우
                         if (!proposed || proposed === folder.name) {
-                          onEditingFolder(null);
+                          setEditingFolderId(null);
                           setEditingFolderName('');
                           return;
                         }
                         // 중복 검사
-                        if (isDuplicateName?.(proposed) && proposed !== folder.name) {
-                          onRequestDuplicate?.(proposed);
+                        if (isDuplicateName(proposed) && proposed !== folder.name) {
+                          openModal('duplicate', proposed);
                           return;
                         }
-                        // 중복 아니면 이름 반영
+                        // 이름 변경 저장
                         commitRename(folder.id, proposed);
                       }}
                     >
@@ -155,7 +149,7 @@ export default function Sidebar({
                       onClick={(ev) => {
                         ev.stopPropagation();
                         const name = editingFolderName || folder.name;
-                        onRequestDelete?.(name);
+                        openModal('delete', name);
                         handleCancelEdit(ev);
                       }}
                     >

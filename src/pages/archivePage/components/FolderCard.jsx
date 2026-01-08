@@ -1,19 +1,14 @@
 import folderImage from '../../../assets/images/folder_btn.webp';
 import { cn } from '../../../lib/utils';
 import useNavigation from '../../../hooks/useNavigation';
+import { useArchiveStore } from '../store/archiveStore';
 
-export default function FolderCard({
-  folderId,
-  folderName = '폴더명',
-  onActive,
-  onHover,
-  getFolderStyle,
-  className,
-}) {
+export default function FolderCard({ folderId, folderName = '폴더명', className }) {
   const { goTo } = useNavigation();
+  const { setActiveFolderId, setHoveredFolderId, getFolderStyle } = useArchiveStore();
 
   const handleFolderClick = () => {
-    onActive?.(folderId);
+    setActiveFolderId(folderId);
     goTo(`/archive/${folderId}`);
   };
 
@@ -34,10 +29,10 @@ export default function FolderCard({
     <div
       className={getCardStyles()}
       onClick={handleFolderClick}
-      onMouseEnter={() => onHover?.(folderId)}
-      onMouseLeave={() => onHover?.(null)}
-      onMouseDown={() => onActive?.(folderId)}
-      onMouseUp={() => onActive?.(null)}
+      onMouseEnter={() => setHoveredFolderId(folderId)}
+      onMouseLeave={() => setHoveredFolderId(null)}
+      onMouseDown={() => setActiveFolderId(folderId)}
+      onMouseUp={() => setActiveFolderId(null)}
     >
       <div className="flex flex-col gap-18 items-center w-128">
         {/* 폴더 이미지 */}
