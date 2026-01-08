@@ -10,9 +10,7 @@ const ArchivePage = () => {
   const {
     folders,
     setFolders,
-    activeFolderId,
     setActiveFolderId,
-    hoveredFolderId,
     setHoveredFolderId,
     editingFolderId,
     setEditingFolderId,
