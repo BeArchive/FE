@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { cn } from '../../lib/utils';
 import Sidebar from './components/Sidebar';
 import FolderCard from './components/FolderCard';
 import ConfirmModal from '../../components/modal/ConfirmModal';
 import archiveIcon from '../../assets/images/archive_empty_logo.svg';
 import { useFolder } from './hooks/useFolder';
+import { useModal } from './hooks/useModal';
 
 const ArchivePage = () => {
   const {
@@ -24,21 +24,9 @@ const ArchivePage = () => {
     { id: 4, name: '안녕하세요' },
   ]);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalVariant, setModalVariant] = useState('default');
-  const [modalFolderName, setModalFolderName] = useState('');
-
-  const openDeleteModal = (name) => {
-    setModalVariant('delete');
-    setModalFolderName(name);
-    setModalOpen(true);
-  };
-
-  const openDuplicateModal = (name) => {
-    setModalVariant('duplicate');
-    setModalFolderName(name);
-    setModalOpen(true);
-  };
+  const { isOpen, variant, data, openModal, closeModal } = useModal();
+  const openDeleteModal = (name) => openModal('delete', name);
+  const openDuplicateModal = (name) => openModal('duplicate', name);
 
   return (
     <div className="w-full h-full bg-primary-0 flex">
@@ -107,33 +95,26 @@ const ArchivePage = () => {
 
         {/* 모달 */}
         <ConfirmModal
-          open={modalOpen}
-          hideCancel={modalVariant === 'duplicate'}
+          open={isOpen}
+          hideCancel={variant === 'duplicate'}
           title={
-            modalVariant === 'delete'
-              ? '폴더 삭제'
-              : modalVariant === 'duplicate'
-                ? '폴더 생성 중복'
-                : '확인'
+            variant === 'delete' ? '폴더 삭제' : variant === 'duplicate' ? '폴더 생성 중복' : '확인'
           }
           description={
-            modalVariant === 'delete'
-              ? [
-                  `(${modalFolderName}) 폴더를 삭제하시겠습니까?`,
-                  '삭제하실 경우 복구할 수 없습니다.',
-                ]
-              : modalVariant === 'duplicate'
+            variant === 'delete'
+              ? [`(${data}) 폴더를 삭제하시겠습니까?`, '삭제하실 경우 복구할 수 없습니다.']
+              : variant === 'duplicate'
                 ? ['기존 폴더명과 중복되어 생성이 불가능합니다.', '폴더명을 변경해 주세요.']
                 : []
           }
           cancelLabel="취소하기"
-          confirmLabel={modalVariant === 'delete' ? '삭제하기' : '확인'}
-          onCancel={() => setModalOpen(false)}
+          confirmLabel={variant === 'delete' ? '삭제하기' : '확인'}
+          onCancel={() => closeModal()}
           onConfirm={() => {
-            if (modalVariant === 'delete') {
-              deleteFolder(modalFolderName);
+            if (variant === 'delete') {
+              deleteFolder(data);
             }
-            setModalOpen(false);
+            closeModal();
           }}
         />
       </div>
