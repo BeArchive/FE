@@ -48,10 +48,10 @@ export const useArchiveStore = create((set, get) => ({
     });
   },
 
-  deleteFolder: (folderName) => {
+  deleteFolder: (folderId) => {
     const state = get();
     set({
-      folders: state.folders.filter((f) => f.name !== folderName),
+      folders: state.folders.filter((f) => f.id !== folderId),
     });
   },
 

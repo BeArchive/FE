@@ -66,7 +66,10 @@ const ArchivePage = () => {
           }
           description={
             variant === 'delete'
-              ? [`(${data}) 폴더를 삭제하시겠습니까?`, '삭제하실 경우 복구할 수 없습니다.']
+              ? [
+                  `(${folders.find((f) => f.id === data)?.name}) 폴더를 삭제하시겠습니까?`,
+                  '삭제하실 경우 복구할 수 없습니다.',
+                ]
               : variant === 'duplicate'
                 ? ['기존 폴더명과 중복되어 생성이 불가능합니다.', '폴더명을 변경해 주세요.']
                 : []

@@ -67,12 +67,6 @@ export default function Sidebar() {
     }
   };
 
-  const handleCancelEdit = (e) => {
-    e.stopPropagation();
-    setEditingFolderId(null);
-    setEditingFolderName('');
-  };
-
   return (
     <div className="flex flex-col h-full w-290 bg-white border-r rounded-tr-20 border-primary-50">
       {/* 헤더 - "폴더" */}
@@ -148,9 +142,7 @@ export default function Sidebar() {
                       aria-label="삭제"
                       onClick={(ev) => {
                         ev.stopPropagation();
-                        const name = editingFolderName || folder.name;
-                        openModal('delete', name);
-                        handleCancelEdit(ev);
+                        openModal('delete', folder.id);
                       }}
                     >
                       <FaRegCircleXmark className="w-full h-full" />
