@@ -8,14 +8,14 @@ import editIcon from '../../../assets/icons/edit_icon.svg';
 export default function Sidebar({
   folders,
   setFolders,
-  activeFolderId,
   onActiveFolder,
-  hoveredFolderId,
   onHoverFolder,
   editingFolderId,
   onEditingFolder,
   onRequestDelete,
   onRequestDuplicate,
+  isDuplicateName,
+  getFolderStyle,
 }) {
   const { goTo } = useNavigation();
   const [folderList, setFolderList] = useState(folders);
@@ -25,20 +25,14 @@ export default function Sidebar({
   const [editingFolderName, setEditingFolderName] = useState('');
 
   // 폴더 상태 스타일 반환
-  const getFolderItemStyles = (folder, isEditing) => {
-    const isActive = activeFolderId === folder.id;
-    const isHovered = hoveredFolderId === folder.id;
+  const getFolderItemStyles = (folder) => {
+    const bgStyle = getFolderStyle(folder.id);
 
     return cn(
       'flex items-center px-20 py-10 rounded-100',
       'cursor-pointer transition-all duration-200',
-      isEditing
-        ? 'bg-gray-50'
-        : isActive
-          ? 'bg-primary-50'
-          : isHovered
-            ? 'bg-primary-0'
-            : 'bg-transparent hover:bg-primary-0',
+      bgStyle,
+      bgStyle === 'bg-transparent' && 'hover:bg-primary-0',
     );
   };
 
@@ -105,10 +99,8 @@ export default function Sidebar({
       {/* 폴더 목록 */}
       <div className="flex flex-col gap-10 px-16 overflow-y-auto flex-1 mt-10">
         {folderList.map((folder) => {
-          const isActive = activeFolderId === folder.id;
-          const isHovered = hoveredFolderId === folder.id;
           const isEditing = editingFolderId === folder.id;
-          const folderItemStyles = getFolderItemStyles(folder, isEditing);
+          const folderItemStyles = getFolderItemStyles(folder);
 
           return (
             <div
@@ -147,10 +139,7 @@ export default function Sidebar({
                           return;
                         }
                         // 중복 검사
-                        const isDuplicate = folders.some(
-                          (f) => f.id !== folder.id && f.name === proposed,
-                        );
-                        if (isDuplicate) {
+                        if (isDuplicateName?.(proposed) && proposed !== folder.name) {
                           onRequestDuplicate?.(proposed);
                           return;
                         }

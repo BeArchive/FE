@@ -5,11 +5,9 @@ import useNavigation from '../../../hooks/useNavigation';
 export default function FolderCard({
   folderId,
   folderName = '폴더명',
-  isActive,
   onActive,
-  isHovered,
   onHover,
-  isEditing,
+  getFolderStyle,
   className,
 }) {
   const { goTo } = useNavigation();
@@ -19,20 +17,18 @@ export default function FolderCard({
     goTo(`/archive/${folderId}`);
   };
 
-  const getCardStyles = () =>
-    cn(
+  const getCardStyles = () => {
+    const bgStyle = getFolderStyle(folderId);
+
+    return cn(
       'flex items-center justify-center p-20 rounded-20',
       'transition-all duration-200',
-      'cursor-pointer bg-transparent shrink-0',
-      isEditing
-        ? 'bg-gray-50'
-        : isActive
-          ? 'bg-primary-50'
-          : isHovered
-            ? 'bg-primary-0'
-            : 'hover:bg-primary-0',
+      'cursor-pointer shrink-0',
+      bgStyle,
+      bgStyle === 'bg-transparent' && 'hover:bg-primary-0',
       className,
     );
+  };
 
   return (
     <div

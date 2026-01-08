@@ -4,23 +4,28 @@ import Sidebar from './components/Sidebar';
 import FolderCard from './components/FolderCard';
 import ConfirmModal from '../../components/modal/ConfirmModal';
 import archiveIcon from '../../assets/images/archive_empty_logo.svg';
-import { useFolderState } from './hooks/useFolderState';
+import { useFolder } from './hooks/useFolder';
 
 const ArchivePage = () => {
-  const [folders, setFolders] = useState([
-    { id: 1, name: '폴더명1' },
-    { id: 2, name: '폴더명2' },
-    { id: 3, name: '폴더명3' },
-    { id: 4, name: '안녕하세요' },
-  ]);
   const {
+    folders,
+    setFolders,
     activeFolderId,
     setActiveFolderId,
     hoveredFolderId,
     setHoveredFolderId,
     editingFolderId,
     setEditingFolderId,
-  } = useFolderState();
+    getFolderStyle,
+    deleteFolder,
+    isDuplicateName,
+  } = useFolder([
+    { id: 1, name: '폴더명1' },
+    { id: 2, name: '폴더명2' },
+    { id: 3, name: '폴더명3' },
+    { id: 4, name: '안녕하세요' },
+  ]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState('default');
   const [modalFolderName, setModalFolderName] = useState('');
@@ -44,14 +49,14 @@ const ArchivePage = () => {
         <Sidebar
           folders={folders}
           setFolders={setFolders}
-          activeFolderId={activeFolderId}
           onActiveFolder={setActiveFolderId}
-          hoveredFolderId={hoveredFolderId}
           onHoverFolder={setHoveredFolderId}
           editingFolderId={editingFolderId}
           onEditingFolder={setEditingFolderId}
           onRequestDelete={openDeleteModal}
           onRequestDuplicate={openDuplicateModal}
+          isDuplicateName={isDuplicateName}
+          getFolderStyle={getFolderStyle}
         />
       </div>
 
@@ -76,11 +81,9 @@ const ArchivePage = () => {
                   key={folder.id}
                   folderId={folder.id}
                   folderName={folder.name}
-                  isActive={activeFolderId === folder.id}
                   onActive={setActiveFolderId}
-                  isHovered={hoveredFolderId === folder.id}
                   onHover={setHoveredFolderId}
-                  isEditing={editingFolderId === folder.id}
+                  getFolderStyle={getFolderStyle}
                 />
               ))
             ) : (
@@ -130,7 +133,7 @@ const ArchivePage = () => {
           onCancel={() => setModalOpen(false)}
           onConfirm={() => {
             if (modalVariant === 'delete') {
-              setFolders((prev) => prev.filter((f) => f.name !== modalFolderName));
+              deleteFolder(modalFolderName);
             }
             setModalOpen(false);
           }}
