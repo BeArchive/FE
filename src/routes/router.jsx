@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import LoginPage from '../pages/loginPage/LoginPage';
 import MainPage from '../pages/mainPage/MainPage';
+import ArchivePage from '../pages/archivePage/ArchivePage';
 import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
 
 const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: 'main',
         element: <MainPage />,
+      },
+      {
+        path: 'archive',
+        element: <ArchivePage />,
       },
       {
         path: 'login',
