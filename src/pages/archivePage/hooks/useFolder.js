@@ -1,5 +1,5 @@
 import { useShallow } from 'zustand/react/shallow';
-import { useArchiveStore } from '../store/archiveStore';
+import { useArchiveStore } from '../../../store/archiveStore';
 
 export const useFolder = () =>
   useArchiveStore(

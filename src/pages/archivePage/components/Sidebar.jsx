@@ -4,7 +4,7 @@ import useNavigation from '../../../hooks/useNavigation';
 import { LuCirclePlus } from 'react-icons/lu';
 import { FaRegCircleCheck, FaRegCircleXmark } from 'react-icons/fa6';
 import editIcon from '../../../assets/icons/edit_icon.svg';
-import { useArchiveStore } from '../store/archiveStore';
+import { useArchiveStore } from '../../../store/archiveStore';
 
 export default function Sidebar() {
   const {

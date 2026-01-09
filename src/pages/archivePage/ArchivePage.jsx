@@ -3,7 +3,7 @@ import Sidebar from './components/Sidebar';
 import FolderCard from './components/FolderCard';
 import ConfirmModal from '../../components/modal/ConfirmModal';
 import archiveIcon from '../../assets/images/archive_empty_logo.svg';
-import { useArchiveStore } from './store/archiveStore';
+import { useArchiveStore } from '../../store/archiveStore';
 
 const ArchivePage = () => {
   const { folders, modal, deleteFolder, closeModal, openModal } = useArchiveStore();

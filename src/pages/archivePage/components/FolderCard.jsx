@@ -1,7 +1,7 @@
 import folderImage from '../../../assets/images/folder_btn.webp';
 import { cn } from '../../../lib/utils';
 import useNavigation from '../../../hooks/useNavigation';
-import { useArchiveStore } from '../store/archiveStore';
+import { useArchiveStore } from '../../../store/archiveStore';
 
 export default function FolderCard({ folderId, folderName = '폴더명', className }) {
   const { goTo } = useNavigation();
