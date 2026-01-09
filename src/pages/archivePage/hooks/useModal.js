@@ -1,19 +1,13 @@
-import { useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { useArchiveStore } from '../store/archiveStore';
 
-export const useModal = () => {
-  const [modalState, setModalState] = useState({
-    isOpen: false,
-    variant: 'default', // 'delete' | 'duplicate'
-    data: '', // 폴더 이름 등 전달할 데이터
-  });
-
-  const openModal = (variant, data = '') => {
-    setModalState({ isOpen: true, variant, data });
-  };
-
-  const closeModal = () => {
-    setModalState((prev) => ({ ...prev, isOpen: false }));
-  };
-
-  return { ...modalState, openModal, closeModal };
-};
+export const useModal = () =>
+  useArchiveStore(
+    useShallow((state) => ({
+      isOpen: state.modal.isOpen,
+      variant: state.modal.variant,
+      data: state.modal.data,
+      openModal: state.openModal,
+      closeModal: state.closeModal,
+    })),
+  );
