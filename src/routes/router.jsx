@@ -23,11 +23,11 @@ const router = createBrowserRouter([
         path: 'archive',
         element: <ArchivePage />,
       },
-      {
-        path: 'login',
-        element: <LoginPage />,
-      },
     ],
+  },
+  {
+    path: 'login',
+    element: <LoginPage />,
   },
 ]);
 
