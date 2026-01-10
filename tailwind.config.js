@@ -24,6 +24,7 @@ export default {
       maxHeight: rem1000,
       boxShadow: {
         basic: 'var(--shadow-primary)',
+        sub: 'var(--shadow-second)',
       },
       colors: {
         black: 'var(--color-black)',
