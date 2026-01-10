@@ -9,7 +9,7 @@ const RootLayout = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <div className="relative flex flex-col w-full h-screen overflow-hidden">
+    <div className="relative flex flex-col w-full h-screen bg-primary-0 overflow-hidden">
       {/* Header: 로고, 로그인/로그아웃 버튼 */}
       <div className="flex flex-row items-center justify-between mx-50 mt-50 mb-33 shrink-0">
         <Logo />
@@ -21,8 +21,8 @@ const RootLayout = () => {
         <ArchiveButton />
       </div>
 
-      {/* Outlet: 배경색 임시 */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 -mt-26">
+      {/* Outlet */}
+      <div className="flex-1 overflow-y-auto bg-white -mt-26">
         <Outlet />
       </div>
 
