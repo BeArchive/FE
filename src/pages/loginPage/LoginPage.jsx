@@ -4,6 +4,16 @@ import GOOGLE from '@assets/images/google_login.webp';
 import KAKAO from '@assets/images/kakao_login.webp';
 
 const LoginPage = () => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${BASE_URL}/oauth2/authorization/google`;
+  };
+
+  const handleKakaoLogin = () => {
+    window.location.href = `${BASE_URL}/oauth2/authorization/kakao`;
+  };
+
   return (
     <div className="relative flex items-center justify-center w-full min-h-screen bg-primary-0 p-50">
       <div className="absolute top-50 left-50">
@@ -28,8 +38,18 @@ const LoginPage = () => {
         <div className="flex flex-col items-center gap-22">
           <p className="text-secondary-200 text-16 font-medium">SNS</p>
           <div className="flex items-center justify-between w-392 h-40">
-            <ImageButton src={GOOGLE} alt="구글로그인" className="w-165 h-40" />
-            <ImageButton src={KAKAO} alt="카카오로그인" className="w-165 h-40" />
+            <ImageButton
+              src={GOOGLE}
+              alt="구글로그인"
+              className="w-165 h-40"
+              onClick={handleGoogleLogin}
+            />
+            <ImageButton
+              src={KAKAO}
+              alt="카카오로그인"
+              className="w-165 h-40"
+              onClick={handleKakaoLogin}
+            />
           </div>
         </div>
       </div>
