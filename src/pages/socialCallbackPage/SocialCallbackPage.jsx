@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
 import useNavigation from '../../hooks/useNavigation';
+import { ROUTES, STORAGE_KEYS } from '../../constants/auth';
 
 const SocialCallbackPage = () => {
   const [searchParams] = useSearchParams();
@@ -14,13 +15,13 @@ const SocialCallbackPage = () => {
 
     if (accessToken && refreshToken) {
       // LocalStorage에 토큰 저장
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
 
-      goTo('/', { replace: true });
+      goTo(ROUTES.MAIN, { replace: true });
     } else {
       console.error('인증 토큰을 찾을 수 없습니다.');
-      goTo('/login');
+      goTo(ROUTES.LOGIN, { replace: true });
     }
   }, [searchParams, goTo]);
 
@@ -28,7 +29,7 @@ const SocialCallbackPage = () => {
     <div className="relative flex items-center justify-center w-full min-h-screen bg-primary-0 p-50">
       <div className="flex flex-col items-center justify-center w-612 h-498 bg-white rounded-24 shadow-sub">
         <Spinner />
-        <p className="mt-10 text-primary-main">환영합니다</p>
+        <p className="mt-10 text-24 text-primary-main whitespace-pre-line text-center">{`환영합니다!\n곧 메인 화면으로 이동합니다`}</p>
       </div>
     </div>
   );

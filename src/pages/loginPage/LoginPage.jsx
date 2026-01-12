@@ -2,17 +2,11 @@ import ImageButton from '../../components/imageButton/ImageButton';
 import Logo from '../../components/logo/Logo';
 import GOOGLE from '@assets/images/google_login.webp';
 import KAKAO from '@assets/images/kakao_login.webp';
+import useNavigation from '../../hooks/useNavigation';
+import { AUTH_ENDPOINTS } from '../../constants/auth';
 
 const LoginPage = () => {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-  const handleGoogleLogin = () => {
-    window.location.href = `${BASE_URL}/oauth2/authorization/google`;
-  };
-
-  const handleKakaoLogin = () => {
-    window.location.href = `${BASE_URL}/oauth2/authorization/kakao`;
-  };
+  const { goTo } = useNavigation();
 
   return (
     <div className="relative flex items-center justify-center w-full min-h-screen bg-primary-0 p-50">
@@ -42,13 +36,13 @@ const LoginPage = () => {
               src={GOOGLE}
               alt="구글로그인"
               className="w-165 h-40"
-              onClick={handleGoogleLogin}
+              onClick={() => goTo(AUTH_ENDPOINTS.GOOGLE)}
             />
             <ImageButton
               src={KAKAO}
               alt="카카오로그인"
               className="w-165 h-40"
-              onClick={handleKakaoLogin}
+              onClick={() => goTo(AUTH_ENDPOINTS.KAKAO)}
             />
           </div>
         </div>
