@@ -20,17 +20,17 @@ const features = [
 
 const MainPage = () => {
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center gap-50 bg-primary-0">
+    <div className="w-full h-full flex flex-col justify-center items-center gap-50 bg-primary-0 p-50 pt-159">
       <p className="text-42 font-bold text-secondary-500 text-center mb-14 whitespace-pre-line">{`브레인스토밍 주제를 입력하고,\n작은 아이디어를 확장시켜요.`}</p>
 
       {/* 입력창 */}
       <MainInput />
 
       {/* 사용 가이드 */}
-      <div className="flex justify-center items-center rounded-8 w-178 h-44 bg-primary-400 text-white text-20 font-medium hover:bg-primary-200 duration-150 cursor-default">
+      <div className="peer flex justify-center items-center rounded-8 w-178 h-44 bg-primary-400 text-white text-20 font-medium hover:bg-primary-200 duration-150 cursor-default">
         어떻게 사용하나요?
       </div>
-      <div className="w-1064 h-245 flex justify-center items-center bg-white rounded-20 gap-277">
+      <div className="invisible opacity-0 peer-hover:visible peer-hover:opacity-100 transition-all duration-300 w-1064 h-245 flex justify-center items-center bg-white rounded-20 gap-277">
         {features.map((feat, index) => (
           <FeatureCard
             key={index}
