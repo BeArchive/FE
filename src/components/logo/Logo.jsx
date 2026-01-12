@@ -7,7 +7,7 @@ const Logo = ({ long = false, className = 'w-178 h-47' }) => {
 
   return (
     <div
-      className={`flex items-center justify-center cursor-pointer active:scale-95 ${className}`}
+      className={`flex-row-center  cursor-pointer active:scale-95 ${className}`}
       onClick={() => goTo('/')}
     >
       <img src={long ? LONG_LOGO : LOGO} alt="Logo" className="object-contain w-full h-full" />

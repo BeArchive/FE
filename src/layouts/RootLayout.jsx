@@ -11,7 +11,7 @@ const RootLayout = () => {
   return (
     <div className="relative flex flex-col w-full h-screen bg-primary-0 overflow-hidden">
       {/* Header: 로고, 로그인/로그아웃 버튼 */}
-      <div className="flex flex-row items-center justify-between mx-50 mt-50 mb-33 shrink-0">
+      <div className="flex-row-center justify-between mx-50 mt-50 mb-33 shrink-0">
         <Logo />
         <AuthButton isLoggedIn={isLoggedIn} onClick={() => setIsLoggedIn(!isLoggedIn)} />
       </div>

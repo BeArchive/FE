@@ -5,7 +5,7 @@ const ImageButton = ({ src, alt = 'button-icon', onClick, className }) => {
     <button
       onClick={onClick}
       className={cn(
-        'flex items-center justify-center p-0 bg-transparent border-none outline-none cursor-pointer',
+        'flex-row-center p-0 bg-transparent border-none outline-none cursor-pointer',
         'transition-transform duration-150 active:scale-95',
         className,
       )}
