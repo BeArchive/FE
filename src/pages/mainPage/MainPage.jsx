@@ -27,7 +27,7 @@ const MainPage = () => {
       <MainInput />
 
       {/* 사용 가이드 */}
-      <div className="peer flex-row-center rounded-8 w-178 h-44 bg-primary-400 text-white text-20 font-medium hover:bg-primary-200 duration-150 cursor-default">
+      <div className="peer flex-row-center rounded-8 w-178 h-44 bg-primary-400 text-white text-20 font-medium px-12 py-10 hover:bg-primary-200 duration-150 cursor-default">
         어떻게 사용하나요?
       </div>
       <div className="flex-row-center invisible opacity-0 peer-hover:visible peer-hover:opacity-100 transition-all duration-300 w-1064 h-245 bg-white rounded-20 gap-277">
