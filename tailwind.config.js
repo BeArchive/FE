@@ -7,21 +7,21 @@ const generateRemTable = (max) => {
   return result;
 };
 
-const rem1000 = generateRemTable(1000);
+const rem1440 = generateRemTable(1440);
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      spacing: rem1000,
-      fontSize: rem1000,
-      lineHeight: rem1000,
-      borderRadius: rem1000,
-      borderWidth: rem1000,
-      minWidth: rem1000,
-      maxWidth: rem1000,
-      minHeight: rem1000,
-      maxHeight: rem1000,
+      spacing: rem1440,
+      fontSize: rem1440,
+      lineHeight: rem1440,
+      borderRadius: rem1440,
+      borderWidth: rem1440,
+      minWidth: rem1440,
+      maxWidth: rem1440,
+      minHeight: rem1440,
+      maxHeight: rem1440,
       boxShadow: {
         basic: 'var(--shadow-primary)',
         sub: 'var(--shadow-second)',
