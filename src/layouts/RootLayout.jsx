@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Logo from '../components/logo/Logo';
-import AuthButton from './components/authButton/AuthButton';
-import ArchiveButton from './components/archiveButton/ArchiveButton';
-import BrainstormNote from './components/brainstormNoteButton/BrainstormNoteButton';
+import Logo from '../components/Logo';
+import AuthButton from './components/AuthButton';
+import ArchiveButton from './components/ArchiveButton';
+import BrainstormNote from './components/BrainstormNoteButton';
 
 const RootLayout = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

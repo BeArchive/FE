@@ -1,4 +1,4 @@
-import MainInput from '../../components/input/MainInput';
+import MainInput from '../../components/MainInput';
 import FEAT1 from '@assets/images/feature_1.webp';
 import FEAT2 from '@assets/images/feature_2.webp';
 import FeatureCard from './components/FeatureCard';

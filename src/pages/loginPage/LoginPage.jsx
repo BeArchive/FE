@@ -1,5 +1,5 @@
-import ImageButton from '../../components/imageButton/ImageButton';
-import Logo from '../../components/logo/Logo';
+import ImageButton from '../../components/ImageButton';
+import Logo from '../../components/Logo';
 import GOOGLE from '@assets/images/google_login.webp';
 import KAKAO from '@assets/images/kakao_login.webp';
 

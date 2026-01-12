@@ -1,6 +1,6 @@
 import LOGO from '@assets/images/logo.svg';
 import LONG_LOGO from '@assets/images/long_logo.svg';
-import useNavigation from '../../hooks/useNavigation';
+import useNavigation from '../hooks/useNavigation';
 
 const Logo = ({ long = false, className = 'w-178 h-47' }) => {
   const { goTo } = useNavigation();

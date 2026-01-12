@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import NOTE_BTN from '@assets/images/note_btn.webp';
-import { cn } from '../../../lib/utils';
+import { cn } from '../../lib/utils';
 
 const BrainstormNote = ({ onClick, className }) => {
   const [isActive, setIsActive] = useState(false);

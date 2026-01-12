@@ -1,4 +1,4 @@
-import { cn } from '../../lib/utils';
+import { cn } from '../lib/utils';
 
 const ImageButton = ({ src, alt = 'button-icon', onClick, className }) => {
   return (

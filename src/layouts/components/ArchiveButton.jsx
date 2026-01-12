@@ -1,5 +1,5 @@
 import FOLDER from '@assets/images/folder_btn.webp';
-import { cn } from '../../../lib/utils';
+import { cn } from '../../lib/utils';
 
 const ArchiveButton = ({ onClick, className }) => {
   const layoutStyles =
