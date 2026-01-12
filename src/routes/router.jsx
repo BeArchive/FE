@@ -4,6 +4,7 @@ import LoginPage from '../pages/loginPage/LoginPage';
 import MainPage from '../pages/mainPage/MainPage';
 import ArchivePage from '../pages/archivePage/ArchivePage';
 import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
+import SocialCallbackPage from '../pages/socialCallbackPage/SocialCallbackPage';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: 'login',
     element: <LoginPage />,
+  },
+  {
+    path: 'oauth/callback',
+    element: <SocialCallbackPage />,
   },
 ]);
 
