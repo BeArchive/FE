@@ -20,7 +20,7 @@ const features = [
 
 const MainPage = () => {
   return (
-    <div className="w-full h-full flex-col-center gap-50 bg-primary-0 pt-180">
+    <div className="w-full min-h-screen flex-col-center gap-50 bg-primary-0">
       <p className="text-42 font-bold text-secondary-500 text-center mb-14 whitespace-pre-line">{`브레인스토밍 주제를 입력하고,\n작은 아이디어를 확장시켜요.`}</p>
 
       {/* 입력창 */}
