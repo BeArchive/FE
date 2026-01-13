@@ -5,7 +5,8 @@ const ArchiveButton = ({ onClick, className }) => {
   const layoutStyles =
     'flex-row-center justify-end w-148 h-52 relative overflow-hidden cursor-pointer';
   const spacingStyles = 'pt-10 pr-22 pb-10 pl-82';
-  const visualStyles = 'bg-primary-50 rounded-r-100 shadow-basic';
+  const visualStyles =
+    'bg-primary-50 rounded-r-100 hover:shadow-basic active:shadow-basic active:scale-95';
 
   return (
     <button onClick={onClick} className={cn(layoutStyles, spacingStyles, visualStyles, className)}>
