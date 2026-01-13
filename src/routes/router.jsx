@@ -4,6 +4,7 @@ import LoginPage from '../pages/loginPage/LoginPage';
 import MainPage from '../pages/mainPage/MainPage';
 import ArchivePage from '../pages/archivePage/ArchivePage';
 import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
+import BrainstormPage from '../pages/brainstormPage/BrainstormPage';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,14 @@ const router = createBrowserRouter([
       {
         path: 'archive',
         element: <ArchivePage />,
+      },
+      {
+        path: 'brainstorm',
+        element: <BrainstormPage />, // 신규 채팅 시작
+      },
+      {
+        path: 'brainstorm/:chatId',
+        element: <BrainstormPage />, // 기존 채팅 조회
       },
     ],
   },
