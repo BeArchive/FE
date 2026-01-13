@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '../lib/utils';
-import ImageButton from './ImageButton';
-import LINK from '@assets/icons/link_icon.svg';
-import SEND from '@assets/icons/send_icon.svg';
+import { LinkIcon, SendIcon } from './iconButton/Icons';
+import IconButton from './iconButton/IconButton';
 
 const MainInput = ({ isChat = false }) => {
   const [text, setText] = useState('');
@@ -46,8 +45,8 @@ const MainInput = ({ isChat = false }) => {
 
       {/* 링크, 전송 버튼 */}
       <div className={cn('flex-row-center justify-between w-108 h-35 shrink-0', !isChat && 'mb-2')}>
-        <ImageButton src={LINK} className="w-35 h-35" />
-        <ImageButton src={SEND} className="w-35 h-35" />
+        <IconButton Icon={LinkIcon} theme="basic" />
+        <IconButton Icon={SendIcon} theme="basic" />
       </div>
     </div>
   );
