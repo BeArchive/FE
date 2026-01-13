@@ -25,6 +25,7 @@ export default {
       boxShadow: {
         basic: 'var(--shadow-primary)',
         sub: 'var(--shadow-second)',
+        icon: 'var(--shadow-icon)',
       },
       colors: {
         black: 'var(--color-black)',

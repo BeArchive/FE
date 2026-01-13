@@ -1,7 +1,7 @@
 const THEMES = {
   basic: {
     icon: 'text-secondary-300 hover:text-primary-400 active:text-primary-main',
-    button: 'bg-primary-0 hover:bg-white active:bg-white',
+    button: 'bg-primary-0 hover:bg-white hover:shadow-icon active:bg-white active:shadow-icon',
   },
 };
 
@@ -10,7 +10,7 @@ const IconButton = ({ Icon, onClick, theme = 'basic', className = '' }) => {
     <button
       onClick={onClick}
       className={`
-        w-35 h-35 shrink-0 flex-row-center rounded-100 transition-all 
+        w-35 h-35 shrink-0 flex-row-center rounded-100 transition-all outline-none border-none 
         ${THEMES[theme].button} ${className}
       `}
     >
