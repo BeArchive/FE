@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import NOTE_BTN from '@assets/images/note_btn.webp';
-import { cn } from '../../../lib/utils';
+import { cn } from '../../lib/utils';
 
 const BrainstormNote = ({ onClick, className }) => {
   const [isActive, setIsActive] = useState(false);
@@ -12,10 +12,9 @@ const BrainstormNote = ({ onClick, className }) => {
 
   // 스타일
   const layoutStyles =
-    'flex w-70 h-70 shrink-0 overflow-hidden pt-15 pr-11 pb-15 pl-21 justify-end items-center';
+    'flex-row-center w-70 h-70 shrink-0 overflow-hidden pt-15 pr-11 pb-15 pl-21 justify-end items-center active:scale-95';
 
-  const visualStyles =
-    'bg-primary-50 rounded-full shadow-[4px_4px_8px_0_rgba(196,196,196,0.16)] transition-all duration-200';
+  const visualStyles = 'bg-primary-50 rounded-full shadow-sub transition-all duration-200';
 
   const borderStyles = cn(
     'border-1',
