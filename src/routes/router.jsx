@@ -3,6 +3,7 @@ import RootLayout from '../layouts/RootLayout';
 import LoginPage from '../pages/loginPage/LoginPage';
 import MainPage from '../pages/mainPage/MainPage';
 import ArchivePage from '../pages/archivePage/ArchivePage';
+import ArchiveFolderPage from '../pages/archiveFolderPage/ArchiveFolderPage';
 import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
 
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'archive',
         element: <ArchivePage />,
+      },
+      {
+        path: 'archive/:folderId',
+        element: <ArchiveFolderPage />,
       },
       {
         path: 'login',
