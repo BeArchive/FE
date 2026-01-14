@@ -6,7 +6,7 @@ import archiveIcon from '../../assets/images/archive_empty_logo.svg';
 import { useArchiveStore } from '../../store/archiveStore';
 
 const ArchivePage = () => {
-  const { folders, modal, deleteFolder, closeModal, openModal } = useArchiveStore();
+  const { folders, modal, deleteFolder, closeModal } = useArchiveStore();
 
   const { isOpen, variant, data } = modal;
 
