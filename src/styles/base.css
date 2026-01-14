@@ -90,4 +90,20 @@
   input:focus {
     @apply outline-none;
   }
+
+  /* 스크롤바 */
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    @apply bg-gray-300 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-200;
+  }
 }

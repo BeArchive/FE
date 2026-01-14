@@ -40,7 +40,7 @@ const MainInput = ({ isChat = false }) => {
         className={cn(
           'flex-1 bg-transparent outline-none resize-none font-medium text-secondary-500 mr-50 placeholder:text-gray-400',
           'text-24 leading-36 self-center',
-          isChat ? 'h-36 overflow-hidden' : 'min-h-36 max-h-72 overflow-y-auto custom-scrollbar',
+          isChat ? 'h-36 overflow-hidden' : 'min-h-36 max-h-72 overflow-y-auto',
         )}
       />
 
