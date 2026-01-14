@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { TfiArrowUp } from 'react-icons/tfi';
 import { FaCheck } from 'react-icons/fa6';
 import { cn } from '../../lib/utils';
+import UploadButton from '../../pages/archiveFolderPage/components/UploadButton';
 
 // 더미 채팅 데이터
 const DUMMY_CHAT_HISTORIES = [
@@ -58,10 +58,6 @@ export default function UploadModal({ open, onClose, onConfirm }) {
     }));
     onConfirm(notes);
   };
-
-  // 버튼 공통 스타일
-  const commonButtonStyle =
-    'w-[117px] h-[35px] rounded-full flex items-center justify-center gap-5 transition-colors';
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -137,37 +133,7 @@ export default function UploadModal({ open, onClose, onConfirm }) {
         <div className="pointer-events-none absolute left-0 right-0 bottom-0 h-[102px] bg-gradient-to-b from-transparent to-white rounded-b-20" />
         <div className="absolute left-1/2 bottom-[34px] -translate-x-1/2 flex items-center justify-center gap-[45px] pointer-events-auto">
           {/* 업로드 */}
-          <button
-            type="button"
-            onClick={handleConfirm}
-            disabled={selected.length === 0}
-            className={cn(
-              'group',
-              'w-[117px] h-[35px] rounded-full',
-              'flex items-center justify-center gap-5',
-              'transition-colors',
-              'bg-primary-50 hover:bg-primary-200 active:bg-primary-200',
-            )}
-          >
-            <TfiArrowUp
-              className={cn(
-                'w-16 h-16 transition-colors',
-                'text-primary-400',
-                'group-hover:text-primary-main',
-                'group-active:text-white',
-              )}
-            />
-            <span
-              className={cn(
-                'font-medium text-[14px] leading-18 transition-colors',
-                'text-primary-400',
-                'group-hover:text-primary-main',
-                'group-active:text-white',
-              )}
-            >
-              업로드
-            </span>
-          </button>
+          <UploadButton onClick={handleConfirm} disabled={selected.length === 0} />
 
           {/* 취소 */}
           <button
