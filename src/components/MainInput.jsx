@@ -12,6 +12,10 @@ const MainInput = ({ isChat = false }) => {
   const MAX_HEIGHT = LINE_HEIGHT * 2; // 2줄까지 늘어남
 
   useEffect(() => {
+    if (isChat && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+
     if (!isChat && textareaRef.current) {
       textareaRef.current.style.height = 'auto';
       const scrollHeight = textareaRef.current.scrollHeight;
