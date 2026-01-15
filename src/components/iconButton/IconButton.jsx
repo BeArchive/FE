@@ -10,7 +10,7 @@ const IconButton = ({ Icon, onClick, theme = 'basic', className = '' }) => {
     <button
       onClick={onClick}
       className={`
-        w-35 h-35 shrink-0 flex-row-center rounded-100 transition-all outline-none border-none 
+        w-35 h-35 shrink-0 flex-row-center rounded-100 transition-all outline-none border-none active:scale-95 
         ${THEMES[theme].button} ${className}
       `}
     >
