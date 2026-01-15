@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ModeTooltip from './ModeTooltip';
 import { MODES } from '../../../mocks/modeData';
+import ChatBubble from './ChatBubble';
 
 const ModeSelector = ({ onSelect }) => {
   const [hoveredMode, setHoveredMode] = useState(null);
@@ -11,28 +12,39 @@ const ModeSelector = ({ onSelect }) => {
                        active:border-transparent active:bg-primary-50`;
 
   return (
-    <div className="relative flex flex-col gap-15 mt-30">
-      {MODES.map((mode) => (
-        <div key={mode.id} className="relative flex items-center">
-          <button
-            onMouseEnter={() => setHoveredMode(mode.id)}
-            onMouseLeave={() => setHoveredMode(null)}
-            onClick={() => onSelect(mode.id)}
-            className={buttonStyle}
-          >
-            <span className="mr-8">{mode.emoji}</span>
-            <span>{mode.label}</span>
-          </button>
+    <ChatBubble
+      type="mode"
+      className="justify-start"
+      content={'좋아요! 모드를 선택해 주세요.\n궁금하신 모드에 마우스를 올리면, 설명이 보여요.'}
+    >
+      <div className="relative flex flex-col gap-15 mt-30">
+        {MODES.map((mode) => (
+          <div key={mode.id} className="relative flex items-center">
+            <button
+              onMouseEnter={() => setHoveredMode(mode.id)}
+              onMouseLeave={() => setHoveredMode(null)}
+              onClick={() => onSelect(mode.id)}
+              className={buttonStyle}
+            >
+              <span className="mr-8">{mode.emoji}</span>
+              <span>{mode.label}</span>
+            </button>
 
-          {/* hover 시 툴팁 표시 */}
-          {hoveredMode === mode.id && (
-            <div className="absolute left-full ml-[-1.5rem] z-10 w-max">
-              <ModeTooltip title={mode.label} emoji={mode.emoji} desc={mode.desc} rec={mode.rec} />
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
+            {/* hover 시 툴팁 표시 */}
+            {hoveredMode === mode.id && (
+              <div className="absolute left-full ml-[-1.5rem] z-10 w-max">
+                <ModeTooltip
+                  title={mode.label}
+                  emoji={mode.emoji}
+                  desc={mode.desc}
+                  rec={mode.rec}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </ChatBubble>
   );
 };
 
