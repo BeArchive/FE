@@ -26,7 +26,8 @@ const MainInput = ({ isChat = false }) => {
   return (
     <div
       className={cn(
-        'flex-row-center w-1064 bg-white px-50 shadow-sub transition-all duration-300 shrink-0 items-center',
+        'flex-row-center w-[90vw] lg:w-[73.8vw] max-w-[1064px] bg-white transition-all duration-300 shrink-0 items-center shadow-sub',
+        'px-[3%]',
         isChat ? 'h-94 rounded-100' : 'min-h-94 h-auto py-28',
         !isChat && (isMultiLine ? 'rounded-20' : 'rounded-100'),
       )}
@@ -38,14 +39,14 @@ const MainInput = ({ isChat = false }) => {
         onChange={(e) => setText(e.target.value)}
         placeholder="새로운 30초 광고 영상을 기획하고 싶은데?"
         className={cn(
-          'flex-1 bg-transparent outline-none resize-none font-medium text-secondary-500 mr-50 placeholder:text-gray-400',
-          'text-24 leading-36 self-center',
-          isChat ? 'h-36 overflow-hidden' : 'min-h-36 max-h-72 overflow-y-auto',
+          'flex-1 bg-transparent outline-none resize-none font-medium text-secondary-500 placeholder:text-gray-400',
+          'text-24 leading-36 self-center mr-20 lg:mr-50',
+          isChat ? 'h-36 overflow-hidden' : 'min-h-36 max-h-72 overflow-y-auto custom-scrollbar',
         )}
       />
 
       {/* 링크, 전송 버튼 */}
-      <div className="flex-row-center justify-between w-108 h-35 shrink-0">
+      <div className="flex-row-center justify-between w-90 lg:w-108 h-35 shrink-0">
         <IconButton Icon={LinkIcon} theme="basic" />
         <IconButton Icon={SendIcon} theme="basic" />
       </div>
