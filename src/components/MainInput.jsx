@@ -37,7 +37,7 @@ const MainInput = ({ isChat = false }) => {
         rows={1}
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="새로운 30초 광고 영상을 기획하고 싶은데?"
+        placeholder={isChat ? '' : '새로운 30초 광고 영상을 기획하고 싶은데?'}
         className={cn(
           'flex-1 bg-transparent outline-none resize-none font-medium text-secondary-500 placeholder:text-gray-400',
           'text-24 leading-36 self-center mr-20 lg:mr-50',
