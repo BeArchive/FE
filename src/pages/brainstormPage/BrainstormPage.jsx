@@ -1,12 +1,20 @@
+import { useState } from 'react';
 import MainInput from '../../components/MainInput';
 import ChatBubble from './components/ChatBubble';
 import ModeSelector from './components/ModeSelector';
 import StepController from './components/StepController';
+import useThinkingDots from './hooks/useThinkingDots';
 
 const BrainstormPage = () => {
+  const [isThinking /*setIsThinking*/] = useState(true); // AI 답변 로딩 중
+  const dots = useThinkingDots(isThinking);
+
   return (
     <div className="relative flex flex-col w-full h-full bg-primary-0">
       <div className="flex-1 flex flex-col gap-50 overflow-y-auto px-85 pt-50 pb-200">
+        {/* AI 로딩 말풍선 */}
+        {isThinking && <ChatBubble content={`생각 퍼즐 맞추는 중${dots}`} />}
+
         {/* AI 질문 예시 */}
         <ChatBubble content={`Q2. 타겟 고객을 한 문장으로 표현한다면?`} />
 
