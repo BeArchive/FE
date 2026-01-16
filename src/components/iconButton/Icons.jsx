@@ -43,9 +43,9 @@ export const AddIcon = ({ className }) => (
   <IconWrapper className={className} fill="none" stroke="currentColor" viewBox="0 0 21 21">
     <path
       d="M10.5014 14.2994L10.5021 10.4993M10.5021 10.4993V6.6999M10.5021 10.4993L6.70201 10.5M10.5021 10.4993L14.3015 10.4993M17.2189 17.2175C20.929 13.5074 20.929 7.49257 17.2189 3.78249C13.5089 0.0724028 7.494 0.0724028 3.78392 3.78249C0.0738375 7.49257 0.0738375 13.5074 3.78392 17.2175C7.494 20.9276 13.5089 20.9276 17.2189 17.2175Z"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </IconWrapper>
 );
