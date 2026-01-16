@@ -62,7 +62,7 @@ export default function UploadModal({ open, onClose, onConfirm }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* 배경 오버레이 */}
-      <div className="absolute inset-0 bg-gray-150 opacity-50" />
+      <div className="absolute inset-0 bg-gray-200 opacity-50" />
 
       {/* 모달 */}
       <div className="bg-white rounded-20 shadow-basic w-[642px] h-[433px] flex flex-col relative z-10">
