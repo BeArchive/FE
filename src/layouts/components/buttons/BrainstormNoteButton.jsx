@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import NOTE_BTN from '@assets/images/note_btn.webp';
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 
-const BrainstormNote = ({ onClick, className }) => {
+const BrainstormNoteButton = ({ onClick, className }) => {
   const [isActive, setIsActive] = useState(false);
 
   const handleToggle = (e) => {
@@ -31,4 +31,4 @@ const BrainstormNote = ({ onClick, className }) => {
   );
 };
 
-export default BrainstormNote;
+export default BrainstormNoteButton;
