@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import NoteItem from './NoteItem';
 import IconButton from '../../../components/iconButton/IconButton';
-import { CancelIcon } from '../../../components/iconButton/Icons';
+import { AddIcon, CancelIcon } from '../../../components/iconButton/Icons';
 
 const BrainstormNote = ({ onClose }) => {
   const [notes, setNotes] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); // 임시 데이터
@@ -41,8 +41,8 @@ const BrainstormNote = ({ onClose }) => {
       </section>
 
       {/* 추가하기 버튼 */}
-      <button className="absolute bottom-25 right-18 z-10 w-117 h-35 rounded-100 bg-primary-50 text-primary-400 flex-row-center gap-5 active:scale-95">
-        <span className="text-24 font-light">+</span>
+      <button className="btn-confirm-yes absolute bottom-25 right-18 z-10 w-117 h-35 rounded-100 bg-primary-50 text-primary-400 flex-row-center gap-5 active:scale-95">
+        <AddIcon className="w-23 h-23" />
         <span className="text-16 font-medium">추가하기</span>
       </button>
     </div>

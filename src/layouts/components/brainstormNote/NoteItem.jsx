@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { cn } from '../../../lib/utils';
+import { RemoveIcon } from '../../../components/iconButton/Icons';
 
 const NoteItem = ({ title, date, onClick, onDelete }) => {
   const [isBtnHovered, setIsBtnHovered] = useState(false);
@@ -27,7 +28,7 @@ const NoteItem = ({ title, date, onClick, onDelete }) => {
 
       {/* 삭제 버튼 */}
       <button
-        className="w-92 h-35 rounded-100 text-14 bg-primary-0 btn-confirm-no"
+        className="flex-row-center gap-5 w-92 h-35 rounded-100 text-14 bg-primary-0 btn-confirm-no"
         onMouseEnter={() => setIsBtnHovered(true)} // 부모 스타일 차단
         onMouseLeave={() => setIsBtnHovered(false)}
         onClick={(e) => {
@@ -39,6 +40,7 @@ const NoteItem = ({ title, date, onClick, onDelete }) => {
           setIsBtnHovered(true); // 부모 스타일 차단
         }}
       >
+        <RemoveIcon className="w-23 h-23" />
         <span>삭제</span>
       </button>
     </div>
