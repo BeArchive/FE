@@ -1,8 +1,15 @@
-const IconWrapper = ({ children, className }) => (
+const IconWrapper = ({
+  children,
+  className,
+  fill = 'currentColor',
+  stroke = 'none',
+  viewBox = '0 0 24 24',
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
+    viewBox={viewBox}
+    fill={fill}
+    stroke={stroke}
     className={className}
   >
     {children}
@@ -18,5 +25,16 @@ export const LinkIcon = ({ className }) => (
 export const SendIcon = ({ className }) => (
   <IconWrapper className={className}>
     <path d="M10.3871 21.8871V3.79967L1.89969 12.2869C1.46507 12.7216 0.760583 12.7216 0.325964 12.2869C-0.108655 11.8523 -0.108655 11.1478 0.325964 10.7132L10.7131 0.326217L10.7972 0.249416C11.2343 -0.107169 11.8794 -0.0812565 12.2869 0.326217L22.674 10.7132C23.1087 11.1478 23.1087 11.8523 22.674 12.2869C22.2394 12.7216 21.5349 12.7216 21.1003 12.2869L12.6129 3.79967V21.8871C12.6129 22.5017 12.1146 23 11.5 23C10.8854 23 10.3871 22.5017 10.3871 21.8871Z" />
+  </IconWrapper>
+);
+
+export const CancelIcon = ({ className }) => (
+  <IconWrapper className={className} fill="none" stroke="currentColor" viewBox="0 0 21 21">
+    <path
+      d="M7.5634 12.9366L10.251 10.25M10.251 10.25L12.9376 7.5634M10.251 10.25L7.5634 7.5634M10.251 10.25L12.9376 12.9366M10.25 19.75C15.4968 19.75 19.75 15.4968 19.75 10.25C19.75 5.00315 15.4968 0.75 10.25 0.75C5.00315 0.75 0.75 5.00315 0.75 10.25C0.75 15.4968 5.00315 19.75 10.25 19.75Z"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </IconWrapper>
 );

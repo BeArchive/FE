@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import NoteItem from './NoteItem';
+import IconButton from '../../../components/iconButton/IconButton';
+import { CancelIcon } from '../../../components/iconButton/Icons';
 
 const BrainstormNote = ({ onClose }) => {
   const [notes, setNotes] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); // 임시 데이터
@@ -22,9 +24,7 @@ const BrainstormNote = ({ onClose }) => {
       {/* 헤더 영역 */}
       <section className="w-full flex items-center justify-between px-4 pb-15 border-b border-primary-50">
         <span className="text-24 font-medium text-secondary-500">브레인스토밍 노트</span>
-        <button onClick={onClose}>
-          <span className="text-24">✕</span>
-        </button>
+        <IconButton Icon={CancelIcon} theme="note" onClick={onClose} />
       </section>
 
       {/* 리스트 영역 */}
