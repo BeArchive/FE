@@ -101,7 +101,7 @@
   }
   ::-webkit-scrollbar-thumb {
     cursor: pointer;
-    @apply bg-gray-300 rounded-full;
+    @apply bg-gray-100 rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-primary-200;
