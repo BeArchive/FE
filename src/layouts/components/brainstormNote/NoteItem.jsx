@@ -1,14 +1,19 @@
+import { useState } from 'react';
 import { cn } from '../../../lib/utils';
 
 const NoteItem = ({ title, date, onClick }) => {
+  const [isBtnHovered, setIsBtnHovered] = useState(false);
+
   return (
     <div
       onClick={onClick}
       className={cn(
         'group flex items-center justify-between w-full h-53 px-10 shrink-0 transition-all duration-200 cursor-pointer',
         'border-b border-gray-50',
-        'hover:border-transparent hover:bg-gray-50 hover:shadow-basic hover:rounded-100',
-        'active:border-transparent active:bg-gray-100 active:shadow-basic active:rounded-100',
+        !isBtnHovered &&
+          'hover:border-transparent hover:bg-gray-50 hover:shadow-basic hover:rounded-100',
+        !isBtnHovered &&
+          'active:border-transparent active:bg-gray-100 active:shadow-basic active:rounded-100',
       )}
     >
       {/* 텍스트 영역 */}
@@ -23,11 +28,16 @@ const NoteItem = ({ title, date, onClick }) => {
       {/* 삭제 버튼 */}
       <button
         className="w-92 h-35 rounded-100 text-14 bg-primary-0 btn-confirm-no"
+        onMouseEnter={() => setIsBtnHovered(true)} // 부모 스타일 차단
+        onMouseLeave={() => setIsBtnHovered(false)}
         onClick={(e) => {
           e.stopPropagation();
           console.log('NoteItem 삭제');
         }}
-        onMouseDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => {
+          e.stopPropagation();
+          setIsBtnHovered(true); // 부모 스타일 차단
+        }}
       >
         <span>삭제</span>
       </button>
