@@ -56,7 +56,7 @@ export default function ArchiveFolderPage() {
         />
 
         {/* 내용 영역 */}
-        <div className="flex-1 overflow-y-auto pt-[118px]">
+        <div className="flex-1 overflow-y-auto">
           {notes.length === 0 ? (
             // 빈 상태
             <EmptyState onUploadClick={() => setOpenUpload(true)} />

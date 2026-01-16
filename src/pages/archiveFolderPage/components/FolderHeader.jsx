@@ -3,7 +3,7 @@ import UploadButton from './UploadButton';
 
 export default function FolderHeader({ folderName, hasNotes, onUploadClick }) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full h-[118px] sticky top-0 z-10 bg-white">
       <p className="absolute left-[41px] top-[41px] font-medium text-[20px] leading-[24px] text-secondary-500">
         아카이브 보드 · {folderName}
       </p>
