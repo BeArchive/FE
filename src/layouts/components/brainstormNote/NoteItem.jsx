@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { cn } from '../../../lib/utils';
 
-const NoteItem = ({ title, date, onClick }) => {
+const NoteItem = ({ title, date, onClick, onDelete }) => {
   const [isBtnHovered, setIsBtnHovered] = useState(false);
 
   return (
@@ -32,7 +32,7 @@ const NoteItem = ({ title, date, onClick }) => {
         onMouseLeave={() => setIsBtnHovered(false)}
         onClick={(e) => {
           e.stopPropagation();
-          console.log('NoteItem 삭제');
+          onDelete();
         }}
         onMouseDown={(e) => {
           e.stopPropagation();

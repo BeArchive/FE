@@ -40,7 +40,7 @@ const RootLayout = () => {
       </div>
 
       {/* 브레인스토밍 노트 버튼 FAB */}
-      <div className="fixed z-50 right-50 bottom-50 flex flex-col items-end gap-20">
+      <div className="fixed z-50 right-50 bottom-50 flex flex-col items-end gap-17">
         {isNoteOpen && <BrainstormNote onClose={() => setIsNoteOpen(false)} />}
         <BrainstormNoteButton isActive={isNoteOpen} onClick={() => setIsNoteOpen(!isNoteOpen)} />
       </div>
