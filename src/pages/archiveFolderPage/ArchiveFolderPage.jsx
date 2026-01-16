@@ -4,6 +4,7 @@ import { useArchiveStore } from '../../store/archiveStore';
 import { useNoteStore } from '../../store/noteStore';
 import Sidebar from '../archivePage/components/Sidebar';
 import UploadModal from '../../components/modal/UploadModal';
+import NoteDeleteModal from '../../components/modal/NoteDeleteModal';
 import FolderHeader from './components/FolderHeader';
 import EmptyState from './components/EmptyState';
 import NoteListItem from './components/NoteListItem';
@@ -21,6 +22,8 @@ export default function ArchiveFolderPage() {
   const [selected, setSelected] = useState([]);
   const [openUpload, setOpenUpload] = useState(false);
   const [hoveredNote, setHoveredNote] = useState(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState(null);
 
   const toggleSelect = (noteId) => {
     setSelected((prev) =>
@@ -34,9 +37,23 @@ export default function ArchiveFolderPage() {
     setOpenUpload(false);
   };
 
-  const onDeleteNote = (noteId) => {
-    deleteNote(folderId, noteId);
-    setSelected((prev) => prev.filter((id) => id !== noteId));
+  const handleDeleteClick = (note) => {
+    setNoteToDelete(note);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (noteToDelete) {
+      deleteNote(folderId, noteToDelete.id);
+      setSelected((prev) => prev.filter((id) => id !== noteToDelete.id));
+      setDeleteModalOpen(false);
+      setNoteToDelete(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteModalOpen(false);
+    setNoteToDelete(null);
   };
 
   return (
@@ -70,7 +87,7 @@ export default function ArchiveFolderPage() {
                   isSelected={selected.includes(note.id)}
                   isHovered={hoveredNote === note.id}
                   onSelect={() => toggleSelect(note.id)}
-                  onDelete={() => onDeleteNote(note.id)}
+                  onDelete={() => handleDeleteClick(note)}
                   onMouseEnter={() => setHoveredNote(note.id)}
                   onMouseLeave={() => setHoveredNote(null)}
                 />
@@ -83,6 +100,13 @@ export default function ArchiveFolderPage() {
           open={openUpload}
           onClose={() => setOpenUpload(false)}
           onConfirm={onConfirmUpload}
+        />
+
+        <NoteDeleteModal
+          open={deleteModalOpen}
+          note={noteToDelete}
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
         />
       </div>
     </div>
