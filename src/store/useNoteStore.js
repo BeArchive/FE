@@ -27,15 +27,44 @@ export const useNoteStore = create((set) => ({
   // 상세 페이지에서 보여줄 노트 데이터 설정
   setSelectedNote: (note) => set({ selectedNote: note }),
 
+  // 초기화
+  resetSelectedNote: () => set({ selectedNote: null }),
+
+  // 초기 데이터 로드
+  setNotes: (notes) => set({ notes }),
+
   // 노트 삭제
   deleteNote: (id) =>
     set((state) => ({
       notes: state.notes.filter((n) => n.data.id !== id),
     })),
 
-  // 초기화
-  resetSelectedNote: () => set({ selectedNote: null }),
+  saveNote: (updatedData) =>
+    set((state) => {
+      const currentId = state.selectedNote?.data?.id;
 
-  // 초기 데이터 로드
-  setNotes: (notes) => set({ notes }),
+      if (currentId) {
+        // 수정 모드
+        return {
+          notes: state.notes.map((n) =>
+            n.data.id === currentId
+              ? { ...n, data: { ...n.data, ...updatedData, id: currentId } }
+              : n,
+          ),
+          selectedNote: null,
+        };
+      } else {
+        // 추가 모드
+        const newNote = {
+          data: {
+            ...updatedData,
+            id: Date.now(),
+          },
+        };
+        return {
+          notes: [newNote, ...state.notes],
+          selectedNote: null,
+        };
+      }
+    }),
 }));

@@ -1,13 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getFormattedDate } from '../../../utils/date';
 import { useNoteStore } from '../../../store/useNoteStore';
 
 const NoteDetail = () => {
-  const { selectedNote } = useNoteStore();
+  const { selectedNote, saveNote } = useNoteStore();
 
   const [title, setTitle] = useState(selectedNote?.data?.title || '');
   const [category, setCategory] = useState(selectedNote?.data?.category || '');
   const [content, setContent] = useState(selectedNote?.data?.memo || '');
+
+  const lastState = useRef({ title, category, content }); // 최신 상태값
+
+  useEffect(() => {
+    lastState.current = { title, category, content };
+  }, [title, category, content]);
+
+  // 언마운트될때 자동 저장
+  useEffect(() => {
+    return () => {
+      const { title, category, content } = lastState.current;
+      // 변경 사항 있는지 체크
+      const isChanged =
+        title !== (selectedNote?.data?.title || '') ||
+        category !== (selectedNote?.data?.category || '') ||
+        content !== (selectedNote?.data?.memo || '');
+
+      // 내용이 하나라도 있는지 체크
+      const hasContent = title.trim() || category.trim() || content.trim();
+
+      //  변경 사항이 있고, 내용이 비어있지 않을 때만 저장
+      if (isChanged && hasContent) {
+        saveNote({
+          title: title.trim() || '제목 없음',
+          category: category.trim() || '미분류',
+          memo: content,
+          updatedAt: new Date().toISOString(),
+          id: selectedNote?.data?.id,
+        });
+      }
+    };
+  }, [saveNote, selectedNote]);
 
   return (
     <div className="flex-1 w-full flex flex-col gap-25 overflow-hidden">
