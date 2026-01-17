@@ -19,9 +19,16 @@ const BrainstormNote = ({ onClose }) => {
     backdropFilter: 'blur(4px)',
   };
 
+  // 노트 삭제 핸들러
   const handleDelete = (id) => {
     setNotes((prevNotes) => prevNotes.filter((noteId) => noteId !== id));
     console.log(`${id}번 노트 삭제`);
+  };
+
+  // 노트 추가 핸들러
+  const handleAdd = () => {
+    setSelectedNoteId(null);
+    setView(VIEW_TYPE.DETAIL);
   };
 
   // 노트 선택 핸들러
@@ -46,7 +53,7 @@ const BrainstormNote = ({ onClose }) => {
       </section>
 
       {view === VIEW_TYPE.LIST ? (
-        <NoteList notes={notes} onDelete={handleDelete} onSelect={handleSelect} />
+        <NoteList notes={notes} onDelete={handleDelete} onSelect={handleSelect} onAdd={handleAdd} />
       ) : (
         <NoteDetail note={notes.find((n) => n === selectedNoteId)} />
       )}

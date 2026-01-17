@@ -2,7 +2,7 @@ import { AddIcon } from '../../../components/iconButton/Icons';
 import NoteItem from './NoteItem';
 
 // NoteItem 리스트, 추가하기 버튼
-const NoteList = ({ notes, onDelete, onSelect }) => {
+const NoteList = ({ notes, onDelete, onSelect, onAdd }) => {
   return (
     <>
       {/* 리스트 영역 */}
@@ -19,7 +19,10 @@ const NoteList = ({ notes, onDelete, onSelect }) => {
       </section>
 
       {/* 추가하기 버튼 */}
-      <button className="btn-confirm-yes absolute bottom-25 right-18 z-10 w-117 h-35 rounded-100 bg-primary-50 text-primary-400 flex-row-center gap-5 active:scale-95">
+      <button
+        onClick={onAdd}
+        className="btn-confirm-yes absolute bottom-25 right-18 z-10 w-117 h-35 rounded-100 bg-primary-50 text-primary-400 flex-row-center gap-5 active:scale-95"
+      >
         <AddIcon className="w-23 h-23" />
         <span className="text-16 font-medium">추가하기</span>
       </button>
