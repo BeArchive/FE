@@ -1,18 +1,10 @@
 import { useState } from 'react';
+import { getFormattedDate } from '../../../utils/date';
 
 const NoteDetail = ({ note }) => {
   const [title, setTitle] = useState(note?.data?.title || '');
   const [category, setCategory] = useState(note?.data?.category || '');
   const [content, setContent] = useState(note?.data?.memo || '');
-
-  // 날짜 포맷
-  const getFormattedDate = (dateStr) => {
-    const date = dateStr ? new Date(dateStr) : new Date();
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    return `${yyyy}. ${mm}. ${dd}`;
-  };
 
   return (
     <div className="flex-1 w-full flex flex-col gap-25 overflow-hidden">
