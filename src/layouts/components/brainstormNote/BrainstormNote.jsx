@@ -1,40 +1,15 @@
-import { useState } from 'react';
 import IconButton from '../../../components/iconButton/IconButton';
 import { CancelIcon, PrevIcon } from '../../../components/iconButton/Icons';
-import NoteList from './NoteList';
+import { useNoteStore, VIEW_TYPE } from '../../../store/useNoteStore';
 import NoteDetail from './NoteDetail';
-
-const VIEW_TYPE = {
-  LIST: 'list',
-  DETAIL: 'detail',
-};
+import NoteList from './NoteList';
 
 const BrainstormNote = ({ onClose }) => {
-  const [notes, setNotes] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); // 임시 데이터
-  const [view, setView] = useState(VIEW_TYPE.LIST); // 목록 or 상세
-  const [selectedNoteId, setSelectedNoteId] = useState(null);
+  const { view, setView } = useNoteStore();
 
   const panelStyle = {
     boxShadow: '0px 0px 16px 0px rgba(217, 217, 217, 0.16)',
     backdropFilter: 'blur(4px)',
-  };
-
-  // 노트 삭제 핸들러
-  const handleDelete = (id) => {
-    setNotes((prevNotes) => prevNotes.filter((noteId) => noteId !== id));
-    console.log(`${id}번 노트 삭제`);
-  };
-
-  // 노트 추가 핸들러
-  const handleAdd = () => {
-    setSelectedNoteId(null);
-    setView(VIEW_TYPE.DETAIL);
-  };
-
-  // 노트 선택 핸들러
-  const handleSelect = (id) => {
-    setSelectedNoteId(id);
-    setView(VIEW_TYPE.DETAIL);
   };
 
   return (
@@ -52,11 +27,7 @@ const BrainstormNote = ({ onClose }) => {
         )}
       </section>
 
-      {view === VIEW_TYPE.LIST ? (
-        <NoteList notes={notes} onDelete={handleDelete} onSelect={handleSelect} onAdd={handleAdd} />
-      ) : (
-        <NoteDetail note={notes.find((n) => n === selectedNoteId)} />
-      )}
+      {view === VIEW_TYPE.LIST ? <NoteList /> : <NoteDetail />}
     </div>
   );
 };

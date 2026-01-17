@@ -1,26 +1,40 @@
 import { AddIcon } from '../../../components/iconButton/Icons';
+import { useNoteStore, VIEW_TYPE } from '../../../store/useNoteStore';
 import NoteItem from './NoteItem';
 
-// NoteItem 리스트, 추가하기 버튼
-const NoteList = ({ notes, onDelete, onSelect, onAdd }) => {
+const NoteList = () => {
+  const { notes, deleteNote, setSelectedNote, setView, resetSelectedNote } = useNoteStore();
+
+  // 추가하기 버튼 핸들러
+  const handleAddClick = () => {
+    resetSelectedNote();
+    setView(VIEW_TYPE.DETAIL);
+  };
+
+  // 노트 선택 핸들러
+  const handleSelectClick = (note) => {
+    setSelectedNote(note);
+    setView(VIEW_TYPE.DETAIL);
+  };
+
   return (
     <>
       {/* 리스트 영역 */}
       <section className="flex-1 w-full overflow-y-auto flex flex-col items-center gap-10 pb-40 custom-scrollbar">
-        {notes.map((id) => (
+        {notes.map((note) => (
           <NoteItem
-            key={id}
-            title="가나다라마바사가나다라마바사가나"
-            date="2026. 01. 01"
-            onDelete={() => onDelete(id)}
-            onClick={() => onSelect(id)}
+            key={note.data.id}
+            title={note.data.title}
+            date={note.data.updatedAt}
+            onDelete={() => deleteNote(note.data.id)}
+            onClick={() => handleSelectClick(note)}
           />
         ))}
       </section>
 
       {/* 추가하기 버튼 */}
       <button
-        onClick={onAdd}
+        onClick={handleAddClick}
         className="btn-confirm-yes absolute bottom-25 right-18 z-10 w-117 h-35 rounded-100 bg-primary-50 text-primary-400 flex-row-center gap-5 active:scale-95"
       >
         <AddIcon className="w-23 h-23" />

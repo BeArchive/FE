@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { getFormattedDate } from '../../../utils/date';
+import { useNoteStore } from '../../../store/useNoteStore';
 
-const NoteDetail = ({ note }) => {
-  const [title, setTitle] = useState(note?.data?.title || '');
-  const [category, setCategory] = useState(note?.data?.category || '');
-  const [content, setContent] = useState(note?.data?.memo || '');
+const NoteDetail = () => {
+  const { selectedNote } = useNoteStore();
+
+  const [title, setTitle] = useState(selectedNote?.data?.title || '');
+  const [category, setCategory] = useState(selectedNote?.data?.category || '');
+  const [content, setContent] = useState(selectedNote?.data?.memo || '');
 
   return (
     <div className="flex-1 w-full flex flex-col gap-25 overflow-hidden">
@@ -26,7 +29,7 @@ const NoteDetail = ({ note }) => {
               날짜
             </span>
             <span className="text-16 font-medium text-secondary-500 ">
-              {getFormattedDate(note?.data?.updatedAt)}
+              {getFormattedDate(selectedNote?.data?.updatedAt)}
             </span>
           </div>
 
