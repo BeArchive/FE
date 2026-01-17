@@ -3,9 +3,14 @@ import IconButton from '../../../components/iconButton/IconButton';
 import { CancelIcon } from '../../../components/iconButton/Icons';
 import NoteList from './NoteList';
 
+const VIEW_TYPE = {
+  LIST: 'list',
+  DETAIL: 'detail',
+};
+
 const BrainstormNote = ({ onClose }) => {
   const [notes, setNotes] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); // 임시 데이터
-  const [view, setView] = useState('list'); // 목록 or 상세
+  const [view, setView] = useState(VIEW_TYPE.LIST); // 목록 or 상세
   const [, /*selectedNoteId*/ setSelectedNoteId] = useState(null);
 
   const panelStyle = {
@@ -21,7 +26,7 @@ const BrainstormNote = ({ onClose }) => {
   // 노트 선택 핸들러
   const handleSelect = (id) => {
     setSelectedNoteId(id);
-    setView('detail');
+    setView(VIEW_TYPE.DETAIL);
   };
 
   return (
@@ -32,14 +37,14 @@ const BrainstormNote = ({ onClose }) => {
       {/* 헤더 영역 */}
       <section className="w-full flex items-center justify-between px-4 pb-15 border-b border-primary-50">
         <span className="text-24 font-medium text-secondary-500">브레인스토밍 노트</span>
-        {view === 'list' ? (
+        {view === VIEW_TYPE.LIST ? (
           <IconButton Icon={CancelIcon} theme="note" onClick={onClose} />
         ) : (
-          <IconButton Icon={CancelIcon} theme="note" onClick={() => setView('list')} />
+          <IconButton Icon={CancelIcon} theme="note" onClick={() => setView(VIEW_TYPE.LIST)} />
         )}
       </section>
 
-      {view === 'list' ? (
+      {view === VIEW_TYPE.LIST ? (
         <NoteList notes={notes} onDelete={handleDelete} onSelect={handleSelect} />
       ) : (
         <div className="flex-1 flex-col-center">NoteDetail 추가 예정</div>
