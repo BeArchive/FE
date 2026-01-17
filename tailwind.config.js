@@ -59,6 +59,10 @@ export default {
           500: 'var(--color-secondary-500)',
           700: 'var(--color-secondary-700)',
         },
+        error: {
+          1: 'var(--color-error-1)',
+          2: 'var(--color-error-2)',
+        },
         btn: {
           gray: {
             base: 'var(--color-gray-300)',
