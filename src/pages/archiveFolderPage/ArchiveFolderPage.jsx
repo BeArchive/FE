@@ -79,7 +79,7 @@ export default function ArchiveFolderPage() {
             <EmptyState onUploadClick={() => setOpenUpload(true)} />
           ) : (
             // 노트 리스트
-            <div className="flex flex-col gap-[15px] px-[41px] pb-[110px]">
+            <div className="flex flex-col gap-15 px-41 pb-110">
               {notes.map((note) => (
                 <NoteListItem
                   key={note.id}

@@ -14,48 +14,46 @@ export default function NoteListItem({
 }) {
   return (
     <div
-      className={cn(
-        'relative h-[53px] flex items-center overflow-hidden transition-all',
+      className={`relative h-53 flex items-center overflow-hidden transition-all ${
         isSelected
           ? 'bg-gray-100 rounded-full shadow-basic'
           : isHovered
             ? 'bg-gray-50 rounded-full shadow-basic'
-            : 'border-b border-gray-50',
-      )}
+            : 'border-b border-gray-50'
+      }`}
       onClick={onSelect}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       {/* 노트 이미지 */}
-      <div className="absolute left-[25px] top-1/2 -translate-y-1/2 w-[30px] h-[31px]">
+      <div className="absolute left-25 top-1/2 -translate-y-1/2 w-30 h-31">
         <img src={noteImage} alt="노트" className="w-full h-full object-contain" />
       </div>
       {/* 노트 이름 */}
-      <p className="absolute left-[115px] font-medium text-[14px] leading-[22px] text-black truncate">
+      <p className="absolute left-115 font-medium text-14 leading-22 text-black truncate">
         {note.name}
       </p>
       {/* 수정날짜 */}
-      <div className="absolute right-[290px] top-1/2 -translate-y-1/2 flex items-center gap-[5px] font-normal text-[14px] leading-[22px] text-secondary-500">
+      <div className="absolute right-290 top-1/2 -translate-y-1/2 flex items-center gap-5 font-normal text-14 leading-22 text-secondary-500">
         <span>수정날짜</span>
         <span>{note.date}</span>
       </div>
       {/* 삭제 버튼 */}
       <button
-        className={cn(
-          'absolute right-[15px] top-1/2 -translate-y-1/2 w-[92px] h-[35px] rounded-full flex items-center justify-center gap-[5px] transition-all',
+        className={`absolute right-15 top-1/2 -translate-y-1/2 w-92 h-35 rounded-full flex items-center justify-center gap-5 transition-all ${
           isSelected
             ? 'bg-gray-300 shadow-basic text-gray-100'
             : isHovered
               ? 'bg-gray-100 shadow-basic text-secondary-500'
-              : 'bg-primary-0 text-secondary-300',
-        )}
+              : 'bg-primary-0 text-secondary-300'
+        }`}
         onClick={(e) => {
           e.stopPropagation();
           onDelete();
         }}
       >
-        <FaRegTrashAlt className="w-[19px] h-[21px]" />
-        <span className="font-medium text-[14px] leading-[18px]">삭제</span>
+        <FaRegTrashAlt className="w-19 h-21" />
+        <span className="font-medium text-14 leading-18">삭제</span>
       </button>
     </div>
   );

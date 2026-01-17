@@ -25,17 +25,9 @@ export default function NoteDeleteModal({
 
   const buttonRowStyles = cn('flex items-center mt-14 mb-14 gap-40');
 
-  const cancelBtnStyles = cn(
-    'bg-primary-0 rounded-100 w-117 h-28',
-    'flex items-center justify-center',
-    'text-[14px] leading-22 text-secondary-300',
-  );
+  const cancelBtnStyles = `bg-primary-0 rounded-100 w-117 h-28 flex items-center justify-center text-14 leading-22 text-secondary-300`;
 
-  const deleteBtnStyles = cn(
-    'bg-[#FF6E6E] rounded-100 w-117 h-28',
-    'flex items-center justify-center',
-    'text-[14px] leading-22 text-secondary-700',
-  );
+  const deleteBtnStyles = `bg-[#FF6E6E] rounded-100 w-117 h-28 flex items-center justify-center text-14 leading-22 text-secondary-700`;
 
   return (
     <div className={overlayStyles}>
@@ -53,7 +45,7 @@ export default function NoteDeleteModal({
         </p>
 
         {/* 노트 정보 */}
-        <div className="mt-12 w-[358px] h-[54px] px-[9px] py-[5px] bg-gray-50 rounded-10">
+        <div className="mt-12 w-358 h-54 px-9 py-5 bg-gray-50 rounded-10">
           <p className="font-medium text-14 leading-22 text-black truncate">{note.name}</p>
           <div className="flex items-center gap-5 font-normal text-12 leading-20 text-secondary-500">
             <span>수정날짜</span>

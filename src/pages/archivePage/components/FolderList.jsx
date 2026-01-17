@@ -35,7 +35,7 @@ export default function FolderList({
           {/* 빈 상태 아카이브*/}
           <div
             className="flex items-center justify-center"
-            style={{ width: '177px', height: '228px', padding: '4px 0 4.83px 0' }}
+            style={{ width: '177', height: '228', padding: '4 0 4.83 0' }}
           >
             <img src={archiveIcon} alt="폴더가 없습니다" className="w-full h-full object-contain" />
           </div>

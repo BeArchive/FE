@@ -32,19 +32,9 @@ export default function ConfirmModal({
     hideCancel ? 'justify-center' : 'gap-40',
   );
 
-  const cancelBtnStyles = cn(
-    'bg-primary-0 rounded-100 w-117 h-28',
-    'flex items-center justify-center',
-    'text-[14px] leading-22 text-secondary-300',
-  );
+  const cancelBtnStyles = `bg-primary-0 rounded-100 w-117 h-28 flex items-center justify-center text-14 leading-22 text-secondary-300`;
 
-  const confirmBtnStyles = cn(
-    'bg-[#FF6E6E]',
-    'rounded-100 w-117 h-28',
-    'flex items-center justify-center',
-    'text-[14px] leading-22',
-    'text-secondary-700',
-  );
+  const confirmBtnStyles = `bg-[#FF6E6E] rounded-100 w-117 h-28 flex items-center justify-center text-14 leading-22 text-secondary-700`;
 
   return (
     <div className={overlayStyles}>
