@@ -63,6 +63,9 @@ export default {
           1: 'var(--color-error-1)',
           2: 'var(--color-error-2)',
         },
+        overlay: {
+          bg: 'rgba(217, 217, 217, 0.5)',
+        },
         btn: {
           gray: {
             base: 'var(--color-gray-300)',

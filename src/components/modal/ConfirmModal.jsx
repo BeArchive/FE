@@ -16,7 +16,7 @@ export default function ConfirmModal({
 
   const overlayStyles = cn(
     'absolute inset-0 z-40',
-    'bg-[rgba(217,217,217,0.5)]',
+    'bg-overlay-bg',
     'flex items-center justify-center',
     'rounded-20',
   );
@@ -34,13 +34,13 @@ export default function ConfirmModal({
 
   const cancelBtnStyles = `bg-primary-0 rounded-100 w-117 h-28 flex items-center justify-center text-14 leading-22 text-secondary-300`;
 
-  const confirmBtnStyles = `bg-[#FF6E6E] rounded-100 w-117 h-28 flex items-center justify-center text-14 leading-22 text-secondary-700`;
+  const confirmBtnStyles = `bg-error-2 rounded-100 w-117 h-28 flex items-center justify-center text-14 leading-22 text-secondary-700`;
 
   return (
     <div className={overlayStyles}>
       <div className={cn(modalStyles, className)}>
         <div className="mt-31 flex items-center justify-center">
-          <FaCircleExclamation className="w-29 h-29 text-[#FF6E6E99]" />
+          <FaCircleExclamation className="w-29 h-29 text-error-1" />
         </div>
 
         {/* 제목 */}
