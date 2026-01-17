@@ -32,6 +32,8 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
         path: 'brainstorm',
         element: <BrainstormPage />, // 신규 채팅 시작
       },
