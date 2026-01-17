@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import IconButton from '../../../components/iconButton/IconButton';
-import { CancelIcon } from '../../../components/iconButton/Icons';
+import { CancelIcon, PrevIcon } from '../../../components/iconButton/Icons';
 import NoteList from './NoteList';
+import NoteDetail from './NoteDetail';
 
 const VIEW_TYPE = {
   LIST: 'list',
@@ -11,7 +12,7 @@ const VIEW_TYPE = {
 const BrainstormNote = ({ onClose }) => {
   const [notes, setNotes] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); // 임시 데이터
   const [view, setView] = useState(VIEW_TYPE.LIST); // 목록 or 상세
-  const [, /*selectedNoteId*/ setSelectedNoteId] = useState(null);
+  const [selectedNoteId, setSelectedNoteId] = useState(null);
 
   const panelStyle = {
     boxShadow: '0px 0px 16px 0px rgba(217, 217, 217, 0.16)',
@@ -40,14 +41,14 @@ const BrainstormNote = ({ onClose }) => {
         {view === VIEW_TYPE.LIST ? (
           <IconButton Icon={CancelIcon} theme="note" onClick={onClose} />
         ) : (
-          <IconButton Icon={CancelIcon} theme="note" onClick={() => setView(VIEW_TYPE.LIST)} />
+          <IconButton Icon={PrevIcon} theme="note" onClick={() => setView(VIEW_TYPE.LIST)} />
         )}
       </section>
 
       {view === VIEW_TYPE.LIST ? (
         <NoteList notes={notes} onDelete={handleDelete} onSelect={handleSelect} />
       ) : (
-        <div className="flex-1 flex-col-center">NoteDetail 추가 예정</div>
+        <NoteDetail note={notes.find((n) => n === selectedNoteId)} />
       )}
     </div>
   );
