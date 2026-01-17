@@ -1,6 +1,7 @@
 import { AddIcon } from '../../../components/iconButton/Icons';
 import { useNoteStore, VIEW_TYPE } from '../../../store/useNoteStore';
 import NoteItem from './NoteItem';
+import { getFormattedDate } from '../../../utils/date';
 
 const NoteList = () => {
   const { notes, deleteNote, setSelectedNote, setView, resetSelectedNote } = useNoteStore();
@@ -25,7 +26,7 @@ const NoteList = () => {
           <NoteItem
             key={note.data.id}
             title={note.data.title}
-            date={note.data.updatedAt}
+            date={getFormattedDate(note.data.updatedAt)}
             onDelete={() => deleteNote(note.data.id)}
             onClick={() => handleSelectClick(note)}
           />

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { cn } from '../../../lib/utils';
 import { RemoveIcon } from '../../../components/iconButton/Icons';
-import { getFormattedDate } from '../../../utils/date';
 
 const NoteItem = ({ title, date, onClick, onDelete }) => {
   const [isBtnHovered, setIsBtnHovered] = useState(false);
@@ -23,7 +22,7 @@ const NoteItem = ({ title, date, onClick, onDelete }) => {
         <span className="text-14 font-medium text-black truncate w-194">{title}</span>
         <div className="flex gap-5 shrink-0 text-14 font-regular text-secondary-500">
           <span>수정날짜</span>
-          <span>{getFormattedDate(date)}</span>
+          <span>{date}</span>
         </div>
       </div>
 
