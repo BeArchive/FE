@@ -1,14 +1,14 @@
 import { cn } from '../../lib/utils';
 import { FaCircleExclamation } from 'react-icons/fa6';
 
-export default function NoteDeleteModal({
+export default function ChatDeleteModal({
   open = false,
-  note = null,
+  chat = null,
   onConfirm = () => {},
   onCancel = () => {},
   className,
 }) {
-  if (!open || !note) return null;
+  if (!open || !chat) return null;
 
   const overlayStyles = cn(
     'absolute inset-0 z-40',
@@ -44,12 +44,12 @@ export default function NoteDeleteModal({
           삭제할 경우 복구하실 수 없습니다.
         </p>
 
-        {/* 노트 정보 */}
+        {/* 채팅 정보 */}
         <div className="mt-12 w-358 h-54 px-9 py-5 bg-gray-50 rounded-10">
-          <p className="font-medium text-14 leading-22 text-black truncate">{note.name}</p>
+          <p className="font-medium text-14 leading-22 text-black truncate">{chat.name}</p>
           <div className="flex items-center gap-5 font-normal text-12 leading-20 text-secondary-500">
             <span>수정날짜</span>
-            <span>{note.date}</span>
+            <span>{chat.date}</span>
           </div>
         </div>
 
