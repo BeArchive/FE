@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useArchiveStore } from '../../store/archiveStore';
 import { useNoteStore } from '../../store/noteStore';
+import { useNoteSelection } from './hooks/useNoteSelection';
 import Sidebar from '../archivePage/components/Sidebar';
 import UploadModal from '../../components/modal/UploadModal';
 import NoteDeleteModal from '../../components/modal/NoteDeleteModal';
@@ -19,21 +20,20 @@ export default function ArchiveFolderPage() {
   const deleteNote = useNoteStore((state) => state.deleteNote);
   const folder = folders.find((f) => f.id === folderId);
 
-  const [selected, setSelected] = useState([]);
+  const { selected, toggleSelect, clearSelection, deselectNote } = useNoteSelection();
   const [openUpload, setOpenUpload] = useState(false);
   const [hoveredNote, setHoveredNote] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
 
-  const toggleSelect = (noteId) => {
-    setSelected((prev) =>
-      prev.includes(noteId) ? prev.filter((id) => id !== noteId) : [...prev, noteId],
-    );
-  };
+  useEffect(() => {
+    clearSelection();
+  }, [folderId]);
 
   const onConfirmUpload = (notes) => {
     // notes는 이미 { id, name, url, date } 형태로 전달됨
     addNotes(folderId, notes);
+    clearSelection();
     setOpenUpload(false);
   };
 
@@ -45,7 +45,7 @@ export default function ArchiveFolderPage() {
   const confirmDelete = () => {
     if (noteToDelete) {
       deleteNote(folderId, noteToDelete.id);
-      setSelected((prev) => prev.filter((id) => id !== noteToDelete.id));
+      deselectNote(noteToDelete.id);
       setDeleteModalOpen(false);
       setNoteToDelete(null);
     }
