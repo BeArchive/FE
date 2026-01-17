@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useArchiveStore } from '../../store/archiveStore';
 import { useNoteStore } from '../../store/noteStore';
 import { useNoteSelection } from './hooks/useNoteSelection';
+import { useNoteActions } from './hooks/useNoteActions';
 import Sidebar from '../archivePage/components/Sidebar';
 import UploadModal from '../../components/modal/UploadModal';
 import NoteDeleteModal from '../../components/modal/NoteDeleteModal';
@@ -16,44 +17,21 @@ export default function ArchiveFolderPage() {
   const folders = useArchiveStore((state) => state.folders);
 
   const notes = useNoteStore((state) => state.getNotes(folderId));
-  const addNotes = useNoteStore((state) => state.addNotes);
-  const deleteNote = useNoteStore((state) => state.deleteNote);
   const folder = folders.find((f) => f.id === folderId);
 
   const { selected, toggleSelect, clearSelection, deselectNote } = useNoteSelection();
-  const [openUpload, setOpenUpload] = useState(false);
+  const { modals } = useNoteActions(folderId, (deletedId) => deselectNote(deletedId));
+  const uploadModal = modals.upload;
+  const deleteModal = modals.delete;
   const [hoveredNote, setHoveredNote] = useState(null);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [noteToDelete, setNoteToDelete] = useState(null);
 
   useEffect(() => {
     clearSelection();
   }, [folderId]);
 
   const onConfirmUpload = (notes) => {
-    // notes는 이미 { id, name, url, date } 형태로 전달됨
-    addNotes(folderId, notes);
+    uploadModal.handle(notes);
     clearSelection();
-    setOpenUpload(false);
-  };
-
-  const handleDeleteClick = (note) => {
-    setNoteToDelete(note);
-    setDeleteModalOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (noteToDelete) {
-      deleteNote(folderId, noteToDelete.id);
-      deselectNote(noteToDelete.id);
-      setDeleteModalOpen(false);
-      setNoteToDelete(null);
-    }
-  };
-
-  const cancelDelete = () => {
-    setDeleteModalOpen(false);
-    setNoteToDelete(null);
   };
 
   return (
@@ -69,14 +47,14 @@ export default function ArchiveFolderPage() {
         <FolderHeader
           folderName={folder ? folder.name : '폴더'}
           hasNotes={notes.length > 0}
-          onUploadClick={() => setOpenUpload(true)}
+          onUploadClick={() => uploadModal.setOpen(true)}
         />
 
         {/* 내용 영역 */}
         <div className="flex-1 overflow-y-auto">
           {notes.length === 0 ? (
             // 빈 상태
-            <EmptyState onUploadClick={() => setOpenUpload(true)} />
+            <EmptyState onUploadClick={() => uploadModal.setOpen(true)} />
           ) : (
             // 노트 리스트
             <div className="flex flex-col gap-15 px-41 pb-110">
@@ -87,7 +65,7 @@ export default function ArchiveFolderPage() {
                   isSelected={selected.includes(note.id)}
                   isHovered={hoveredNote === note.id}
                   onSelect={() => toggleSelect(note.id)}
-                  onDelete={() => handleDeleteClick(note)}
+                  onDelete={() => deleteModal.openModal(note)}
                   onMouseEnter={() => setHoveredNote(note.id)}
                   onMouseLeave={() => setHoveredNote(null)}
                 />
@@ -97,16 +75,16 @@ export default function ArchiveFolderPage() {
         </div>
 
         <UploadModal
-          open={openUpload}
-          onClose={() => setOpenUpload(false)}
+          open={uploadModal.open}
+          onClose={() => uploadModal.setOpen(false)}
           onConfirm={onConfirmUpload}
         />
 
         <NoteDeleteModal
-          open={deleteModalOpen}
-          note={noteToDelete}
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
+          open={deleteModal.open}
+          note={deleteModal.note}
+          onConfirm={deleteModal.confirm}
+          onCancel={deleteModal.close}
         />
       </div>
     </div>
