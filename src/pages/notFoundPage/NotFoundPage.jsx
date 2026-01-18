@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../../components/Logo';
 import questionIcon from '../../assets/icons/question_icon.svg';
-import notFoundIcon from '../../assets/icons/404_icon.svg';
+import notFoundIcon from '../../assets/icons/notfound_icon.svg';
 
 export default function NotFoundPage() {
   return (
