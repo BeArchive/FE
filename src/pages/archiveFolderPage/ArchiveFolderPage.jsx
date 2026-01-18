@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useArchiveStore } from '../../store/archiveStore';
-import { useNoteStore } from '../../store/noteStore';
+import { useChatStore } from '../../store/chatStore';
 import { useChatSelection } from './hooks/useChatSelection';
 import { useChatActions } from './hooks/useChatActions';
 import Sidebar from '../archivePage/components/Sidebar';
@@ -16,7 +16,7 @@ export default function ArchiveFolderPage() {
   const folderId = parseInt(folderIdStr, 10);
   const folders = useArchiveStore((state) => state.folders);
 
-  const chats = useNoteStore((state) => state.getNotes(folderId));
+  const chats = useChatStore((state) => state.getChats(folderId));
   const folder = folders.find((f) => f.id === folderId);
 
   const { selected, toggleSelect, clearSelection, deselectChat } = useChatSelection();

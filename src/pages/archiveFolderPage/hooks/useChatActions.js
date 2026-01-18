@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNoteStore } from '../../../store/noteStore';
+import { useChatStore } from '../../../store/chatStore';
 
 export function useChatActions(folderId, onAfterDelete) {
-  const addNotes = useNoteStore((state) => state.addNotes);
-  const deleteNote = useNoteStore((state) => state.deleteNote);
+  const addChats = useChatStore((state) => state.addChats);
+  const deleteChat = useChatStore((state) => state.deleteChat);
 
   const [openUpload, setOpenUpload] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -11,7 +11,7 @@ export function useChatActions(folderId, onAfterDelete) {
 
   // 업로드 시 채팅 추가
   const handleUpload = (chats) => {
-    addNotes(folderId, chats);
+    addChats(folderId, chats);
     setOpenUpload(false);
   };
 
@@ -24,7 +24,7 @@ export function useChatActions(folderId, onAfterDelete) {
   // 채팅 삭제
   const confirmDelete = () => {
     if (chatToDelete) {
-      deleteNote(folderId, chatToDelete.id);
+      deleteChat(folderId, chatToDelete.id);
       if (onAfterDelete) onAfterDelete(chatToDelete.id);
       closeDeleteModal();
     }
