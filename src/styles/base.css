@@ -90,4 +90,40 @@
   input:focus {
     @apply outline-none;
   }
+
+  /* 스크롤바 */
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    @apply bg-gray-300 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-200;
+  }
+}
+
+@layer components {
+  .btn-confirm-base {
+    @apply w-117 h-35 rounded-100 text-14 font-medium flex-row-center transition-all duration-200 cursor-pointer outline-none;
+  }
+
+  /* 확인 버튼 */
+  .btn-confirm-yes {
+    @apply btn-confirm-base bg-primary-50 text-primary-400;
+    @apply hover:bg-primary-200 hover:text-primary-main hover:shadow-basic;
+    @apply active:bg-primary-200 active:text-white active:shadow-basic;
+  }
+
+  /* 취소 버튼 */
+  .btn-confirm-no {
+    @apply btn-confirm-base bg-secondary-50 text-secondary-300;
+    @apply hover:bg-gray-100 hover:text-secondary-500 hover:shadow-basic;
+    @apply active:bg-gray-300 active:text-gray-100 active:shadow-basic;
+  }
 }

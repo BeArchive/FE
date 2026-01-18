@@ -37,7 +37,11 @@
   /* Gradient */
   --gradient-main: linear-gradient(180deg, #82cbff 12.28%, #007bff 113.54%);
 
+  /* Overlay */
+  --color-overlay-bg: #d9d9d980;
+
   /* Shadow */
   --shadow-primary: 4px 4px 4px 0 #d9d9d929;
   --shadow-second: 4px 4px 8px 0 #d9d9d929;
+  --shadow-icon: 0px 4px 4px 0 #d9d9d952;
 }
