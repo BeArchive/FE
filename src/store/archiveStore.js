@@ -25,6 +25,7 @@ export const useArchiveStore = create((set, get) => ({
   activeFolderId: null,
   hoveredFolderId: null,
   editingFolderId: null,
+  selectedFolderId: null, // 아카이브 보드에서 선택된 폴더 ID
 
   // 모달 상태
   modal: {
@@ -38,6 +39,7 @@ export const useArchiveStore = create((set, get) => ({
   setActiveFolderId: (id) => set({ activeFolderId: id }),
   setHoveredFolderId: (id) => set({ hoveredFolderId: id }),
   setEditingFolderId: (id) => set({ editingFolderId: id }),
+  setSelectedFolderId: (id) => set({ selectedFolderId: id }),
 
   // 폴더 액션
   addFolder: (name) => {
