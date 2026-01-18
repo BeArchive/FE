@@ -1,8 +1,8 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const AUTHI_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL;
 
 export const AUTH_ENDPOINTS = {
-  GOOGLE: `${API_BASE_URL}/oauth2/authorization/google`,
-  KAKAO: `${API_BASE_URL}/oauth2/authorization/kakao`,
+  GOOGLE: `${AUTHI_BASE_URL}/oauth2/authorization/google`,
+  KAKAO: `${AUTHI_BASE_URL}/oauth2/authorization/kakao`,
 };
 
 export const ROUTES = {
