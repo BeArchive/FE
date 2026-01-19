@@ -1,7 +1,7 @@
 import FOLDER from '@assets/images/folder_btn.webp';
 import { cn } from '../../../lib/utils';
 
-const ArchiveButton = ({ onClick, className }) => {
+const ArchiveButton = ({ onClick, className = '' }) => {
   const layoutStyles =
     'flex-row-center justify-end w-148 h-52 relative overflow-hidden cursor-pointer';
   const spacingStyles = 'pt-10 pr-22 pb-10 pl-82';

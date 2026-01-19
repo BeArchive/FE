@@ -1,7 +1,7 @@
 import NOTE_BTN from '@assets/images/note_btn.webp';
 import { cn } from '../../../lib/utils';
 
-const BrainstormNoteButton = ({ isActive, onClick, className }) => {
+const BrainstormNoteButton = ({ isActive, onClick, className = '' }) => {
   // 스타일
   const layoutStyles =
     'flex-row-center w-70 h-70 shrink-0 overflow-hidden pt-15 pr-11 pb-15 pl-21 justify-end items-center active:scale-95';

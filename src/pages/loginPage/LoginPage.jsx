@@ -2,8 +2,12 @@ import ImageButton from '../../components/ImageButton';
 import Logo from '../../components/Logo';
 import GOOGLE from '@assets/images/google_login.webp';
 import KAKAO from '@assets/images/kakao_login.webp';
+import useNavigation from '../../hooks/useNavigation';
+import { AUTH_ENDPOINTS } from '../../constants/auth';
 
 const LoginPage = () => {
+  const { goTo } = useNavigation();
+
   return (
     <div className="relative flex-row-center w-full min-h-screen bg-primary-0 p-50">
       <div className="absolute top-50 left-50">
@@ -27,9 +31,19 @@ const LoginPage = () => {
         {/* SNS 로그인 버튼 */}
         <div className="flex-col-center gap-22">
           <p className="text-secondary-200 text-16 font-medium">SNS</p>
-          <div className="flex-row-center justify-between w-392 h-40">
-            <ImageButton src={GOOGLE} alt="구글로그인" className="w-165 h-40" />
-            <ImageButton src={KAKAO} alt="카카오로그인" className="w-165 h-40" />
+          <div className="flex items-center justify-between w-392 h-40">
+            <ImageButton
+              src={GOOGLE}
+              alt="구글로그인"
+              className="w-165 h-40"
+              onClick={() => goTo(AUTH_ENDPOINTS.GOOGLE)}
+            />
+            <ImageButton
+              src={KAKAO}
+              alt="카카오로그인"
+              className="w-165 h-40"
+              onClick={() => goTo(AUTH_ENDPOINTS.KAKAO)}
+            />
           </div>
         </div>
       </div>

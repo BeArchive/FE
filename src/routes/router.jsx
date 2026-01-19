@@ -5,6 +5,7 @@ import MainPage from '../pages/mainPage/MainPage';
 import ArchivePage from '../pages/archivePage/ArchivePage';
 import ArchiveFolderPage from '../pages/archiveFolderPage/ArchiveFolderPage';
 import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
+import SocialCallbackPage from '../pages/socialCallbackPage/SocialCallbackPage';
 import BrainstormPage from '../pages/brainstormPage/BrainstormPage';
 
 const router = createBrowserRouter([
@@ -30,10 +31,6 @@ const router = createBrowserRouter([
         element: <ArchiveFolderPage />,
       },
       {
-        path: 'login',
-        element: <LoginPage />,
-      },
-      {
         path: 'brainstorm',
         element: <BrainstormPage />, // 신규 채팅 시작
       },
@@ -46,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: 'login',
     element: <LoginPage />,
+  },
+  {
+    path: 'oauth/callback',
+    element: <SocialCallbackPage />,
   },
 ]);
 
