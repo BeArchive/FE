@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Logo from '../components/Logo';
-import AuthButton from './components/AuthButton';
-import ArchiveButton from './components/ArchiveButton';
-import BrainstormNote from './components/BrainstormNoteButton';
+import AuthButton from './components/buttons/AuthButton';
+import ArchiveButton from './components/buttons/ArchiveButton';
+import BrainstormNoteButton from './components/buttons/BrainstormNoteButton';
 import useNavigation from '../hooks/useNavigation';
+import BrainstormNote from './components/brainstormNote/BrainstormNote';
 import { ROUTES, STORAGE_KEYS } from '../constants/auth';
 
 const RootLayout = () => {
   const { goTo } = useNavigation();
+
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN));
+  const [isNoteOpen, setIsNoteOpen] = useState(false);
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
@@ -41,8 +44,9 @@ const RootLayout = () => {
       </div>
 
       {/* 브레인스토밍 노트 버튼 FAB */}
-      <div className="fixed z-50 right-50 bottom-50">
-        <BrainstormNote />
+      <div className="fixed z-50 right-50 bottom-50 flex flex-col items-end gap-17">
+        {isNoteOpen && <BrainstormNote onClose={() => setIsNoteOpen(false)} />}
+        <BrainstormNoteButton isActive={isNoteOpen} onClick={() => setIsNoteOpen(!isNoteOpen)} />
       </div>
     </div>
   );
