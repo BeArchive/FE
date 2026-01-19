@@ -6,7 +6,7 @@ export default function ChatDeleteModal({
   chat = null,
   onConfirm = () => {},
   onCancel = () => {},
-  className,
+  className = '',
 }) {
   if (!open || !chat) return null;
 

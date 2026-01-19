@@ -1,4 +1,4 @@
-import { cn } from '../../lib/utils';
+import { cn } from '../../../lib/utils';
 
 const AuthButton = ({ isLoggedIn, onClick, className }) => {
   const layoutStyles = 'flex-row-center w-127 py-10 px-12 gap-10 rounded-8 active:scale-95';
