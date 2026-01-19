@@ -2,11 +2,13 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Spinner from '../../components/spinner/Spinner';
 import useNavigation from '../../hooks/useNavigation';
-import { ROUTES, STORAGE_KEYS } from '../../constants/auth';
+import { ROUTES } from '../../constants/auth';
+import useAuthStore from '../../store/useAuthStore';
 
 const SocialCallbackPage = () => {
   const [searchParams] = useSearchParams();
   const { goTo } = useNavigation();
+  const { login } = useAuthStore();
 
   useEffect(() => {
     // URL에서 토큰 추출
@@ -14,16 +16,13 @@ const SocialCallbackPage = () => {
     const refreshToken = searchParams.get('refreshToken');
 
     if (accessToken && refreshToken) {
-      // LocalStorage에 토큰 저장
-      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
-
+      login(accessToken, refreshToken); // 로그인
       goTo(ROUTES.MAIN, { replace: true });
     } else {
       console.error('인증 토큰을 찾을 수 없습니다.');
       goTo(ROUTES.LOGIN, { replace: true });
     }
-  }, [searchParams, goTo]);
+  }, [searchParams, goTo, login]);
 
   return (
     <div className="relative flex items-center justify-center w-full min-h-screen bg-primary-0 p-50">

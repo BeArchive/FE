@@ -6,19 +6,18 @@ import ArchiveButton from './components/buttons/ArchiveButton';
 import BrainstormNoteButton from './components/buttons/BrainstormNoteButton';
 import useNavigation from '../hooks/useNavigation';
 import BrainstormNote from './components/brainstormNote/BrainstormNote';
-import { ROUTES, STORAGE_KEYS } from '../constants/auth';
+import useAuthStore from '../store/useAuthStore';
+import { ROUTES } from '../constants/auth';
 
 const RootLayout = () => {
   const { goTo } = useNavigation();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN));
+  const { isLoggedIn, logout } = useAuthStore();
   const [isNoteOpen, setIsNoteOpen] = useState(false);
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
-      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-      setIsLoggedIn(false);
+      logout();
       goTo(ROUTES.MAIN);
     } else {
       goTo(ROUTES.LOGIN);
