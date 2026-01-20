@@ -6,14 +6,16 @@ import NoteDetail from './NoteDetail';
 import NoteList from './NoteList';
 
 const BrainstormNote = ({ onClose }) => {
-  const { view, setView } = useNoteStore();
+  const { view, setView, fetchNotes } = useNoteStore();
 
   // 언마운트뷰될때 리스트로 초기화
   useEffect(() => {
+    fetchNotes();
+
     return () => {
       setView(VIEW_TYPE.LIST);
     };
-  }, [setView]);
+  }, [setView, fetchNotes]);
 
   const panelStyle = {
     boxShadow: '0px 0px 16px 0px rgba(217, 217, 217, 0.16)',

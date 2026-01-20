@@ -28,7 +28,6 @@ export const useAutoSave = (values, selectedNote, saveNote) => {
           title: title.trim() || '제목 없음',
           category: category.trim() || '미분류',
           memo: content,
-          updatedAt: new Date().toISOString(),
           id: selectedNote?.data?.id,
         });
       }

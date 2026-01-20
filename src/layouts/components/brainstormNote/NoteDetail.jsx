@@ -4,6 +4,7 @@ import { useNoteStore } from '../../../store/useNoteStore';
 import { useAutoSave } from '../../../hooks/useAutoSave';
 
 const NoteDetail = () => {
+  const LIMIT = 15; // 글자 수 제한
   const { selectedNote, saveNote } = useNoteStore();
 
   const [title, setTitle] = useState(selectedNote?.data?.title || '');
@@ -13,6 +14,18 @@ const NoteDetail = () => {
   // 자동 저장 로직
   useAutoSave({ title, category, content }, selectedNote, saveNote);
 
+  // 글자 수 제한 핸들러
+  const handleTitleChange = (e) => {
+    if (e.target.value.length <= LIMIT) {
+      setTitle(e.target.value);
+    }
+  };
+  const handleCategoryChange = (e) => {
+    if (e.target.value.length <= LIMIT) {
+      setCategory(e.target.value);
+    }
+  };
+
   return (
     <div className="flex-1 w-full flex flex-col gap-25 overflow-hidden">
       {/* 상단 정보 영역 */}
@@ -21,8 +34,8 @@ const NoteDetail = () => {
         <input
           type="text"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="제목을 입력하세요"
+          onChange={handleTitleChange}
+          placeholder="제목을 입력하세요 (15자 이내)"
           className="bg-transparent border-none outline-none text-18 font-semibold text-secondary-500 w-full"
         />
 
@@ -45,8 +58,8 @@ const NoteDetail = () => {
             <input
               type="text"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="카테고리"
+              onChange={handleCategoryChange}
+              placeholder="카테고리 (15자 이내)"
               className="bg-transparent border-none outline-none text-16 font-medium text-secondary-500 w-full"
             />
           </div>

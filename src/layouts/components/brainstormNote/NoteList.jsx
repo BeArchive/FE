@@ -4,6 +4,7 @@ import NoteItem from './NoteItem';
 import { getFormattedDate } from '../../../utils/date';
 import { useState } from 'react';
 import ChatDeleteModal from '../../../components/modal/ChatDeleteModal';
+import * as noteApi from '../../../apis/noteApi';
 
 const NoteList = () => {
   const { notes, deleteNote, setSelectedNote, setView, resetSelectedNote } = useNoteStore();
@@ -18,9 +19,17 @@ const NoteList = () => {
   };
 
   // 노트 선택 핸들러
-  const handleSelectClick = (note) => {
-    setSelectedNote(note);
-    setView(VIEW_TYPE.DETAIL);
+  const handleSelectClick = async (note) => {
+    try {
+      const response = await noteApi.getNoteDetail(note.data.id);
+
+      if (response.isSuccess) {
+        setSelectedNote({ data: response.data });
+        setView(VIEW_TYPE.DETAIL);
+      }
+    } catch (error) {
+      console.error('상세 정보 로드 실패', error);
+    }
   };
 
   // 노트 삭제 핸들러
