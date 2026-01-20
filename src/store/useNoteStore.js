@@ -41,15 +41,31 @@ export const useNoteStore = create((set, get) => ({
     }),
 
   // 초기 데이터 로드
-  fetchNotes: async () => {
+  fetchNotes: async (cursor = null) => {
+    const { isLoading, notes } = get();
+
+    if (isLoading) return;
+
+    set({ isLoading: true });
     try {
-      const response = await noteApi.getNoteList({ limit: 10 });
+      const response = await noteApi.getNoteList({
+        cursor: cursor,
+        limit: 10,
+      });
+
       if (response.isSuccess) {
-        const formattedNotes = response.data.notes.map((n) => ({ data: n }));
-        set({ notes: formattedNotes });
+        const newNotes = response.data.notes.map((n) => ({ data: n }));
+
+        set({
+          notes: cursor ? [...notes, ...newNotes] : newNotes,
+          nextCursor: response.data.nextCursor,
+          hasNext: response.data.hasNext,
+        });
       }
     } catch (error) {
       console.error('노트 목록 로드 실패:', error);
+    } finally {
+      set({ isLoading: false });
     }
   },
 

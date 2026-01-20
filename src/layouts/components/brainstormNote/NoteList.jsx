@@ -1,16 +1,32 @@
+import { useState } from 'react';
 import { AddIcon } from '../../../components/iconButton/Icons';
 import { useNoteStore, VIEW_TYPE } from '../../../store/useNoteStore';
 import NoteItem from './NoteItem';
 import { getFormattedDate } from '../../../utils/date';
-import { useState } from 'react';
 import ChatDeleteModal from '../../../components/modal/ChatDeleteModal';
 import * as noteApi from '../../../apis/noteApi';
+import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
 const NoteList = () => {
-  const { notes, deleteNote, setSelectedNote, setView, resetSelectedNote } = useNoteStore();
+  const {
+    notes,
+    fetchNotes,
+    hasNext,
+    nextCursor,
+    deleteNote,
+    setSelectedNote,
+    setView,
+    resetSelectedNote,
+  } = useNoteStore();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetNote, setTargetNote] = useState(null);
+
+  // 무한 스크롤 훅 연결
+  const bottomRef = useInfiniteScroll({
+    hasNextPage: hasNext,
+    fetchNextPage: () => fetchNotes(nextCursor),
+  });
 
   // 추가하기 버튼 핸들러
   const handleAddClick = () => {
@@ -59,6 +75,9 @@ const NoteList = () => {
             onClick={() => handleSelectClick(note)}
           />
         ))}
+
+        {/* 무한 스크롤 감지 박스 */}
+        <div ref={bottomRef} className="h-20 w-full shrink-0" />
       </section>
 
       {/* 추가하기 버튼 */}
