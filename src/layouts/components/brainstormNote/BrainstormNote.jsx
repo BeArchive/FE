@@ -4,18 +4,18 @@ import { CancelIcon, PrevIcon } from '../../../components/iconButton/Icons';
 import { useNoteStore, VIEW_TYPE } from '../../../store/useNoteStore';
 import NoteDetail from './NoteDetail';
 import NoteList from './NoteList';
+import { useMutation } from './hooks/useMutation';
 
 const BrainstormNote = ({ onClose }) => {
-  const { view, setView, fetchNotes, saveNote } = useNoteStore();
+  const { view, setView } = useNoteStore();
+  const { mutateSave } = useMutation();
 
-  // 언마운트뷰될때 리스트로 초기화
+  // 컴포넌트 언마운트 시 뷰 상태를 리스트로 초기화
   useEffect(() => {
-    fetchNotes();
-
     return () => {
       setView(VIEW_TYPE.LIST);
     };
-  }, [setView, fetchNotes]);
+  }, [setView]);
 
   const panelStyle = {
     boxShadow: '0px 0px 16px 0px rgba(217, 217, 217, 0.16)',
@@ -33,7 +33,7 @@ const BrainstormNote = ({ onClose }) => {
         {view === VIEW_TYPE.LIST ? (
           <IconButton Icon={CancelIcon} theme="note" onClick={onClose} />
         ) : (
-          <IconButton Icon={PrevIcon} theme="note" onClick={saveNote} />
+          <IconButton Icon={PrevIcon} theme="note" onClick={() => mutateSave()} />
         )}
       </section>
 
