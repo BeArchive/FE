@@ -1,7 +1,6 @@
 import React from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import noteImage from '../../../assets/images/note_btn.webp';
-import { cn } from '../../../lib/utils';
 
 export default function ChatListItem({
   chat,
