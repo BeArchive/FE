@@ -11,15 +11,34 @@ export const useNoteStore = create((set, get) => ({
   notes: [], // 전체 노트
   view: VIEW_TYPE.LIST, // 현재 화면
   selectedNote: null, // 상세 페이지에서 보여줄 선택된 노트 데이터
+  tempNote: { title: '', category: '', content: '' }, // 입력 중인 임시 데이터
 
   // 화면 전환
   setView: (view) => set({ view }),
 
   // 상세 페이지에서 보여줄 노트 데이터 설정
-  setSelectedNote: (note) => set({ selectedNote: note }),
+  setSelectedNote: (note) =>
+    set({
+      selectedNote: note,
+      tempNote: {
+        title: note?.data?.title || '',
+        category: note?.data?.category || '',
+        content: note?.data?.memo || '',
+      },
+    }),
+
+  // 임시 데이터 업데이트
+  setTempNote: (field, value) =>
+    set((state) => ({
+      tempNote: { ...state.tempNote, [field]: value },
+    })),
 
   // 초기화
-  resetSelectedNote: () => set({ selectedNote: null }),
+  resetSelectedNote: () =>
+    set({
+      selectedNote: null,
+      tempNote: { title: '', category: '', content: '' },
+    }),
 
   // 초기 데이터 로드
   fetchNotes: async () => {
@@ -49,34 +68,46 @@ export const useNoteStore = create((set, get) => ({
   },
 
   // 노트 저장/수정
-  saveNote: async (saveData) => {
-    const currentId = saveData.id;
+  saveNote: async () => {
+    const { tempNote, selectedNote, fetchNotes } = get();
+    const currentId = selectedNote?.data?.id;
+
+    // 변경사항 및 내용 유무 체크
+    const hasContent = tempNote.title.trim() || tempNote.category.trim() || tempNote.content.trim();
+    if (!hasContent) {
+      set({ view: VIEW_TYPE.LIST, selectedNote: null });
+      return;
+    }
 
     try {
       let response;
       if (currentId) {
         // 수정 모드 (PATCH)
         response = await noteApi.updateNote(currentId, {
-          title: saveData.title,
-          category: saveData.category,
-          memo: saveData.memo,
+          title: tempNote.title.trim() || '제목 없음',
+          category: tempNote.category.trim() || '미분류',
+          memo: tempNote.content,
         });
       } else {
         // 생성 모드 (POST)
         response = await noteApi.createNote({
-          title: saveData.title,
-          category: saveData.category,
-          memo: saveData.memo,
+          title: tempNote.title.trim() || '제목 없음',
+          category: tempNote.category.trim() || '미분류',
+          memo: tempNote.content,
         });
       }
 
       if (response.isSuccess) {
-        // 저장 성공 후 목록 최신화
-        await get().fetchNotes();
-        set({ selectedNote: null });
+        // 저장 성공 후 목록 최신화 및 리스트로 이동
+        await fetchNotes();
+        set({ selectedNote: null, view: VIEW_TYPE.LIST });
       }
     } catch (error) {
-      console.error('노트 저장 실패:', error);
+      if (error.response?.status === 409) {
+        alert('이미 존재하는 제목입니다.');
+      } else {
+        console.error('노트 저장 실패:', error);
+      }
     }
   },
 }));

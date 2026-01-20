@@ -6,7 +6,7 @@ import NoteDetail from './NoteDetail';
 import NoteList from './NoteList';
 
 const BrainstormNote = ({ onClose }) => {
-  const { view, setView, fetchNotes } = useNoteStore();
+  const { view, setView, fetchNotes, saveNote } = useNoteStore();
 
   // 언마운트뷰될때 리스트로 초기화
   useEffect(() => {
@@ -33,7 +33,7 @@ const BrainstormNote = ({ onClose }) => {
         {view === VIEW_TYPE.LIST ? (
           <IconButton Icon={CancelIcon} theme="note" onClick={onClose} />
         ) : (
-          <IconButton Icon={PrevIcon} theme="note" onClick={() => setView(VIEW_TYPE.LIST)} />
+          <IconButton Icon={PrevIcon} theme="note" onClick={saveNote} />
         )}
       </section>
 
