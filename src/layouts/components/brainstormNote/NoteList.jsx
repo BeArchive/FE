@@ -1,15 +1,26 @@
+import { useState } from 'react';
 import { AddIcon } from '../../../components/iconButton/Icons';
 import { useNoteStore, VIEW_TYPE } from '../../../store/useNoteStore';
 import NoteItem from './NoteItem';
 import { getFormattedDate } from '../../../utils/date';
-import { useState } from 'react';
 import ChatDeleteModal from '../../../components/modal/ChatDeleteModal';
+import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
+import { useNoteQuery } from './hooks/useNoteQuery';
+import { useMutation } from './hooks/useMutation';
 
 const NoteList = () => {
-  const { notes, deleteNote, setSelectedNote, setView, resetSelectedNote } = useNoteStore();
+  const { setView, setSelectedNote, resetSelectedNote } = useNoteStore();
+  const { notes, getNextPage, hasNext } = useNoteQuery();
+  const { mutateDelete } = useMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetNote, setTargetNote] = useState(null);
+
+  // 무한 스크롤 훅 연결
+  const bottomRef = useInfiniteScroll({
+    hasNextPage: hasNext,
+    fetchNextPage: getNextPage,
+  });
 
   // 추가하기 버튼 핸들러
   const handleAddClick = () => {
@@ -19,19 +30,14 @@ const NoteList = () => {
 
   // 노트 선택 핸들러
   const handleSelectClick = (note) => {
-    setSelectedNote(note);
+    setSelectedNote({ data: note });
     setView(VIEW_TYPE.DETAIL);
   };
 
-  // 노트 삭제 핸들러
-  const handleDeleteClick = (note) => {
-    setTargetNote(note);
-    setIsModalOpen(true);
-  };
-
+  // 삭제 확인 핸들러
   const handleConfirmDelete = () => {
     if (targetNote) {
-      deleteNote(targetNote.data.id);
+      mutateDelete(targetNote.id);
       setIsModalOpen(false);
       setTargetNote(null);
     }
@@ -39,20 +45,24 @@ const NoteList = () => {
 
   return (
     <>
-      {/* 리스트 영역 */}
       <section className="flex-1 w-full overflow-y-auto flex flex-col items-center gap-10 pb-40 custom-scrollbar">
         {notes.map((note) => (
           <NoteItem
-            key={note.data.id}
-            title={note.data.title}
-            date={getFormattedDate(note.data.updatedAt)}
-            onDelete={() => handleDeleteClick(note)}
+            key={note.id}
+            title={note.title}
+            date={getFormattedDate(note.updatedAt)}
+            onDelete={() => {
+              setTargetNote(note);
+              setIsModalOpen(true);
+            }}
             onClick={() => handleSelectClick(note)}
           />
         ))}
+
+        {/* 무한 스크롤 감지 박스 */}
+        <div ref={bottomRef} className="h-20 w-full shrink-0" />
       </section>
 
-      {/* 추가하기 버튼 */}
       <button
         onClick={handleAddClick}
         className="btn-confirm-yes absolute bottom-25 right-18 z-10 w-117 h-35 rounded-100 bg-primary-50 text-primary-400 flex-row-center gap-5 active:scale-95"
@@ -61,15 +71,11 @@ const NoteList = () => {
         <span className="text-16 font-medium">추가하기</span>
       </button>
 
-      {/* 삭제 모달 */}
       <ChatDeleteModal
         open={isModalOpen}
         chat={
           targetNote
-            ? {
-                name: targetNote.data.title,
-                date: getFormattedDate(targetNote.data.updatedAt),
-              }
+            ? { name: targetNote.title, date: getFormattedDate(targetNote.updatedAt) }
             : null
         }
         onConfirm={handleConfirmDelete}
