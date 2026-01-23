@@ -3,6 +3,7 @@ import { cn } from '../lib/utils';
 import { LinkIcon, SendIcon } from './iconButton/Icons';
 import IconButton from './iconButton/IconButton';
 import FilePreview from './FilePreview';
+import { validateFiles, formatFileSelection, revokeFiles } from '../utils/file';
 
 const MainInput = ({ onSend }) => {
   const [text, setText] = useState('');
@@ -14,6 +15,10 @@ const MainInput = ({ onSend }) => {
   const LINE_HEIGHT = 36;
   const MAX_HEIGHT = LINE_HEIGHT * 2; // 2줄까지 늘어남
 
+  useEffect(() => {
+    return () => revokeFiles(files);
+  }, []);
+
   // 메세지 전송 핸들러
   const handleSend = async () => {
     if (!text.trim()) return;
@@ -21,6 +26,7 @@ const MainInput = ({ onSend }) => {
     if (onSend) {
       await onSend(text, files);
 
+      revokeFiles(files);
       setText('');
       setFiles([]);
     }
@@ -38,33 +44,17 @@ const MainInput = ({ onSend }) => {
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
 
-    // 허용할 확장자 목록
-    const ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'pdf'];
+    // 검증
+    const { isValid, msg } = validateFiles(selectedFiles, files.length);
 
-    // 확장자 검증
-    const isAllAllowed = selectedFiles.every((file) => {
-      const extension = file.name.split('.').pop().toLowerCase();
-      return ALLOWED_EXTENSIONS.includes(extension);
-    });
-
-    if (!isAllAllowed) {
-      alert('png, jpg, jpeg, pdf 파일만 첨부할 수 있습니다.');
+    if (!isValid) {
+      alert(msg);
       e.target.value = '';
       return;
     }
 
-    // 개수 제한 체크
-    if (files.length + selectedFiles.length > 5) {
-      alert('파일은 최대 5개까지 첨부할 수 있습니다.');
-      return;
-    }
-
-    const newFiles = selectedFiles.map((file) => ({
-      id: Date.now() + Math.random(),
-      file,
-      preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
-      name: file.name,
-    }));
+    // 데이터 포맷팅
+    const newFiles = formatFileSelection(selectedFiles);
 
     setFiles((prev) => [...prev, ...newFiles]);
     e.target.value = '';
