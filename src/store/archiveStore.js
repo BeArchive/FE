@@ -1,11 +1,6 @@
 import { create } from 'zustand';
 
-const initialFolders = [
-  { id: 1, name: '폴더명1' },
-  { id: 2, name: '폴더명2' },
-  { id: 3, name: '폴더명3' },
-  { id: 4, name: '안녕하세요' },
-];
+const initialFolders = [];
 
 const getNextFolderNumber = (folderNames) => {
   let count = 0;
@@ -25,7 +20,7 @@ export const useArchiveStore = create((set, get) => ({
   activeFolderId: null,
   hoveredFolderId: null,
   editingFolderId: null,
-  selectedFolderId: null, // 아카이브 보드에서 선택된 폴더 ID
+  // isLoading: false, // 필요 시 로딩 상태 관리용
 
   // 모달 상태
   modal: {
@@ -39,17 +34,9 @@ export const useArchiveStore = create((set, get) => ({
   setActiveFolderId: (id) => set({ activeFolderId: id }),
   setHoveredFolderId: (id) => set({ hoveredFolderId: id }),
   setEditingFolderId: (id) => set({ editingFolderId: id }),
-  setSelectedFolderId: (id) => set({ selectedFolderId: id }),
+  // setIsLoading: (isLoading) => set({ isLoading }), // 필요 시 로딩 상태 관리용
 
   // 폴더 액션
-  addFolder: (name) => {
-    const state = get();
-    const newId = Math.max(...state.folders.map((f) => f.id), 0) + 1;
-    set({
-      folders: [...state.folders, { id: newId, name }],
-    });
-  },
-
   deleteFolder: (folderId) => {
     const state = get();
     set({
@@ -57,10 +44,10 @@ export const useArchiveStore = create((set, get) => ({
     });
   },
 
-  updateFolderName: (oldName, newName) => {
+  updateFolderName: (folderId, newName) => {
     const state = get();
     set({
-      folders: state.folders.map((f) => (f.name === oldName ? { ...f, name: newName } : f)),
+      folders: state.folders.map((f) => (f.id === folderId ? { ...f, name: newName } : f)),
     });
   },
 

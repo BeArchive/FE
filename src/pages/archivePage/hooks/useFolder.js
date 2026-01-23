@@ -15,7 +15,6 @@ export const useFolder = () =>
       getFolderStyle: state.getFolderStyle,
       deleteFolder: state.deleteFolder,
       isDuplicateName: state.isDuplicateName,
-      addFolder: state.addFolder,
       getNewFolderName: state.getNewFolderName,
       updateFolderName: state.updateFolderName,
     })),

@@ -5,6 +5,8 @@ import { LuCirclePlus } from 'react-icons/lu';
 import { FaRegCircleCheck, FaRegCircleXmark } from 'react-icons/fa6';
 import editIcon from '../../../assets/icons/edit_icon.svg';
 import { useArchiveStore } from '../../../store/archiveStore';
+import { useFoldersQuery } from '../hooks/useFoldersQuery';
+import { createFolder, updateFolderName as updateFolderNameApi } from '../../../apis/folderApi';
 
 export default function Sidebar() {
   const {
@@ -20,6 +22,8 @@ export default function Sidebar() {
     getNewFolderName,
     updateFolderName,
   } = useArchiveStore();
+
+  useFoldersQuery(); // 폴더 데이터 조회
 
   const { goTo } = useNavigation();
   const [editingFolderName, setEditingFolderName] = useState('');
@@ -37,14 +41,23 @@ export default function Sidebar() {
   };
 
   // 폴더 추가 핸들러
-  const handleAddFolder = () => {
+  const handleAddFolder = async () => {
     const newName = getNewFolderName();
-    const newId = Date.now(); // 임시 ID 생성
-    const newFolder = { id: newId, name: newName };
-    const next = [...folders, newFolder];
-    setFolders(next);
-    setEditingFolderId(newId);
-    setEditingFolderName(newName);
+
+    try {
+      const folderData = await createFolder(newName);
+      const newFolder = {
+        id: folderData.folderId,
+        name: folderData.folderName,
+        folderOrder: folderData.folderOrder,
+      };
+      const next = [...folders, newFolder];
+      setFolders(next);
+      setEditingFolderId(newFolder.id);
+      setEditingFolderName(newFolder.name);
+    } catch (error) {
+      console.error('폴더 생성 실패:', error);
+    }
   };
 
   const handleFolderSelect = (folderId) => {
@@ -58,12 +71,14 @@ export default function Sidebar() {
     setEditingFolderName(folder.name);
   };
 
-  const commitRename = (folderId, newName) => {
-    const oldFolder = folders.find((f) => f.id === folderId);
-    if (oldFolder) {
-      updateFolderName(oldFolder.name, newName);
+  const commitRename = async (folderId, newName) => {
+    try {
+      await updateFolderNameApi(folderId, newName);
+      updateFolderName(folderId, newName);
       setEditingFolderId(null);
       setEditingFolderName('');
+    } catch (error) {
+      console.error('폴더명 수정 실패:', error);
     }
   };
 

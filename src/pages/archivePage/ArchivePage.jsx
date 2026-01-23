@@ -4,11 +4,25 @@ import FolderCard from './components/FolderCard';
 import ConfirmModal from '../../components/modal/ConfirmModal';
 import archiveIcon from '../../assets/images/archive_empty_logo.svg';
 import { useArchiveStore } from '../../store/archiveStore';
+import { useFoldersQuery } from './hooks/useFoldersQuery';
+import { deleteFolder as deleteFolderApi } from '../../apis/folderApi';
 
 const ArchivePage = () => {
   const { folders, modal, deleteFolder, closeModal } = useArchiveStore();
+  useFoldersQuery();
 
   const { isOpen, variant, data } = modal;
+
+  const handleDeleteFolder = async (folderId) => {
+    try {
+      await deleteFolderApi(folderId);
+      deleteFolder(folderId);
+      closeModal();
+    } catch (error) {
+      console.error('폴더 삭제 실패:', error);
+      closeModal();
+    }
+  };
 
   return (
     <div className="w-full h-full bg-primary-0 flex">
@@ -79,9 +93,10 @@ const ArchivePage = () => {
           onCancel={() => closeModal()}
           onConfirm={() => {
             if (variant === 'delete') {
-              deleteFolder(data);
+              handleDeleteFolder(data);
+            } else {
+              closeModal();
             }
-            closeModal();
           }}
         />
       </div>
