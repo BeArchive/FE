@@ -1,6 +1,6 @@
 import BOT from '@assets/images/bot.svg';
 
-const ChatBubble = ({ type, content, children, className }) => {
+const ChatBubble = ({ type, content, files = [], children, className }) => {
   const isUser = type === 'user';
 
   // 말풍선 배치: AI(왼)/ User(오)
@@ -13,7 +13,33 @@ const ChatBubble = ({ type, content, children, className }) => {
       <div className={`flex ${isUser ? '' : 'flex-row'} max-w-820`}>
         {/* AI 봇 아이콘 */}
         {!isUser && <img src={BOT} alt="bot" className="w-120 h-120 shrink-0 self-start" />}
-        <div className="flex flex-col items-center max-w-700">
+
+        <div className={`flex flex-col ${isUser ? 'items-end' : 'items-center'} max-w-700`}>
+          {/* 첨부한 파일 목록 */}
+          {isUser && files.length > 0 && (
+            <div className="flex gap-20 mb-20 flex-wrap justify-end">
+              {files.map((fileObj, idx) => (
+                <div
+                  key={idx}
+                  className="w-120 h-120 rounded-6 overflow-hidden shadow-sub shrink-0"
+                >
+                  {fileObj.preview ? (
+                    <img
+                      src={fileObj.preview}
+                      alt="upload-preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex-row-center text-12 text-gray-500">
+                      PDF
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 말풍선 본체 */}
           <div
             className={`shadow-sub rounded-20 px-50 py-29 bg-white text-18 font-medium ${textColorClass}`}
           >

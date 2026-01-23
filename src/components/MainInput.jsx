@@ -4,7 +4,7 @@ import { LinkIcon, SendIcon } from './iconButton/Icons';
 import IconButton from './iconButton/IconButton';
 import FilePreview from './FilePreview';
 
-const MainInput = () => {
+const MainInput = ({ onSend }) => {
   const [text, setText] = useState('');
   const [isMultiLine, setIsMultiLine] = useState(false); // 높이 상태
   const [files, setFiles] = useState([]); // 첨부 파일
@@ -13,6 +13,26 @@ const MainInput = () => {
   const fileInputRef = useRef(null);
   const LINE_HEIGHT = 36;
   const MAX_HEIGHT = LINE_HEIGHT * 2; // 2줄까지 늘어남
+
+  // 메세지 전송 핸들러
+  const handleSend = async () => {
+    if (!text.trim()) return;
+
+    if (onSend) {
+      await onSend(text, files);
+
+      setText('');
+      setFiles([]);
+    }
+  };
+
+  // 엔터 키 핸들러
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   // 파일 선택 핸들러
   const handleFileChange = (e) => {
@@ -88,6 +108,7 @@ const MainInput = () => {
           rows={1}
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="새로운 30초 광고 영상을 기획하고 싶은데?"
           className={cn(
             'flex-1 bg-transparent outline-none resize-none font-medium text-secondary-500 placeholder:text-gray-400',
@@ -107,7 +128,7 @@ const MainInput = () => {
             accept=".png,.jpg,.jpeg,.pdf"
           />
           <IconButton Icon={LinkIcon} theme="basic" onClick={() => fileInputRef.current?.click()} />
-          <IconButton Icon={SendIcon} theme="basic" />
+          <IconButton Icon={SendIcon} theme="basic" onClick={handleSend} />
         </div>
       </div>
     </div>

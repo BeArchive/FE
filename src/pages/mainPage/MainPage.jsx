@@ -2,6 +2,7 @@ import MainInput from '../../components/MainInput';
 import FEAT1 from '@assets/images/feature_1.webp';
 import FEAT2 from '@assets/images/feature_2.webp';
 import FeatureCard from './components/FeatureCard';
+import useNavigation from '../../hooks/useNavigation';
 
 const features = [
   {
@@ -19,12 +20,24 @@ const features = [
 ];
 
 const MainPage = () => {
+  const { goTo } = useNavigation();
+
+  // 전송 핸들러
+  const handleMainSend = (text, files) => {
+    goTo('/brainstorm', {
+      state: {
+        initialPrompt: text,
+        initialFiles: files,
+      },
+    });
+  };
+
   return (
     <div className="w-full min-h-screen flex-col-center gap-50 bg-primary-0">
       <p className="text-42 font-bold text-secondary-500 text-center mb-14 whitespace-pre-line">{`브레인스토밍 주제를 입력하고,\n작은 아이디어를 확장시켜요.`}</p>
 
       {/* 입력창 */}
-      <MainInput />
+      <MainInput onSend={handleMainSend} />
 
       {/* 사용 가이드 */}
       <div className="peer flex-row-center rounded-8 w-178 h-44 bg-primary-400 text-white text-20 font-medium px-12 py-10 hover:bg-primary-200 duration-150 cursor-default">
