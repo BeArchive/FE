@@ -34,7 +34,7 @@ const BrainstormPage = () => {
       {/* 입력창 (하단 고정) */}
       <div className="fixed bottom-38 left-0 right-0 flex justify-center z-50 pointer-events-none">
         <div className="pointer-events-auto">
-          <MainInput isChat={true} />
+          <MainInput />
         </div>
       </div>
     </div>
