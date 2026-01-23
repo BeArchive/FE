@@ -11,15 +11,17 @@ const THEMES = {
 };
 
 const IconButton = ({ Icon, onClick, theme = 'basic', className = '' }) => {
+  const hasSize = className.includes('w-') || className.includes('h-');
+
   return (
     <button
       onClick={onClick}
       className={`
-        w-35 h-35 shrink-0 flex-row-center rounded-100 transition-all outline-none border-none active:scale-95 
+        ${hasSize ? '' : 'w-35 h-35'} shrink-0 flex-row-center rounded-100 transition-all outline-none border-none active:scale-95 
         ${THEMES[theme].button} ${className}
       `}
     >
-      {Icon && <Icon className={`w-23 h-23 ${THEMES[theme].icon} transition-colors`} />}
+      {Icon && <Icon className={`w-[65%] h-[65%] ${THEMES[theme].icon} transition-colors`} />}
     </button>
   );
 };
