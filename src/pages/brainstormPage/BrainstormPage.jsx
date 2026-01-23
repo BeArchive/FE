@@ -1,77 +1,36 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import MainInput from '../../components/MainInput';
 import ChatBubble from './components/ChatBubble';
 import useThinkingDots from './hooks/useThinkingDots';
-import { createChatRoom } from '../../apis/chatApi';
+import { useChat } from '../../hooks/useChat';
+import { useScrollToBottom } from './hooks/useScrollToBottom';
 
 const BrainstormPage = () => {
   const location = useLocation();
   const { initialPrompt, initialFiles } = location.state || {};
 
-  // 대화 내역 상태 관리
-  const [messages, setMessages] = useState([]);
-  const [isThinking, setIsThinking] = useState(false);
+  const { messages, isThinking, startNewChat, sendNextMessage } = useChat();
   const dots = useThinkingDots(isThinking);
 
-  const isFirstRender = useRef(true); // 초기 API 호출 중복 방지용 플래그
+  // 자동 스크롤 훅 적용
+  const scrollRef = useScrollToBottom(messages);
+  const isFirstRender = useRef(true);
 
   // 초기 데이터 세팅 및 API 호출
   useEffect(() => {
     if (initialPrompt && isFirstRender.current) {
       isFirstRender.current = false;
-
-      setMessages([
-        {
-          type: 'user',
-          content: initialPrompt,
-          files: initialFiles || [],
-        },
-      ]);
-      setIsThinking(true);
-
-      // 채팅방 생성 API 호출
-      const initChat = async () => {
-        try {
-          const response = await createChatRoom(initialPrompt, initialFiles);
-
-          setMessages((prev) => [
-            ...prev,
-            {
-              type: 'ai',
-              content: response.data.firstMessage.answer,
-            },
-          ]);
-        } catch (error) {
-          console.error('초기 대화 생성 실패:', error);
-        } finally {
-          setIsThinking(false);
-        }
-      };
-
-      initChat();
+      startNewChat(initialPrompt, initialFiles);
     }
-  }, [initialPrompt, initialFiles]);
-
-  // 대화 전송 핸들러
-  const handleChatSend = async (text, files) => {
-    const userMsg = { type: 'user', content: text, files: files || [] };
-    setMessages((prev) => [...prev, userMsg]);
-
-    setIsThinking(true);
-
-    try {
-      // 대화 이어가기 API 호출 예정
-    } catch (error) {
-      console.error('대화 전송 실패:', error);
-    } finally {
-      setIsThinking(false);
-    }
-  };
+  }, []);
 
   return (
     <div className="relative flex flex-col w-full h-full bg-primary-0">
-      <div className="flex-1 flex flex-col gap-50 overflow-y-auto px-85 pt-50 pb-200 custom-scrollbar">
+      <div
+        ref={scrollRef}
+        className="flex-1 flex flex-col gap-50 overflow-y-auto px-85 pt-50 pb-200 custom-scrollbar"
+      >
         {messages.map((msg, index) => (
           <ChatBubble key={index} type={msg.type} content={msg.content} files={msg.files} />
         ))}
@@ -83,7 +42,7 @@ const BrainstormPage = () => {
       {/* 입력창 (하단 고정) */}
       <div className="fixed bottom-38 left-0 right-0 flex justify-center z-50 pointer-events-none">
         <div className="pointer-events-auto">
-          <MainInput onSend={handleChatSend} />
+          <MainInput onSend={sendNextMessage} />
         </div>
       </div>
     </div>
