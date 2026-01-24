@@ -5,11 +5,16 @@ import ConfirmModal from '../../components/modal/ConfirmModal';
 import archiveIcon from '../../assets/images/archive_empty_logo.svg';
 import { useArchiveStore } from '../../store/archiveStore';
 import { useFoldersQuery } from './hooks/useFoldersQuery';
+import { useFolderDnd } from './hooks/useFolderDnd';
 import { deleteFolder as deleteFolderApi } from '../../apis/folderApi';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
+import SortableFolderItem from './components/SortableFolderItem';
 
 const ArchivePage = () => {
   const { folders, modal, deleteFolder, closeModal } = useArchiveStore();
   useFoldersQuery();
+  const { handleDragEnd } = useFolderDnd();
 
   const { isOpen, variant, data } = modal;
 
@@ -47,9 +52,15 @@ const ArchivePage = () => {
             )}
           >
             {folders.length > 0 ? (
-              folders.map((folder) => (
-                <FolderCard key={folder.id} folderId={folder.id} folderName={folder.name} />
-              ))
+              <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={folders.map((f) => f.id)} strategy={rectSortingStrategy}>
+                  {folders.map((folder) => (
+                    <SortableFolderItem key={folder.id} id={folder.id}>
+                      <FolderCard folderId={folder.id} folderName={folder.name} />
+                    </SortableFolderItem>
+                  ))}
+                </SortableContext>
+              </DndContext>
             ) : (
               <div className="col-span-4 flex flex-col gap-17 items-center justify-center">
                 {/* 빈 상태 아카이브 */}
