@@ -57,7 +57,11 @@ const ArchivePage = () => {
                 <SortableContext items={folders.map((f) => f.id)} strategy={rectSortingStrategy}>
                   {folders.map((folder) => (
                     <SortableFolderItem key={folder.id} id={folder.id}>
-                      <FolderCard folderId={folder.id} folderName={folder.name} />
+                      {(listeners) => (
+                        <div {...listeners}>
+                          <FolderCard folderId={folder.id} folderName={folder.name} />
+                        </div>
+                      )}
                     </SortableFolderItem>
                   ))}
                 </SortableContext>
