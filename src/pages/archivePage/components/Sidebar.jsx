@@ -5,7 +5,6 @@ import { LuCirclePlus } from 'react-icons/lu';
 import { FaRegCircleCheck, FaRegCircleXmark } from 'react-icons/fa6';
 import editIcon from '../../../assets/icons/edit_icon.svg';
 import { useArchiveStore } from '../../../store/archiveStore';
-import { useFoldersQuery } from '../hooks/useFoldersQuery';
 import { useFolderDnd } from '../hooks/useFolderDnd';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -26,8 +25,6 @@ export default function Sidebar() {
     getNewFolderName,
     updateFolderName,
   } = useArchiveStore();
-
-  useFoldersQuery(); // 폴더 데이터 조회
 
   const { goTo } = useNavigation();
   const [editingFolderName, setEditingFolderName] = useState('');

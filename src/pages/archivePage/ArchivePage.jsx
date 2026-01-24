@@ -13,11 +13,12 @@ import SortableFolderItem from './components/SortableFolderItem';
 
 const ArchivePage = () => {
   const { folders, modal, deleteFolder, closeModal } = useArchiveStore();
-  useFoldersQuery();
-  const { handleDragEnd } = useFolderDnd();
-
   const { isOpen, variant, data } = modal;
 
+  useFoldersQuery(); // 폴더 조회
+  const { handleDragEnd } = useFolderDnd();
+
+  // 폴더 삭제 처리
   const handleDeleteFolder = async (folderId) => {
     try {
       await deleteFolderApi(folderId);
