@@ -35,7 +35,16 @@ const BrainstormPage = () => {
   const handleSendMessage = (text, files) => {
     // '/돌아가기'를 입력했을 경우
     if (text.trim() === CHAT_COMMANDS.RESET_MODE) {
-      handleCancel();
+      setSelectedModeId(null);
+      setModeStep(CHAT_STEPS.SELECT);
+
+      // 명령어로 돌아갈 때만 새로운 모드 선택 메시지 추가
+      addMessage(
+        'ai',
+        '어떤 방식으로 브레인스토밍을 다시 시작해볼까요?',
+        [],
+        CHAT_ACTION_TYPES.MODE_SELECT,
+      );
       return;
     }
 
@@ -64,19 +73,12 @@ const BrainstormPage = () => {
   const handleCancel = () => {
     setSelectedModeId(null);
     setModeStep(CHAT_STEPS.SELECT);
-
-    addMessage(
-      'ai',
-      '어떤 방식으로 브레인스토밍을 다시 시작해볼까요?',
-      [],
-      CHAT_ACTION_TYPES.MODE_SELECT,
-    );
   };
 
   // 가이드 노출 조건
   const lastMessage = messages[messages.length - 1];
   const isGeneralChatting =
-    messages.length > 0 && lastMessage?.actionType !== CHAT_ACTION_TYPES.MODE_SELECT;
+    messages.length > 0 && lastMessage?.actionType !== CHAT_ACTION_TYPES.MODE_SELECT && !isThinking;
 
   return (
     <div className="relative flex flex-col w-full h-full bg-primary-0">
@@ -86,7 +88,14 @@ const BrainstormPage = () => {
       >
         {messages.map((msg, index) => {
           if (msg.type === 'ai' && msg.actionType === CHAT_ACTION_TYPES.MODE_SELECT) {
-            console.log('현재 모드 단계:', modeStep);
+            const isLastAction =
+              index ===
+              messages.findLastIndex((m) => m.actionType === CHAT_ACTION_TYPES.MODE_SELECT);
+
+            if (!isLastAction) {
+              return <ChatBubble key={index} type="ai" content={msg.content} />;
+            }
+
             return (
               <div key={index} className="flex flex-col gap-50">
                 {/* 단계별 UI 분기 */}
@@ -114,7 +123,7 @@ const BrainstormPage = () => {
       {/* 입력창 (하단 고정) */}
       <div className="fixed bottom-38 left-0 right-0 flex flex-col items-center z-50 pointer-events-none">
         {isGeneralChatting && (
-          <div className="w-[90vw] lg:w-[73.8vw] max-w-1064 ml-40 mb-10 text-left">
+          <div className="w-[90vw] lg:w-[73.8vw] max-w-1064 pl-40 mb-10 text-left">
             <span className="text-18 font-medium text-secondary-300">
               * 대화중 돌아가고 싶다면, {CHAT_COMMANDS.RESET_MODE}를 입력해주세요.
             </span>
