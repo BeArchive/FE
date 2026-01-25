@@ -20,7 +20,7 @@ const BrainstormPage = () => {
   const [selectedModeId, setSelectedModeId] = useState(null);
 
   // 자동 스크롤 훅 적용
-  const scrollRef = useScrollToBottom(messages);
+  const { scrollRef, scrollToBottom } = useScrollToBottom(messages);
   const isFirstRender = useRef(true);
 
   // 초기 데이터 세팅 및 API 호출
@@ -45,10 +45,13 @@ const BrainstormPage = () => {
         [],
         CHAT_ACTION_TYPES.MODE_SELECT,
       );
+
+      setTimeout(() => scrollToBottom('auto'), 0);
       return;
     }
 
     sendNextMessage(text, files);
+    setTimeout(() => scrollToBottom('auto'), 0);
   };
 
   // 모드 선택 핸들러
@@ -58,6 +61,8 @@ const BrainstormPage = () => {
 
       setSelectedModeId(modeValue);
       setModeStep(CHAT_STEPS.CONFIRM);
+
+      setTimeout(() => scrollToBottom('auto'), 0);
     } catch (error) {
       console.error('모드 변경 중 에러 발생:', error);
     }
@@ -67,6 +72,7 @@ const BrainstormPage = () => {
   const handleConfirm = () => {
     setModeStep(CHAT_STEPS.SELECT);
     sendNextMessage('');
+    setTimeout(() => scrollToBottom('auto'), 0);
   };
 
   // "다음에 할게요" 클릭
