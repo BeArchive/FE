@@ -17,3 +17,7 @@ export const CHAT_CONFIG = {
   SCROLL_GAP: 50,
   BOTTOM_PADDING: 200,
 };
+
+export const CHAT_COMMANDS = {
+  RESET_MODE: '/돌아가기',
+};

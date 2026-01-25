@@ -89,10 +89,10 @@ export const useChat = () => {
     },
   });
 
-  const addMessage = useCallback((type, content, files = []) => {
+  const addMessage = useCallback((type, content, files = [], actionType = 'EXECUTE') => {
     dispatch({
       type: 'ADD_MESSAGE',
-      payload: { type, content, files },
+      payload: { type, content, files, actionType },
     });
   }, []);
 
@@ -140,5 +140,6 @@ export const useChat = () => {
     startNewChat,
     sendNextMessage,
     selectMode,
+    addMessage,
   };
 };

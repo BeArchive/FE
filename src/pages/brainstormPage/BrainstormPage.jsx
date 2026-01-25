@@ -7,13 +7,13 @@ import { useChat } from '../../hooks/useChat';
 import { useScrollToBottom } from './hooks/useScrollToBottom';
 import ModeSelector from './components/ModeSelector';
 import StepController from './components/StepController';
-import { CHAT_STEPS, CHAT_MESSAGES, CHAT_ACTION_TYPES } from '../../constants/chat';
+import { CHAT_STEPS, CHAT_MESSAGES, CHAT_ACTION_TYPES, CHAT_COMMANDS } from '../../constants/chat';
 
 const BrainstormPage = () => {
   const location = useLocation();
   const { initialPrompt, initialFiles } = location.state || {};
 
-  const { messages, isThinking, startNewChat, sendNextMessage, selectMode } = useChat();
+  const { messages, isThinking, startNewChat, sendNextMessage, selectMode, addMessage } = useChat();
   const dots = useThinkingDots(isThinking);
 
   const [modeStep, setModeStep] = useState(CHAT_STEPS.SELECT);
@@ -31,12 +31,21 @@ const BrainstormPage = () => {
     }
   }, []);
 
+  // 메시지 전송 핸들러
+  const handleSendMessage = (text, files) => {
+    // '/돌아가기'를 입력했을 경우
+    if (text.trim() === CHAT_COMMANDS.RESET_MODE) {
+      handleCancel();
+      return;
+    }
+
+    sendNextMessage(text, files);
+  };
+
   // 모드 선택 핸들러
   const handleModeSelect = async (modeValue) => {
     try {
-      console.log('1. 모드 변경 시작:', modeValue);
       await selectMode(modeValue);
-      console.log('2. 모드 변경 성공!'); // 이 로그가 찍히는지 확인
 
       setSelectedModeId(modeValue);
       setModeStep(CHAT_STEPS.CONFIRM);
@@ -55,7 +64,19 @@ const BrainstormPage = () => {
   const handleCancel = () => {
     setSelectedModeId(null);
     setModeStep(CHAT_STEPS.SELECT);
+
+    addMessage(
+      'ai',
+      '어떤 방식으로 브레인스토밍을 다시 시작해볼까요?',
+      [],
+      CHAT_ACTION_TYPES.MODE_SELECT,
+    );
   };
+
+  // 가이드 노출 조건
+  const lastMessage = messages[messages.length - 1];
+  const isGeneralChatting =
+    messages.length > 0 && lastMessage?.actionType !== CHAT_ACTION_TYPES.MODE_SELECT;
 
   return (
     <div className="relative flex flex-col w-full h-full bg-primary-0">
@@ -91,9 +112,16 @@ const BrainstormPage = () => {
       </div>
 
       {/* 입력창 (하단 고정) */}
-      <div className="fixed bottom-38 left-0 right-0 flex justify-center z-50 pointer-events-none">
+      <div className="fixed bottom-38 left-0 right-0 flex flex-col items-center z-50 pointer-events-none">
+        {isGeneralChatting && (
+          <div className="w-[90vw] lg:w-[73.8vw] max-w-1064 ml-40 mb-10 text-left">
+            <span className="text-18 font-medium text-secondary-300">
+              * 대화중 돌아가고 싶다면, {CHAT_COMMANDS.RESET_MODE}를 입력해주세요.
+            </span>
+          </div>
+        )}
         <div className="pointer-events-auto">
-          <MainInput onSend={sendNextMessage} disabled={isThinking} />
+          <MainInput onSend={handleSendMessage} disabled={isThinking} />
         </div>
       </div>
     </div>
