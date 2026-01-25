@@ -24,9 +24,10 @@ const MainInput = ({ onSend, disabled }) => {
     if (!text.trim() || disabled) return;
 
     if (onSend) {
-      await onSend(text, files);
+      const filesToSend = [...files];
+      await onSend(text, filesToSend);
 
-      revokeFiles(files);
+      revokeFiles(filesToSend);
       setText('');
       setFiles([]);
     }
@@ -101,11 +102,14 @@ const MainInput = ({ onSend, disabled }) => {
           disabled={disabled}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="새로운 30초 광고 영상을 기획하고 싶은데?"
+          placeholder={
+            disabled ? '생각 퍼즐을 맞추는 중...' : '새로운 30초 광고 영상을 기획하고 싶은데?'
+          }
           className={cn(
             'flex-1 bg-transparent outline-none resize-none font-medium text-secondary-500 placeholder:text-gray-400',
             'text-24 leading-36 self-center mr-20 lg:mr-50',
             'min-h-36 max-h-72 overflow-y-auto',
+            disabled && 'cursor-not-allowed',
           )}
         />
 
@@ -120,7 +124,12 @@ const MainInput = ({ onSend, disabled }) => {
             accept=".png,.jpg,.jpeg,.pdf"
             disabled={disabled}
           />
-          <IconButton Icon={LinkIcon} theme="basic" onClick={() => fileInputRef.current?.click()} />
+          <IconButton
+            Icon={LinkIcon}
+            theme="basic"
+            onClick={() => !disabled && fileInputRef.current?.click()}
+            className={cn(disabled && 'opacity-30 cursor-not-allowed')}
+          />
           <IconButton
             Icon={SendIcon}
             theme="basic"
