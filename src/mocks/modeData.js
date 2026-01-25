@@ -1,6 +1,7 @@
 export const MODES = [
   {
     id: 'question',
+    value: 'QUESTION',
     label: '질문으로 시작하는 브레인스토밍',
     emoji: '⚡️',
     desc: `AI가 연속으로 질문을 던져 생각을 확장시켜요.\n"왜?", "만약 ~라면?", "반대로 하면?" 같은\n다양한 각도의 질문으로 아이디어를 깊고 넓게 만들어요.`,
@@ -9,6 +10,7 @@ export const MODES = [
   },
   {
     id: 'keyword',
+    value: 'KEYWORD',
     label: '키워드 믹스로 시작하는 브레인스토밍',
     emoji: '🎲',
     desc: `전혀 관련 없는 키워드들을 무작위로 조합해요.\n예상치 못한 연결에서 창의적인 아이디어가 탄생해요.`,
@@ -21,6 +23,7 @@ export const MODES = [
   },
   {
     id: 'perspective',
+    value: 'PERSONA',
     label: '관점의 전환으로 시작하는 브레인스토밍',
     emoji: '👥',
     desc: `다양한 페르소나의 시각으로 문제를 바라봐요.\nCEO, 어린이, 예술가 등 여러 관점에서\n새로운 인사이트를 발견할 수 있어요.`,
@@ -29,6 +32,7 @@ export const MODES = [
   },
   {
     id: 'theory',
+    value: 'THEORY',
     label: '이론으로 시작하는 브레인스토밍',
     emoji: '📚',
     desc: `검증된 마케팅·기획 이론을 실전에 바로 적용해요.\nAARRR, SCAMPER 등 프레임워크로\n체계적이고 설득력 있는 아이디어를 만들어요.`,

@@ -1,6 +1,6 @@
 import { useState, useCallback, useReducer } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { createChatRoom } from '../apis/chatApi';
+import { createChatRoom, sendChatMessage, changeChatMode } from '../apis/chatApi';
 
 // 메시지 상태 변화 로직 Reducer
 const messageReducer = (state, action) => {
@@ -12,6 +12,7 @@ const messageReducer = (state, action) => {
           type: action.payload.type,
           content: action.payload.content,
           files: action.payload.files || [],
+          actionType: action.payload.actionType || 'EXECUTE',
         },
       ];
     case 'SET_MESSAGES':
@@ -25,7 +26,7 @@ const messageReducer = (state, action) => {
 
 export const useChat = () => {
   const [messages, dispatch] = useReducer(messageReducer, []);
-  const [, /*chatRoomId*/ setChatRoomId] = useState(null);
+  const [chatRoomId, setChatRoomId] = useState(null);
   const [isThinking, setIsThinking] = useState(false);
 
   // 채팅방 초기 생성
@@ -33,17 +34,57 @@ export const useChat = () => {
     mutationFn: ({ prompt, files }) => createChatRoom(prompt, files),
     onSuccess: (response) => {
       const { data } = response;
-      setChatRoomId(data.chatRoomId);
+      setChatRoomId(data.chatRoomId); // 채팅방 ID 저장
 
       const aiAnswer = data.firstMessage.answer;
+      const aiActionType = data.firstMessage.actionType;
+
       dispatch({
         type: 'ADD_MESSAGE',
-        payload: { type: 'ai', content: aiAnswer },
+        payload: {
+          type: 'ai',
+          content: aiAnswer,
+          actionType: aiActionType,
+        },
       });
       setIsThinking(false);
     },
     onError: (error) => {
       console.error('채팅방 생성 실패:', error);
+      setIsThinking(false);
+    },
+  });
+
+  // 메시지 추가 전송
+  const sendMessageMutation = useMutation({
+    mutationFn: ({ roomId, text, files }) => sendChatMessage(roomId, text, files),
+    onSuccess: (response) => {
+      const { data } = response;
+
+      dispatch({
+        type: 'ADD_MESSAGE',
+        payload: {
+          type: 'ai',
+          content: data.answer,
+          actionType: data.actionType,
+        },
+      });
+      setIsThinking(false);
+    },
+    onError: (error) => {
+      console.error('메시지 전송 실패:', error);
+      setIsThinking(false);
+    },
+  });
+
+  // 대화 모드 변경
+  const changeModeMutation = useMutation({
+    mutationFn: ({ roomId, mode }) => changeChatMode(roomId, mode),
+    onSuccess: () => {
+      setIsThinking(false);
+    },
+    onError: (error) => {
+      console.error('모드 변경 실패:', error);
       setIsThinking(false);
     },
   });
@@ -67,13 +108,30 @@ export const useChat = () => {
   );
 
   // 메시지 전송 함수
+  const mutateSendMessage = sendMessageMutation.mutate;
   const sendNextMessage = useCallback(
     (text, files) => {
+      if (!chatRoomId) return console.error('채팅방 ID가 없습니다.');
+
       setIsThinking(true);
-      addMessage('user', text, files);
-      // 구현 예정
+      if (text !== '') {
+        addMessage('user', text, files);
+      }
+
+      mutateSendMessage({ roomId: chatRoomId, text, files });
     },
-    [addMessage],
+    [addMessage, chatRoomId, mutateSendMessage],
+  );
+
+  // 모드 변경 함수
+  const mutateChangeMode = changeModeMutation.mutateAsync;
+  const selectMode = useCallback(
+    async (mode) => {
+      if (!chatRoomId) return console.error('채팅방 ID가 없습니다.');
+      setIsThinking(true);
+      return mutateChangeMode({ roomId: chatRoomId, mode });
+    },
+    [chatRoomId, mutateChangeMode],
   );
 
   return {
@@ -81,5 +139,6 @@ export const useChat = () => {
     isThinking,
     startNewChat,
     sendNextMessage,
+    selectMode,
   };
 };
