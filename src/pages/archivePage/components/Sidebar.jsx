@@ -28,7 +28,7 @@ export default function Sidebar() {
 
   const { goTo } = useNavigation();
   const [editingFolderName, setEditingFolderName] = useState('');
-  const { handleDragEnd } = useFolderDnd();
+  const { sensors, handleDragEnd } = useFolderDnd();
 
   // 폴더 상태 스타일 반환
   const getFolderItemStyles = (folder) => {
@@ -99,7 +99,7 @@ export default function Sidebar() {
       <div className="h-1 bg-primary-50 my-10 mx-20 " />
 
       {/* 폴더 목록 */}
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} sensors={sensors}>
         <SortableContext items={folders.map((f) => f.id)} strategy={verticalListSortingStrategy}>
           <div className="flex flex-col gap-10 px-16 overflow-y-auto flex-1 mt-10">
             {folders.map((folder) => {

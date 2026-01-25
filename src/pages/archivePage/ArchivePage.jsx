@@ -16,7 +16,7 @@ const ArchivePage = () => {
   const { isOpen, variant, data } = modal;
 
   useFoldersQuery(); // 폴더 조회
-  const { handleDragEnd } = useFolderDnd();
+  const { sensors, handleDragEnd } = useFolderDnd();
 
   // 폴더 삭제 처리
   const handleDeleteFolder = async (folderId) => {
@@ -53,7 +53,11 @@ const ArchivePage = () => {
             )}
           >
             {folders.length > 0 ? (
-              <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+                sensors={sensors}
+              >
                 <SortableContext items={folders.map((f) => f.id)} strategy={rectSortingStrategy}>
                   {folders.map((folder) => (
                     <SortableFolderItem key={folder.id} id={folder.id}>

@@ -1,10 +1,19 @@
 import { arrayMove } from '@dnd-kit/sortable';
 import { useArchiveStore } from '../../../store/archiveStore';
 import { reorderFolders } from '../../../apis/folderApi';
+import { useSensor, useSensors, PointerSensor } from '@dnd-kit/core';
 
 // 폴더 드래그 앤 드롭 훅
 export const useFolderDnd = () => {
   const { folders, setFolders } = useArchiveStore();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+  );
 
   const handleDragEnd = async (event) => {
     const { active, over } = event;
@@ -28,5 +37,5 @@ export const useFolderDnd = () => {
     }
   };
 
-  return { handleDragEnd };
+  return { sensors, handleDragEnd };
 };
