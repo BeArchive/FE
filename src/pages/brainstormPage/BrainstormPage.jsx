@@ -7,6 +7,7 @@ import { useChat } from '../../hooks/useChat';
 import { useScrollToBottom } from './hooks/useScrollToBottom';
 import ModeSelector from './components/ModeSelector';
 import StepController from './components/StepController';
+import { CHAT_STEPS, CHAT_MESSAGES, CHAT_ACTION_TYPES } from '../../constants/chat';
 
 const BrainstormPage = () => {
   const location = useLocation();
@@ -15,7 +16,7 @@ const BrainstormPage = () => {
   const { messages, isThinking, startNewChat, sendNextMessage, selectMode } = useChat();
   const dots = useThinkingDots(isThinking);
 
-  const [modeStep, setModeStep] = useState('SELECT'); // SELECT | CONFIRM
+  const [modeStep, setModeStep] = useState(CHAT_STEPS.SELECT);
   const [selectedModeId, setSelectedModeId] = useState(null);
 
   // 자동 스크롤 훅 적용
@@ -38,22 +39,22 @@ const BrainstormPage = () => {
       console.log('2. 모드 변경 성공!'); // 이 로그가 찍히는지 확인
 
       setSelectedModeId(modeValue);
-      setModeStep('CONFIRM');
+      setModeStep(CHAT_STEPS.CONFIRM);
     } catch (error) {
-      console.error('모드 변경 중 에러 발생:', error); // 405나 다른 에러가 나면 여기로 빠짐
+      console.error('모드 변경 중 에러 발생:', error);
     }
   };
 
   // "준비 됐어요" 클릭
   const handleConfirm = () => {
-    setModeStep('SELECT');
+    setModeStep(CHAT_STEPS.SELECT);
     sendNextMessage('');
   };
 
   // "다음에 할게요" 클릭
   const handleCancel = () => {
     setSelectedModeId(null);
-    setModeStep('SELECT');
+    setModeStep(CHAT_STEPS.SELECT);
   };
 
   return (
@@ -63,12 +64,12 @@ const BrainstormPage = () => {
         className="flex-1 flex flex-col gap-50 overflow-y-auto px-85 pt-50 pb-200 custom-scrollbar"
       >
         {messages.map((msg, index) => {
-          if (msg.type === 'ai' && msg.actionType === 'MODE_SELECT') {
+          if (msg.type === 'ai' && msg.actionType === CHAT_ACTION_TYPES.MODE_SELECT) {
             console.log('현재 모드 단계:', modeStep);
             return (
               <div key={index} className="flex flex-col gap-50">
                 {/* 단계별 UI 분기 */}
-                {modeStep === 'SELECT' ? (
+                {modeStep === CHAT_STEPS.SELECT ? (
                   <ModeSelector content={msg.content} onSelect={handleModeSelect} />
                 ) : (
                   <StepController
@@ -86,7 +87,7 @@ const BrainstormPage = () => {
         })}
 
         {/* AI 로딩 말풍선 */}
-        {isThinking && <ChatBubble content={`생각 퍼즐 맞추는 중${dots}`} />}
+        {isThinking && <ChatBubble content={`${CHAT_MESSAGES.THINKING}${dots}`} />}
       </div>
 
       {/* 입력창 (하단 고정) */}
