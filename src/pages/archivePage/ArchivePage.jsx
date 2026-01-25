@@ -4,11 +4,31 @@ import FolderCard from './components/FolderCard';
 import ConfirmModal from '../../components/modal/ConfirmModal';
 import archiveIcon from '../../assets/images/archive_empty_logo.svg';
 import { useArchiveStore } from '../../store/archiveStore';
+import { useFoldersQuery } from './hooks/useFoldersQuery';
+import { useFolderDnd } from './hooks/useFolderDnd';
+import { deleteFolder as deleteFolderApi } from '../../apis/folderApi';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
+import SortableFolderItem from './components/SortableFolderItem';
 
 const ArchivePage = () => {
   const { folders, modal, deleteFolder, closeModal } = useArchiveStore();
-
   const { isOpen, variant, data } = modal;
+
+  useFoldersQuery(); // 폴더 조회
+  const { sensors, handleDragEnd } = useFolderDnd();
+
+  // 폴더 삭제 처리
+  const handleDeleteFolder = async (folderId) => {
+    try {
+      await deleteFolderApi(folderId);
+      deleteFolder(folderId);
+      closeModal();
+    } catch (error) {
+      console.error('폴더 삭제 실패:', error);
+      closeModal();
+    }
+  };
 
   return (
     <div className="w-full h-full bg-primary-0 flex">
@@ -33,9 +53,23 @@ const ArchivePage = () => {
             )}
           >
             {folders.length > 0 ? (
-              folders.map((folder) => (
-                <FolderCard key={folder.id} folderId={folder.id} folderName={folder.name} />
-              ))
+              <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+                sensors={sensors}
+              >
+                <SortableContext items={folders.map((f) => f.id)} strategy={rectSortingStrategy}>
+                  {folders.map((folder) => (
+                    <SortableFolderItem key={folder.id} id={folder.id}>
+                      {(listeners) => (
+                        <div {...listeners}>
+                          <FolderCard folderId={folder.id} folderName={folder.name} />
+                        </div>
+                      )}
+                    </SortableFolderItem>
+                  ))}
+                </SortableContext>
+              </DndContext>
             ) : (
               <div className="col-span-4 flex flex-col gap-17 items-center justify-center">
                 {/* 빈 상태 아카이브 */}
@@ -79,9 +113,10 @@ const ArchivePage = () => {
           onCancel={() => closeModal()}
           onConfirm={() => {
             if (variant === 'delete') {
-              deleteFolder(data);
+              handleDeleteFolder(data);
+            } else {
+              closeModal();
             }
-            closeModal();
           }}
         />
       </div>
