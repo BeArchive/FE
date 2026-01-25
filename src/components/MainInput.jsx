@@ -5,7 +5,7 @@ import IconButton from './iconButton/IconButton';
 import FilePreview from './FilePreview';
 import { validateFiles, formatFileSelection, revokeFiles } from '../utils/file';
 
-const MainInput = ({ onSend }) => {
+const MainInput = ({ onSend, disabled }) => {
   const [text, setText] = useState('');
   const [isMultiLine, setIsMultiLine] = useState(false); // 높이 상태
   const [files, setFiles] = useState([]); // 첨부 파일
@@ -21,7 +21,7 @@ const MainInput = ({ onSend }) => {
 
   // 메세지 전송 핸들러
   const handleSend = async () => {
-    if (!text.trim()) return;
+    if (!text.trim() || disabled) return;
 
     if (onSend) {
       await onSend(text, files);
@@ -87,6 +87,7 @@ const MainInput = ({ onSend }) => {
         'flex flex-col w-[90vw] lg:w-[73.8vw] max-w-1064 bg-white transition-all duration-300 shrink-0 shadow-sub px-[3%]',
         'min-h-94 h-auto py-28',
         isMultiLine || files.length > 0 ? 'rounded-20' : 'rounded-100',
+        disabled && 'bg-gray-50 opacity-70',
       )}
     >
       {/* 파일 미리보기 */}
@@ -97,6 +98,7 @@ const MainInput = ({ onSend }) => {
           ref={textareaRef}
           rows={1}
           value={text}
+          disabled={disabled}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="새로운 30초 광고 영상을 기획하고 싶은데?"
@@ -116,9 +118,15 @@ const MainInput = ({ onSend }) => {
             className="hidden"
             multiple
             accept=".png,.jpg,.jpeg,.pdf"
+            disabled={disabled}
           />
           <IconButton Icon={LinkIcon} theme="basic" onClick={() => fileInputRef.current?.click()} />
-          <IconButton Icon={SendIcon} theme="basic" onClick={handleSend} />
+          <IconButton
+            Icon={SendIcon}
+            theme="basic"
+            onClick={handleSend}
+            className={cn(disabled && 'opacity-30 cursor-not-allowed')}
+          />
         </div>
       </div>
     </div>

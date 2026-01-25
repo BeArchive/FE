@@ -2,7 +2,7 @@ import ChatBubble from './ChatBubble';
 import { MODES } from '../../../mocks/modeData';
 
 const StepController = ({ modeId, onConfirm, onCancel }) => {
-  const selectedMode = MODES.find((m) => m.id === modeId);
+  const selectedMode = MODES.find((m) => m.value === modeId);
 
   if (!selectedMode) return null;
 

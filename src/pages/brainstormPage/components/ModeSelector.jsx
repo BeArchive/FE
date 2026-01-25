@@ -3,7 +3,7 @@ import ModeTooltip from './ModeTooltip';
 import { MODES } from '../../../mocks/modeData';
 import ChatBubble from './ChatBubble';
 
-const ModeSelector = ({ onSelect }) => {
+const ModeSelector = ({ content, onSelect }) => {
   const [hoveredMode, setHoveredMode] = useState(null);
 
   const buttonStyle = `group flex items-center w-full h-58 px-20 py-18 rounded-10 border-1 transition-all duration-200
@@ -15,7 +15,7 @@ const ModeSelector = ({ onSelect }) => {
     <ChatBubble
       type="mode"
       className="justify-start"
-      content={'좋아요! 모드를 선택해 주세요.\n궁금하신 모드에 마우스를 올리면, 설명이 보여요.'}
+      content={`${content}\n궁금하신 모드에 마우스를 올리면, 설명이 보여요.`}
     >
       <div className="relative flex flex-col gap-15 mt-30">
         {MODES.map((mode) => (
@@ -23,7 +23,7 @@ const ModeSelector = ({ onSelect }) => {
             <button
               onMouseEnter={() => setHoveredMode(mode.id)}
               onMouseLeave={() => setHoveredMode(null)}
-              onClick={() => onSelect(mode.id)}
+              onClick={() => onSelect(mode.value)}
               className={buttonStyle}
             >
               <span className="mr-8">{mode.emoji}</span>
