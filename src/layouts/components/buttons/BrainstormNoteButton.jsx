@@ -6,7 +6,8 @@ const BrainstormNoteButton = ({ isActive, onClick, className = '' }) => {
   const layoutStyles =
     'flex-row-center w-70 h-70 shrink-0 overflow-hidden pt-15 pr-11 pb-15 pl-21 justify-end items-center active:scale-95';
 
-  const visualStyles = 'bg-primary-50 rounded-full shadow-sub transition-all duration-200';
+  const visualStyles =
+    'bg-primary-50 rounded-full shadow-sub transition-all duration-200 focus:outline-none';
 
   const borderStyles = cn(
     'border-1',

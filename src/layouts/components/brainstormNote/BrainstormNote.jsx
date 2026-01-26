@@ -25,10 +25,10 @@ const BrainstormNote = ({ onClose }) => {
   return (
     <div
       style={panelStyle}
-      className="relative w-516 h-602 rounded-20 flex flex-col gap-15 overflow-hidden animate-in fade-in slide-in-from-bottom-4 p-20 bg-white"
+      className="relative w-516 h-602 max-w-[calc(100vw-40rem)] max-h-[calc(100vh-28.5rem)] rounded-20 flex flex-col gap-15 overflow-hidden animate-in fade-in slide-in-from-bottom-4 p-20 bg-white"
     >
       {/* 헤더 영역 */}
-      <section className="w-full flex items-center justify-between px-4 pb-15 border-b border-primary-50">
+      <section className="w-full flex items-center justify-between px-4 pb-15 border-b border-primary-50 shrink-0">
         <span className="text-24 font-medium text-secondary-500">브레인스토밍 노트</span>
         {view === VIEW_TYPE.LIST ? (
           <IconButton Icon={CancelIcon} theme="note" onClick={onClose} />
@@ -37,7 +37,9 @@ const BrainstormNote = ({ onClose }) => {
         )}
       </section>
 
-      {view === VIEW_TYPE.LIST ? <NoteList /> : <NoteDetail />}
+      <div className="flex-1 overflow-y-auto">
+        {view === VIEW_TYPE.LIST ? <NoteList /> : <NoteDetail />}
+      </div>
     </div>
   );
 };
