@@ -78,6 +78,7 @@ export default function ArchiveFolderPage() {
           open={uploadModal.open}
           onClose={() => uploadModal.setOpen(false)}
           onConfirm={onConfirmUpload}
+          folderId={folderId}
         />
 
         <ChatDeleteModal
