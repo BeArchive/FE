@@ -22,7 +22,7 @@ export default function UploadModal({ open, onClose, onConfirm, folderId }) {
           const data = await getUnassignedChatRooms();
           const formattedChats = data.map((chat) => ({
             id: chat.chatRoomId,
-            title: chat.title,
+            name: chat.title,
             date: getFormattedDate(chat.updatedAt),
           }));
           setChatHistories(formattedChats);
@@ -52,19 +52,9 @@ export default function UploadModal({ open, onClose, onConfirm, folderId }) {
 
     setIsUploading(true);
     try {
-      // 선택된 각 채팅방을 폴더에 할당
       await Promise.all(selected.map((chatRoomId) => assignChatRoomToFolder(chatRoomId, folderId)));
 
-      // 선택된 채팅 내역을 note 형태로 변환 (분류 채탕방 조회 연동 후 삭제 예정)
-      const selectedChats = chatHistories.filter((chat) => selected.includes(chat.id));
-      const notes = selectedChats.map((chat) => ({
-        id: chat.id,
-        name: chat.title,
-        url: null, // 추후 상세페이지 연결 시
-        date: chat.date,
-      }));
-
-      onConfirm(notes);
+      onConfirm();
       onClose();
     } catch (error) {
       console.error('채팅방 업로드 실패:', error);
@@ -135,7 +125,7 @@ export default function UploadModal({ open, onClose, onConfirm, folderId }) {
 
                     {/* 텍스트 */}
                     <p className="absolute left-152 font-medium text-14 leading-22 text-black">
-                      {chat.title.length > 16 ? chat.title.slice(0, 16) + '...' : chat.title}
+                      {chat.name.length > 16 ? chat.name.slice(0, 16) + '...' : chat.name}
                     </p>
 
                     {/* 날짜 */}
