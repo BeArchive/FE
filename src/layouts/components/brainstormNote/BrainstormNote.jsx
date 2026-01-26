@@ -25,7 +25,7 @@ const BrainstormNote = ({ onClose }) => {
   return (
     <div
       style={panelStyle}
-      className="relative w-[51.6rem] h-[60.2rem] max-w-[calc(100vw-40rem)] max-h-[calc(100vh-28.5rem)] rounded-[2rem] flex flex-col gap-[1.5rem] overflow-hidden animate-in fade-in slide-in-from-bottom-4 p-[2rem] bg-white"
+      className="relative w-516 h-602 max-w-[calc(100vw-40rem)] max-h-[calc(100vh-28.5rem)] rounded-20 flex flex-col gap-15 overflow-hidden animate-in fade-in slide-in-from-bottom-4 p-20 bg-white"
     >
       {/* 헤더 영역 */}
       <section className="w-full flex items-center justify-between px-4 pb-15 border-b border-primary-50 shrink-0">
