@@ -80,3 +80,9 @@ export const assignChatRoomToFolder = async (chatRoomId, folderId) => {
   });
   return response.data;
 };
+
+// ===== 채팅방 삭제 (DELETE)
+export const deleteChatRoom = async (chatRoomId) => {
+  const response = await defaultInstance.delete(`${CHAT_PATH}/${chatRoomId}`);
+  return response.data;
+};

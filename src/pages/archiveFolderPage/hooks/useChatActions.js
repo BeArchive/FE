@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useChatStore } from '../../../store/chatStore';
+import { deleteChatRoom } from '../../../apis/chatApi';
 
 export function useChatActions(folderId, onAfterDelete) {
   const addChats = useChatStore((state) => state.addChats);
@@ -22,11 +23,18 @@ export function useChatActions(folderId, onAfterDelete) {
   };
 
   // 채팅 삭제
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (chatToDelete) {
-      deleteChat(folderId, chatToDelete.id);
-      if (onAfterDelete) onAfterDelete(chatToDelete.id);
-      closeDeleteModal();
+      try {
+        await deleteChatRoom(chatToDelete.id);
+        deleteChat(folderId, chatToDelete.id);
+        if (onAfterDelete) onAfterDelete(chatToDelete.id);
+      } catch (error) {
+        console.error('채팅방 삭제 실패:', error);
+        alert('채팅방 삭제에 실패했습니다. 다시 시도해주세요.');
+      } finally {
+        closeDeleteModal();
+      }
     }
   };
 
