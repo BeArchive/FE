@@ -1,6 +1,6 @@
 import { useState, useCallback, useReducer } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { createChatRoom, sendChatMessage, changeChatMode } from '../apis/chatApi';
+import { createChatRoom, sendChatMessage, changeChatMode, getChatMessages } from '../apis/chatApi';
 
 // 메시지 상태 변화 로직 Reducer
 const messageReducer = (state, action) => {
@@ -28,6 +28,30 @@ export const useChat = () => {
   const [messages, dispatch] = useReducer(messageReducer, []);
   const [chatRoomId, setChatRoomId] = useState(null);
   const [isThinking, setIsThinking] = useState(false);
+
+  // 기존 채팅 내역 조회
+  const loadChatHistory = useCallback(async (chatRoomId) => {
+    chatRoomId = Number(chatRoomId);
+    try {
+      setIsThinking(true);
+      const list = await getChatMessages(chatRoomId);
+
+      setChatRoomId(chatRoomId);
+
+      const formattedMessages = list.map((msg) => ({
+        type: msg.role === 'USER' ? 'user' : 'ai',
+        content: msg.content,
+        files: msg.hasFiles ? msg.attachments : [],
+        actionType: 'EXECUTE',
+      }));
+
+      dispatch({ type: 'SET_MESSAGES', payload: formattedMessages });
+    } catch (error) {
+      console.error('채팅 내역 조회 실패:', error);
+    } finally {
+      setIsThinking(false);
+    }
+  }, []);
 
   // 채팅방 초기 생성
   const createRoomMutation = useMutation({
@@ -141,5 +165,6 @@ export const useChat = () => {
     sendNextMessage,
     selectMode,
     addMessage,
+    loadChatHistory,
   };
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import noteImage from '../../../assets/images/note_btn.webp';
 
@@ -6,11 +7,16 @@ export default function ChatListItem({
   chat,
   isSelected,
   isHovered,
-  onSelect,
   onDelete,
   onMouseEnter,
   onMouseLeave,
 }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/brainstorm/${chat.id}`);
+  };
+
   return (
     <div
       className={`relative h-53 flex items-center overflow-hidden transition-all ${
@@ -20,7 +26,7 @@ export default function ChatListItem({
             ? 'bg-gray-50 rounded-full shadow-basic'
             : 'border-b border-gray-50'
       }`}
-      onClick={onSelect}
+      onClick={handleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
