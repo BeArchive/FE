@@ -24,6 +24,15 @@ const RootLayout = () => {
     }
   };
 
+  const handleNoteClick = () => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요한 서비스입니다.');
+      goTo(ROUTES.LOGIN);
+      return;
+    }
+    setIsNoteOpen(!isNoteOpen);
+  };
+
   return (
     <div className="relative flex flex-col w-full h-screen bg-primary-0 overflow-hidden">
       {/* Header: 로고, 로그인/로그아웃 버튼 */}
@@ -45,7 +54,7 @@ const RootLayout = () => {
       {/* 브레인스토밍 노트 버튼 FAB */}
       <div className="fixed z-50 right-50 bottom-50 flex flex-col items-end gap-17">
         {isNoteOpen && <BrainstormNote onClose={() => setIsNoteOpen(false)} />}
-        <BrainstormNoteButton isActive={isNoteOpen} onClick={() => setIsNoteOpen(!isNoteOpen)} />
+        <BrainstormNoteButton isActive={isNoteOpen} onClick={handleNoteClick} />
       </div>
     </div>
   );
