@@ -4,6 +4,15 @@ import { useEffect, useRef } from 'react';
 export const useScrollToBottom = (dependency) => {
   const scrollRef = useRef(null);
 
+  const scrollToBottom = (behavior = 'smooth') => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: behavior,
+      });
+    }
+  };
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
@@ -13,5 +22,5 @@ export const useScrollToBottom = (dependency) => {
     }
   }, [dependency]);
 
-  return scrollRef;
+  return { scrollRef, scrollToBottom };
 };
