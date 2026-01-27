@@ -41,7 +41,13 @@ export const useChat = () => {
       const formattedMessages = list.map((msg) => ({
         type: msg.role === 'USER' ? 'user' : 'ai',
         content: msg.content,
-        files: msg.hasFiles ? msg.attachments : [],
+        files: msg.hasFiles
+          ? msg.attachments.map((att) => ({
+              preview: att.fileUrl,
+              fileType: att.fileType,
+              name: att.originalFilename,
+            }))
+          : [],
         actionType: 'EXECUTE',
       }));
 
