@@ -1,22 +1,43 @@
 import { create } from 'zustand';
+import { getChatRoomsByFolder } from '../apis/chatApi';
+import { getFormattedDate } from '../utils/date';
 
 const EMPTY_CHATS = []; // 빈 배열 고정 참조
 
 export const useChatStore = create((set, get) => ({
   // 폴더별 채팅 상태
-  chatsByFolder: {}, // { [folderId]: [{ id, name, url, date }...] }
+  chatsByFolder: {},
 
   // 채팅 조회
-  getChats: (folderId) => {
-    const state = get();
-    return state.chatsByFolder[folderId] ?? EMPTY_CHATS;
+  getChats: (folderId) => get().chatsByFolder[folderId] ?? EMPTY_CHATS,
+
+  // 분류된 채팅방 폴더별 조회
+  fetchChatsByFolder: async (folderId) => {
+    if (folderId == null || Number.isNaN(folderId)) return;
+
+    try {
+      const data = await getChatRoomsByFolder(folderId);
+      const formatted = data.map((chat) => ({
+        id: chat.chatRoomId,
+        name: chat.title,
+        date: getFormattedDate(chat.updatedAt),
+      }));
+
+      set((state) => ({
+        chatsByFolder: {
+          ...state.chatsByFolder,
+          [folderId]: formatted,
+        },
+      }));
+    } catch (e) {
+      console.error('폴더별 채팅방 조회 실패:', e);
+    }
   },
 
   // 채팅 추가
   addChats: (folderId, chats) => {
     const state = get();
     const existing = state.chatsByFolder[folderId] ?? EMPTY_CHATS;
-    // chats는 이미 { id, name, url, date } 형태로 전달됨
     set({
       chatsByFolder: {
         ...state.chatsByFolder,
