@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { cn } from '../../lib/utils';
 import Sidebar from './components/Sidebar';
 import FolderCard from './components/FolderCard';
@@ -12,11 +13,16 @@ import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import SortableFolderItem from './components/SortableFolderItem';
 
 const ArchivePage = () => {
-  const { folders, modal, deleteFolder, closeModal } = useArchiveStore();
+  const { folders, modal, deleteFolder, closeModal, setActiveFolderId } = useArchiveStore();
   const { isOpen, variant, data } = modal;
 
   useFoldersQuery(); // 폴더 조회
   const { sensors, handleDragEnd } = useFolderDnd();
+
+  // 다른 페이지에서 돌아왔을 때 active 상태 초기화
+  useEffect(() => {
+    setActiveFolderId(null);
+  }, [setActiveFolderId]);
 
   // 폴더 삭제 처리
   const handleDeleteFolder = async (folderId) => {
