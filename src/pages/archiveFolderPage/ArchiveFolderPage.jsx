@@ -15,6 +15,7 @@ export default function ArchiveFolderPage() {
   const { folderId: folderIdStr } = useParams();
   const folderId = parseInt(folderIdStr, 10);
   const folders = useArchiveStore((state) => state.folders);
+  const setActiveFolderId = useArchiveStore((state) => state.setActiveFolderId);
 
   const chats = useChatStore((state) => state.getChats(folderId));
   const fetchChatsByFolder = useChatStore((state) => state.fetchChatsByFolder);
@@ -31,7 +32,12 @@ export default function ArchiveFolderPage() {
   useEffect(() => {
     clearSelection();
     fetchChatsByFolder(folderId);
-  }, [folderId, clearSelection, fetchChatsByFolder]);
+    setActiveFolderId(folderId);
+
+    return () => {
+      setActiveFolderId(null);
+    };
+  }, [folderId, clearSelection, fetchChatsByFolder, setActiveFolderId]);
 
   // 업로드 완료 시
   const onConfirmUpload = async () => {
@@ -83,7 +89,7 @@ export default function ArchiveFolderPage() {
         <UploadModal
           open={uploadModal.open}
           onClose={() => uploadModal.setOpen(false)}
-          onConfirm={onConfirmUpload} // ✅ 이제 notes 안 받음
+          onConfirm={onConfirmUpload}
           folderId={folderId}
         />
 
