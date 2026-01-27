@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import Logo from '../components/Logo';
 import AuthButton from './components/buttons/AuthButton';
 import ArchiveButton from './components/buttons/ArchiveButton';
@@ -8,12 +9,17 @@ import useNavigation from '../hooks/useNavigation';
 import BrainstormNote from './components/brainstormNote/BrainstormNote';
 import useAuthStore from '../store/useAuthStore';
 import { ROUTES } from '../constants/auth';
+import Spinner from '../components/Spinner';
 
 const RootLayout = () => {
   const { goTo } = useNavigation();
-
   const { isLoggedIn, logout } = useAuthStore();
   const [isNoteOpen, setIsNoteOpen] = useState(false);
+
+  //  전역 로딩 상태 감시
+  const isFetching = useIsFetching();
+  const isMutating = useIsMutating();
+  const isLoading = isFetching > 0 || isMutating > 0;
 
   const handleAuthClick = () => {
     if (isLoggedIn) {
@@ -35,6 +41,8 @@ const RootLayout = () => {
 
   return (
     <div className="relative flex flex-col w-full h-screen bg-primary-0 overflow-hidden">
+      {isLoading && <Spinner />}
+
       {/* Header: 로고, 로그인/로그아웃 버튼 */}
       <div className="flex-row-center justify-between mx-50 mt-50 mb-33 shrink-0">
         <Logo />

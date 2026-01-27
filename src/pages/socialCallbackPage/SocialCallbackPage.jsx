@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Spinner from '../../components/spinner/Spinner';
 import useNavigation from '../../hooks/useNavigation';
 import { ROUTES } from '../../constants/auth';
 import useAuthStore from '../../store/useAuthStore';
+import Spinner from '../../components/Spinner';
 
 const SocialCallbackPage = () => {
   const [searchParams] = useSearchParams();
@@ -26,9 +26,9 @@ const SocialCallbackPage = () => {
 
   return (
     <div className="relative flex items-center justify-center w-full min-h-screen bg-primary-0 p-50">
-      <div className="flex flex-col items-center justify-center w-612 h-498 bg-white rounded-24 shadow-sub">
-        <Spinner />
-        <p className="mt-10 text-24 text-primary-main whitespace-pre-line text-center">{`환영합니다!\n곧 메인 화면으로 이동합니다`}</p>
+      <div className="flex flex-col-center w-612 h-498 bg-white rounded-24 shadow-sub">
+        <Spinner showDimmer={false} />
+        <p className="mb-250 text-24 text-primary-main whitespace-pre-line text-center">{`환영합니다!\n곧 메인 화면으로 이동합니다`}</p>
       </div>
     </div>
   );
