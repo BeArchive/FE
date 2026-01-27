@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import MainInput from '../../components/MainInput';
 import ChatBubble from './components/ChatBubble';
 import useThinkingDots from './hooks/useThinkingDots';
@@ -11,9 +11,18 @@ import { CHAT_STEPS, CHAT_MESSAGES, CHAT_ACTION_TYPES, CHAT_COMMANDS } from '../
 
 const BrainstormPage = () => {
   const location = useLocation();
+  const { chatId } = useParams();
   const { initialPrompt, initialFiles } = location.state || {};
 
-  const { messages, isThinking, startNewChat, sendNextMessage, selectMode, addMessage } = useChat();
+  const {
+    messages,
+    isThinking,
+    startNewChat,
+    sendNextMessage,
+    selectMode,
+    addMessage,
+    loadChatHistory,
+  } = useChat();
   const dots = useThinkingDots(isThinking);
 
   const [modeStep, setModeStep] = useState(CHAT_STEPS.SELECT);
@@ -25,11 +34,21 @@ const BrainstormPage = () => {
 
   // 초기 데이터 세팅 및 API 호출
   useEffect(() => {
-    if (initialPrompt && isFirstRender.current) {
+    if (isFirstRender.current) {
       isFirstRender.current = false;
+    }
+
+    // URL에 chatId가 있으면 기존 채팅 로드
+    if (chatId) {
+      loadChatHistory(chatId);
+      return;
+    }
+
+    // initialPrompt가 있으면 새 채팅 시작
+    if (initialPrompt) {
       startNewChat(initialPrompt, initialFiles);
     }
-  }, []);
+  }, [chatId, initialPrompt, initialFiles, loadChatHistory, startNewChat]);
 
   // 메시지 전송 핸들러
   const handleSendMessage = (text, files) => {

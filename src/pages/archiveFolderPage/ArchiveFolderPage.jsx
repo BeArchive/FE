@@ -17,6 +17,8 @@ export default function ArchiveFolderPage() {
   const folders = useArchiveStore((state) => state.folders);
 
   const chats = useChatStore((state) => state.getChats(folderId));
+  const fetchChatsByFolder = useChatStore((state) => state.fetchChatsByFolder);
+
   const folder = folders.find((f) => f.id === folderId);
 
   const { selected, toggleSelect, clearSelection, deselectChat } = useChatSelection();
@@ -25,12 +27,16 @@ export default function ArchiveFolderPage() {
   const deleteModal = modals.delete;
   const [hoveredChat, setHoveredChat] = useState(null);
 
+  // 폴더 진입/변경 시
   useEffect(() => {
     clearSelection();
-  }, [folderId]);
+    fetchChatsByFolder(folderId);
+  }, [folderId, clearSelection, fetchChatsByFolder]);
 
-  const onConfirmUpload = (chats) => {
-    uploadModal.handle(chats);
+  // 업로드 완료 시
+  const onConfirmUpload = async () => {
+    await fetchChatsByFolder(folderId);
+    uploadModal.setOpen(false);
     clearSelection();
   };
 
@@ -77,7 +83,8 @@ export default function ArchiveFolderPage() {
         <UploadModal
           open={uploadModal.open}
           onClose={() => uploadModal.setOpen(false)}
-          onConfirm={onConfirmUpload}
+          onConfirm={onConfirmUpload} // ✅ 이제 notes 안 받음
+          folderId={folderId}
         />
 
         <ChatDeleteModal
