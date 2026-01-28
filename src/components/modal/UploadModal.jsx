@@ -4,6 +4,8 @@ import { cn } from '../../lib/utils';
 import UploadButton from '../../pages/archiveFolderPage/components/UploadButton';
 import { getUnassignedChatRooms, assignChatRoomToFolder } from '../../apis/chatApi';
 import { getFormattedDate } from '../../utils/date';
+import Spinner from '../Spinner';
+import { MoonLoader } from 'react-spinners';
 
 export default function UploadModal({ open, onClose, onConfirm, folderId }) {
   const [selected, setSelected] = useState([]);
@@ -84,8 +86,7 @@ export default function UploadModal({ open, onClose, onConfirm, folderId }) {
         <div className="flex-1 overflow-y-auto px-10 pt-14 pb-140">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
-              {/* TODO: 로딩 스피너 컴포넌트로 교체 예정 */}
-              <p className="text-secondary-300">로딩 중...</p>
+              <MoonLoader size={30} color="#007BFF" speedMultiplier={0.7} />
             </div>
           ) : (
             <div className="flex flex-col gap-10 w-full">

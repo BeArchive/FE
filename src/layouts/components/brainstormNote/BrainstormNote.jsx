@@ -5,10 +5,14 @@ import { useNoteStore, VIEW_TYPE } from '../../../store/useNoteStore';
 import NoteDetail from './NoteDetail';
 import NoteList from './NoteList';
 import { useMutation } from './hooks/useMutation';
+import { useNoteQuery } from './hooks/useNoteQuery';
 
 const BrainstormNote = ({ onClose }) => {
   const { view, setView } = useNoteStore();
-  const { mutateSave } = useMutation();
+  const { mutateSave, isSaving } = useMutation();
+  const { isLoading, isDetailLoading } = useNoteQuery();
+
+  const isGlobalLoading = isLoading || isDetailLoading || isSaving;
 
   // 컴포넌트 언마운트 시 뷰 상태를 리스트로 초기화
   useEffect(() => {
@@ -37,7 +41,13 @@ const BrainstormNote = ({ onClose }) => {
         )}
       </section>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto relative">
+        {isGlobalLoading && (
+          <div className="absolute inset-0 flex-row-center z-50">
+            <MoonLoader size={30} color="#007BFF" speedMultiplier={0.7} />
+          </div>
+        )}
+
         {view === VIEW_TYPE.LIST ? <NoteList /> : <NoteDetail />}
       </div>
     </div>
