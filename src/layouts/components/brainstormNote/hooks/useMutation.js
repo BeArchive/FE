@@ -24,6 +24,7 @@ export const useMutation = () => {
       // ID 존재 여부에 따라 API 선택
       return currentId ? noteApi.updateNote(currentId, payload) : noteApi.createNote(payload);
     },
+    meta: { hideSpinner: true },
     onSuccess: (response) => {
       if (!response) {
         setView(VIEW_TYPE.LIST);
@@ -50,6 +51,7 @@ export const useMutation = () => {
   // 노트 삭제
   const deleteMutation = useTanstackMutation({
     mutationFn: (id) => noteApi.deleteNote(id),
+    meta: { hideSpinner: true },
     onSuccess: (response) => {
       if (response.isSuccess) {
         // 삭제 성공 시 목록 새로고침

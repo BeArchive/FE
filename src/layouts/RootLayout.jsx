@@ -17,8 +17,12 @@ const RootLayout = () => {
   const [isNoteOpen, setIsNoteOpen] = useState(false);
 
   //  전역 로딩 상태 감시
-  const isFetching = useIsFetching();
-  const isMutating = useIsMutating();
+  const isFetching = useIsFetching({
+    predicate: (query) => !query.meta?.hideSpinner,
+  });
+  const isMutating = useIsMutating({
+    predicate: (mutation) => !mutation.meta?.hideSpinner,
+  });
   const isLoading = isFetching > 0 || isMutating > 0;
 
   const handleAuthClick = () => {

@@ -62,6 +62,7 @@ export const useChat = () => {
   // 채팅방 초기 생성
   const createRoomMutation = useMutation({
     mutationFn: ({ prompt, files }) => createChatRoom(prompt, files),
+    meta: { hideSpinner: true },
     onSuccess: (response) => {
       const { data } = response;
       setChatRoomId(data.chatRoomId); // 채팅방 ID 저장
@@ -88,6 +89,7 @@ export const useChat = () => {
   // 메시지 추가 전송
   const sendMessageMutation = useMutation({
     mutationFn: ({ roomId, text, files }) => sendChatMessage(roomId, text, files),
+    meta: { hideSpinner: true },
     onSuccess: (response) => {
       const { data } = response;
 
@@ -119,6 +121,10 @@ export const useChat = () => {
     },
   });
 
+  const { mutate: mutateCreateRoom } = createRoomMutation;
+  const { mutate: mutateSendMessage } = sendMessageMutation;
+  const { mutateAsync: mutateChangeMode } = changeModeMutation;
+
   const addMessage = useCallback((type, content, files = [], actionType = 'EXECUTE') => {
     dispatch({
       type: 'ADD_MESSAGE',
@@ -127,7 +133,6 @@ export const useChat = () => {
   }, []);
 
   // 페이지 진입 시 최초 실행 함수
-  const mutateCreateRoom = createRoomMutation.mutate;
   const startNewChat = useCallback(
     (prompt, files) => {
       setIsThinking(true);
@@ -138,7 +143,6 @@ export const useChat = () => {
   );
 
   // 메시지 전송 함수
-  const mutateSendMessage = sendMessageMutation.mutate;
   const sendNextMessage = useCallback(
     (text, files) => {
       if (!chatRoomId) return console.error('채팅방 ID가 없습니다.');
@@ -154,7 +158,6 @@ export const useChat = () => {
   );
 
   // 모드 변경 함수
-  const mutateChangeMode = changeModeMutation.mutateAsync;
   const selectMode = useCallback(
     async (mode) => {
       if (!chatRoomId) return console.error('채팅방 ID가 없습니다.');
