@@ -6,6 +6,7 @@ import NoteDetail from './NoteDetail';
 import NoteList from './NoteList';
 import { useMutation } from './hooks/useMutation';
 import { useNoteQuery } from './hooks/useNoteQuery';
+import { MoonLoader } from 'react-spinners';
 
 const BrainstormNote = ({ onClose }) => {
   const { view, setView } = useNoteStore();

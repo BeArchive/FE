@@ -11,6 +11,7 @@ export const useNoteQuery = () => {
     queryKey: ['notes'],
     queryFn: ({ pageParam = null }) => noteApi.getNoteList({ cursor: pageParam, limit: 10 }),
     getNextPageParam: (lastPage) => (lastPage.data.hasNext ? lastPage.data.nextCursor : undefined),
+    meta: { hideSpinner: true },
   });
 
   // 노트 상세 조회
@@ -18,6 +19,7 @@ export const useNoteQuery = () => {
     queryKey: ['note', selectedId],
     queryFn: () => noteApi.getNoteDetail(selectedId),
     enabled: !!selectedId, // ID가 없으면 실행하지 않음
+    meta: { hideSpinner: true },
   });
 
   return {
